@@ -1,0 +1,79 @@
+:root{
+/* Brand navy — sampled from the CMK uniform */
+--navy-950:#0A1330;
+--navy-900:#0E1A3C;
+--navy-800:#16244F;
+--navy-700:#1E2F63;
+--navy-600:#243568;
+--navy-500:#33477F;
+--navy-400:#5266A0;
+--navy-300:#8A99C4;
+--navy-200:#C2CBE2;
+--navy-100:#E3E8F4;
+--navy-050:#F1F4FB;
+
+/* Action blue — buttons, links, active states */
+--blue-700:#0B4FA8;
+--blue-600:#0F62D0;
+--blue-500:#1B76EE;
+--blue-400:#4E97F5;
+--blue-200:#B7D5FB;
+--blue-100:#E4EFFE;
+--blue-050:#F3F8FF;
+
+/* Care teal — secondary accent, wellbeing / diagnostics */
+--teal-600:#0E8A86;
+--teal-500:#14A8A0;
+--teal-100:#D6F2F0;
+
+/* Neutrals */
+--white:#FFFFFF;
+--grey-050:#F7F8FA;
+--grey-100:#EDEFF3;
+--grey-200:#DFE3EA;
+--grey-300:#C6CCD8;
+--grey-400:#9AA3B2;
+--grey-500:#6B7488;
+--grey-600:#4C5566;
+--grey-700:#333B49;
+--grey-900:#171C26;
+
+/* Semantic status */
+--success-600:#177A4B;
+--success-100:#DDF3E7;
+--warning-600:#9A6206;
+--warning-100:#FBEED3;
+--danger-600:#B3261E;
+--danger-100:#FBE3E1;
+--info-600:var(--blue-600);
+--info-100:var(--blue-100);
+
+/* Semantic aliases */
+--text-strong:var(--navy-900);
+--text-body:var(--grey-700);
+--text-muted:var(--grey-500);
+--text-inverse:var(--white);
+--text-link:var(--blue-600);
+--text-link-hover:var(--blue-700);
+
+--surface-page:var(--white);
+--surface-subtle:var(--navy-050);
+--surface-card:var(--white);
+--surface-inverse:var(--navy-900);
+--surface-accent:var(--blue-050);
+--surface-disabled:var(--grey-100);
+
+--border-subtle:var(--grey-200);
+--border-default:var(--grey-300);
+--border-strong:var(--navy-200);
+--border-focus:var(--blue-500);
+
+--action-primary:var(--blue-600);
+--action-primary-hover:var(--blue-700);
+--action-secondary:var(--navy-800);
+--action-secondary-hover:var(--navy-900);
+
+--gradient-hero:linear-gradient(120deg,var(--navy-900) 0%,var(--navy-700) 48%,var(--blue-700) 100%);
+--gradient-wash:linear-gradient(180deg,var(--navy-050) 0%,var(--white) 100%);
+--scrim-photo:linear-gradient(90deg,rgba(14,26,60,.86) 0%,rgba(14,26,60,.55) 45%,rgba(14,26,60,0) 78%); /* @kind color */
+}
