@@ -288,8 +288,7 @@
           </button>
         </div>
         <div style="padding:24px; overflow-y:auto; min-height:320px;">
-          <a href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka" data-zl-widget-facility="centrum-medyczne-kasprzaka" rel="nofollow" data-placement="inline" data-zlw-type="facility-calendar-listing-with-saas-only">Umów wizytę</a>
-          <script id="zl-facility-widget" src="https://www.znanylekarz.pl/platform/js/widget.js"></script>
+          <a id="zl-widget-anchor" href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka" data-zl-widget-facility="centrum-medyczne-kasprzaka" rel="nofollow" data-placement="inline" data-zlw-type="facility-calendar-listing-with-saas-only">Umów wizytę</a>
         </div>
         <div style="padding:16px 24px 24px; border-top:1px solid var(--border-subtle); display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end;">
           <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" variant="secondary" onClick="{{ zamknijKalendarz }}" hint-size="auto,46px">Zamknij</x-import>
@@ -322,6 +321,15 @@ class Component extends DCLogic {
     if (e && e.preventDefault) e.preventDefault();
     document.body.style.overflow = 'hidden';
     this.setState({ kalendarzOtwarty: true });
+    setTimeout(() => {
+      if (!document.getElementById('zl-widget-anchor')) return;
+      const stary = document.getElementById('zl-facility-widget');
+      if (stary) stary.remove();
+      const s = document.createElement('script');
+      s.id = 'zl-facility-widget';
+      s.src = 'https://www.znanylekarz.pl/platform/js/widget.js';
+      document.body.appendChild(s);
+    }, 0);
   };
   zamknijKalendarz = () => {
     document.body.style.overflow = '';
