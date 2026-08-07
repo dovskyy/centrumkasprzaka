@@ -4,8 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<style>
+  #intro-reveal{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(120deg,#0e1a3c 0%,#16265c 48%,#1d4ed8 100%);animation:introOverlayOut 3s ease forwards;}
+  #intro-reveal .intro-reveal__mark{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;}
+  #intro-reveal .intro-reveal__ring{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.35);opacity:0;transform:scale(.3);animation:introRing .9s cubic-bezier(.16,1,.3,1) .05s forwards;}
+  #intro-reveal .intro-reveal__logo{position:relative;width:96px;height:96px;opacity:0;transform:scale(.72);filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));animation:introLogoIn .7s cubic-bezier(.16,1,.3,1) .15s forwards;}
+  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-display,inherit);font-weight:var(--weight-extrabold,800);font-size:18px;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
+  @keyframes introLogoIn{0%{opacity:0;transform:scale(.72);}65%{opacity:1;transform:scale(1.08);}100%{opacity:1;transform:scale(1);}}
+  @keyframes introRing{0%{opacity:.6;transform:scale(.3);}70%{opacity:0;transform:scale(1.7);}100%{opacity:0;transform:scale(1.7);}}
+  @keyframes introTextIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
+  @keyframes introOverlayOut{0%,62%{opacity:1;visibility:visible;pointer-events:auto;}93%{opacity:0;visibility:visible;pointer-events:none;}100%{opacity:0;visibility:hidden;pointer-events:none;}}
+  html.intro-active,html.intro-active body{overflow:hidden;}
+  html.intro-seen #intro-reveal{display:none;}
+  @media (prefers-reduced-motion: reduce){#intro-reveal{display:none !important;}}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('cmkIntroShown')){
+      document.documentElement.classList.add('intro-seen');
+    }else{
+      sessionStorage.setItem('cmkIntroShown','1');
+      document.documentElement.classList.add('intro-active');
+    }
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
+<div id="intro-reveal" aria-hidden="true">
+  <div class="intro-reveal__mark">
+    <div class="intro-reveal__ring"></div>
+    <img src="uploads/assets-1786096163757-0x49.webp" alt="" class="intro-reveal__logo" width="96" height="96">
+  </div>
+  <div class="intro-reveal__text">Centrum Medyczne Kasprzaka</div>
+</div>
+<script>
+(function(){
+  var el = document.getElementById('intro-reveal');
+  if(!el) return;
+  if(!document.documentElement.classList.contains('intro-active')){ el.remove(); return; }
+  el.addEventListener('animationend', function(e){
+    if(e.target !== el) return;
+    document.documentElement.classList.remove('intro-active');
+    el.remove();
+  });
+})();
+</script>
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
