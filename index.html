@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <style>
-  #intro-reveal{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(120deg,#0e1a3c 0%,#16265c 48%,#1d4ed8 100%);animation:introOverlayOut 3s ease forwards;}
+  #intro-reveal{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(120deg,#0e1a3c 0%,#16265c 48%,#1d4ed8 100%);animation:introOverlayOut var(--intro-duration,3s) ease forwards;}
   #intro-reveal .intro-reveal__mark{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;}
   #intro-reveal .intro-reveal__ring{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.35);opacity:0;transform:scale(.3);animation:introRing .9s cubic-bezier(.16,1,.3,1) .05s forwards;}
   #intro-reveal .intro-reveal__logo{position:relative;width:96px;height:96px;opacity:0;transform:scale(.72);filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));animation:introLogoIn .7s cubic-bezier(.16,1,.3,1) .15s forwards;}
@@ -15,19 +15,16 @@
   @keyframes introTextIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
   @keyframes introOverlayOut{0%,62%{opacity:1;visibility:visible;pointer-events:auto;}93%{opacity:0;visibility:visible;pointer-events:none;}100%{opacity:0;visibility:hidden;pointer-events:none;}}
   html.intro-active,html.intro-active body{overflow:hidden;}
-  html.intro-seen #intro-reveal{display:none;}
   @media (prefers-reduced-motion: reduce){#intro-reveal{display:none !important;}}
 </style>
 <script>
 (function(){
   try{
-    if(sessionStorage.getItem('cmkIntroShown')){
-      document.documentElement.classList.add('intro-seen');
-    }else{
-      sessionStorage.setItem('cmkIntroShown','1');
-      document.documentElement.classList.add('intro-active');
-    }
+    var firstRun = !localStorage.getItem('cmkIntroSeenEver');
+    if(firstRun) localStorage.setItem('cmkIntroSeenEver','1');
+    document.documentElement.style.setProperty("--intro-duration", (3 + (firstRun ? 0.5 : 0)) + "s");
   }catch(e){}
+  document.documentElement.classList.add('intro-active');
 })();
 </script>
 </head>
@@ -316,43 +313,45 @@
 
     <section aria-labelledby="dlaczego-h" style="background:var(--surface-subtle);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:56px; align-items:center;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:64px; align-items:center;">
           <div style="position:relative; min-height:420px;">
-            <img src="uploads/CMK-interior.jpg" alt="Wnętrze Centrum Medycznego Kasprzaka — poczekalnia" style="display:block; width:100%; height:420px; object-fit:cover; border-radius:28px; box-shadow:var(--shadow-md, 0 24px 44px rgba(14,26,60,.18));">
-            <img src="uploads/interior-2.webp" alt="Wnętrze Centrum Medycznego Kasprzaka — gabinet" style="position:absolute; right:-24px; bottom:-28px; width:58%; max-width:280px; height:190px; object-fit:cover; border-radius:20px; border:6px solid var(--white); box-shadow:0 20px 40px rgba(14,26,60,.28);">
+            <img src="uploads/doctor-patient.webp" alt="Lekarka Centrum Medycznego Kasprzaka rozmawia z pacjentem podczas konsultacji" style="display:block; width:100%; height:480px; object-fit:cover; border-radius:28px; box-shadow:var(--shadow-md, 0 24px 44px rgba(14,26,60,.18));">
           </div>
           <div>
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Jak wygląda wizyta" title="Cztery kroki, bez niespodzianek" lead="Od rezerwacji do wyniku — wszystko na miejscu, przy ul. Kasprzaka 31." hint-size="100%,160px"></x-import>
-            <ol style="margin:32px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:20px;">
-              <li style="display:flex; gap:16px;">
-                <span style="width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--blue-050); color:var(--blue-600); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px;">1</span>
-                <span>
-                  <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wybierasz termin online</span>
-                  <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Wolne godziny widać od razu. Zwykle w ciągu 3 dni, bez skierowania.</span>
-                </span>
-              </li>
-              <li style="display:flex; gap:16px;">
-                <span style="width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--blue-050); color:var(--blue-600); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px;">2</span>
-                <span>
-                  <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Przychodzisz do przychodni</span>
-                  <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Parking przed budynkiem, wejście z poziomu ulicy, bez schodów.</span>
-                </span>
-              </li>
-              <li style="display:flex; gap:16px;">
-                <span style="width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--blue-050); color:var(--blue-600); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px;">3</span>
-                <span>
-                  <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Badanie robimy na miejscu</span>
-                  <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">USG dla dzieci i dorosłych w tym samym gabinecie co konsultacja.</span>
-                </span>
-              </li>
-              <li style="display:flex; gap:16px;">
-                <span style="width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--blue-050); color:var(--blue-600); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px;">4</span>
-                <span>
-                  <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wynik dostajesz tego samego dnia</span>
-                  <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Opis USG omawiamy bezpośrednio po badaniu.</span>
-                </span>
-              </li>
-            </ol>
+            <div style="position:relative; margin-top:36px;">
+              <div aria-hidden="true" style="position:absolute; left:16px; top:17px; bottom:17px; width:2px; background:var(--border-subtle);"></div>
+              <ol style="position:relative; margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:30px;">
+                <li style="position:relative; display:flex; gap:16px;">
+                  <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--blue-600); color:var(--white); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">1</span>
+                  <span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wybierasz termin online</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Wolne godziny widać od razu. Zwykle w ciągu 3 dni, bez skierowania.</span>
+                  </span>
+                </li>
+                <li style="position:relative; display:flex; gap:16px;">
+                  <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--white); color:var(--blue-600); border:2px solid var(--blue-200); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">2</span>
+                  <span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Przychodzisz do przychodni</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Parking przed budynkiem, wejście z poziomu ulicy, bez schodów.</span>
+                  </span>
+                </li>
+                <li style="position:relative; display:flex; gap:16px;">
+                  <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--white); color:var(--blue-600); border:2px solid var(--blue-200); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">3</span>
+                  <span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Badanie robimy na miejscu</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">USG dla dzieci i dorosłych w tym samym gabinecie co konsultacja.</span>
+                  </span>
+                </li>
+                <li style="position:relative; display:flex; gap:16px;">
+                  <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--white); color:var(--blue-600); border:2px solid var(--blue-200); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">4</span>
+                  <span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wynik dostajesz tego samego dnia</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Opis USG omawiamy bezpośrednio po badaniu.</span>
+                  </span>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
