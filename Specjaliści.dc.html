@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Specjaliści — Centrum Medyczne Kasprzaka, Warszawa Wola</title>
-<meta name="description" content="Lekarze przyjmujący w Centrum Medycznym Kasprzaka przy ul. Kasprzaka 17A w Warszawie. Ginekologia, dermatologia, pediatria, kardiologia, USG dzieci i dorosłych.">
+<meta name="description" content="Lekarze przyjmujący w Centrum Medycznym Kasprzaka przy ul. Kasprzaka 31 w Warszawie. Ginekologia, dermatologia, pediatria, kardiologia, USG dzieci i dorosłych.">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/fonts.css">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/colors.css">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/typography.css">
@@ -33,11 +33,11 @@
   .nav-toggle[aria-expanded="true"] .icon-menu { display:none; }
   .nav-toggle[aria-expanded="true"] .icon-close { display:block; }
   .mobile-menu a:hover { background:var(--navy-050); }
-  @media (max-width:760px) {
+  @media (max-width:1000px) {
     .nav-links, .nav-cta { display:none !important; }
     .nav-toggle { display:inline-flex !important; margin-left:auto; }
   }
-  @media (min-width:761px) {
+  @media (min-width:1001px) {
     .mobile-menu { display:none !important; }
   }
   @media (max-width:400px) {
@@ -66,6 +66,7 @@
         <nav class="nav-links" aria-label="Główna" style="margin-left:auto; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
           <a href="index.html#specjalizacje" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjalizacje</a>
           <a href="#lista" aria-current="page" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-semibold); color:var(--blue-700); background:var(--blue-050); text-decoration:none; white-space:nowrap;">Specjaliści</a>
+          <a href="index.html#opinie" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Opinie</a>
           <a href="index.html#kontakt" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Kontakt</a>
         </nav>
         <div class="nav-cta" style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; white-space:nowrap;">
@@ -83,6 +84,7 @@
         <div style="max-width:var(--container-max); margin:0 auto; padding:10px var(--gutter) 20px; display:flex; flex-direction:column; gap:2px;">
           <a href="index.html#specjalizacje" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjalizacje</a>
           <a href="#lista" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-semibold); color:var(--blue-700); background:var(--blue-050); text-decoration:none;">Specjaliści</a>
+          <a href="index.html#opinie" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Opinie</a>
           <a href="index.html#kontakt" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Kontakt</a>
           <div style="margin-top:10px;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarzZMenu }}" icon="calendar-check" style="width:100%; justify-content:center;" hint-size="100%,46px">Umów wizytę</x-import>
@@ -218,7 +220,7 @@
                 <p style="margin:0; font-size:14.5px; line-height:1.55; color:var(--text-muted);">Konsultacje, cytologia, USG ginekologiczne</p>
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:auto; padding-top:14px; border-top:1px solid var(--border-subtle);">
                   <span style="font-size:13.5px; color:var(--text-muted);">Dorośli</span>
-                  <a href="tel:+48228628080" style="background:var(--surface-subtle); color:var(--navy-800); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); text-decoration:none; white-space:nowrap; border:1px solid var(--grey-300);" style-hover="background:var(--navy-050);">Zapytaj</a>
+                  <a href="tel:+48727500085" style="background:var(--surface-subtle); color:var(--navy-800); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); text-decoration:none; white-space:nowrap; border:1px solid var(--grey-300);" style-hover="background:var(--navy-050);">Zapytaj</a>
                 </div>
               </div>
             </article>
@@ -239,7 +241,7 @@
             <p style="margin:0; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78);">Zadzwoń do rejestracji — pomożemy wybrać specjalistę i najbliższy wolny termin.</p>
           </div>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
-            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48228628080" size="lg" icon="phone" hint-size="auto,56px">Zadzwoń do rejestracji</x-import>
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48727500085" size="lg" icon="phone" hint-size="auto,56px">Zadzwoń do rejestracji</x-import>
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" variant="onDark" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę</x-import>
           </div>
         </div>
@@ -252,7 +254,7 @@
     <div style="max-width:var(--container-max); margin:0 auto; padding:56px var(--gutter) 28px; display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:40px;">
       <div>
         <img src="uploads/assets-1786096163757-0x49.webp" alt="" width="40" height="40" style="display:block; width:40px; height:40px; margin-bottom:16px;">
-        <p style="margin:0; font-size:14.5px; line-height:1.65;">Centrum Medyczne Kasprzaka Sp. z o.o.<br>ul. Marcina Kasprzaka 17A, 01-211 Warszawa<br>NIP: 5272935293 · REGON: 387123910</p>
+        <p style="margin:0; font-size:14.5px; line-height:1.65;">Centrum Medyczne Kasprzaka Sp. z o.o.<br>ul. Marcina Kasprzaka 31 lok. U7, 01-211 Warszawa<br>NIP: 5272935293 · REGON: 387123910</p>
       </div>
       <nav aria-label="Stopka — serwis">
         <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--white); margin-bottom:16px;">Serwis</div>
@@ -265,7 +267,7 @@
       </nav>
       <div>
         <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--white); margin-bottom:16px;">Rejestracja</div>
-        <p style="margin:0 0 8px; font-size:14.5px;"><a href="tel:+48228628080" style="color:var(--white); font-weight:var(--weight-semibold); text-decoration:none;">22 862 80 80</a></p>
+        <p style="margin:0 0 8px; font-size:14.5px;"><a href="tel:+48727500085" style="color:var(--white); font-weight:var(--weight-semibold); text-decoration:none;">727 500 085</a></p>
         <p style="margin:0 0 8px; font-size:14.5px;"><a href="mailto:rejestracja@cmkasprzaka.pl" style="color:rgba(255,255,255,.72); text-decoration:none; word-break:break-all;">rejestracja@cmkasprzaka.pl</a></p>
         <p style="margin:0; font-size:14.5px;">pon.–pt. 8:00–20:00, sob. 8:00–14:00</p>
       </div>
@@ -345,6 +347,11 @@ class Component extends DCLogic {
       if (e.key === 'Escape' && this.state.kalendarzOtwarty) this.zamknijKalendarz();
     };
     window.addEventListener('keydown', this.obslugaKlawiszy);
+
+    // Wejście z kafelka specjalizacji na stronie głównej: Specjaliści.dc.html?spec=Ginekologia.
+    // support.js nie mapuje query stringa na propsy, więc czytamy go tutaj. Nieznana wartość = brak filtra.
+    const zUrl = new URLSearchParams(location.search).get('spec');
+    if (zUrl && this.grupy().includes(zUrl)) this.setState({ filtr: zUrl });
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.obslugaKlawiszy);
