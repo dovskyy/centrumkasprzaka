@@ -94,6 +94,13 @@
     .spec-card { flex:0 0 auto; width:44vw; scroll-snap-align:start; }
   }
 
+  .visit-photo-wrap { min-height:420px; }
+  .visit-photo { height:480px; }
+  @media (max-width:760px) {
+    .visit-photo-wrap { min-height:0; }
+    .visit-photo { height:280px; }
+  }
+
   .hero-phone-btn { flex-shrink:0; }
   @media (max-width:760px) {
     .hero-copy { padding-bottom:48px !important; }
@@ -314,8 +321,8 @@
     <section aria-labelledby="dlaczego-h" style="background:var(--surface-subtle);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:64px; align-items:center;">
-          <div style="position:relative; min-height:420px;">
-            <img src="uploads/doctor-patient.webp" alt="Lekarka Centrum Medycznego Kasprzaka rozmawia z pacjentem podczas konsultacji" style="display:block; width:100%; height:480px; object-fit:cover; border-radius:28px; box-shadow:var(--shadow-md, 0 24px 44px rgba(14,26,60,.18));">
+          <div class="visit-photo-wrap" style="position:relative;">
+            <img src="uploads/doctor-patient.webp" alt="Lekarka Centrum Medycznego Kasprzaka rozmawia z pacjentem podczas konsultacji" class="visit-photo" style="display:block; width:100%; object-fit:cover; border-radius:28px; box-shadow:var(--shadow-md, 0 24px 44px rgba(14,26,60,.18));">
           </div>
           <div>
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Jak wygląda wizyta" title="Cztery kroki, bez niespodzianek" lead="Od rezerwacji do wyniku — wszystko na miejscu, przy ul. Kasprzaka 31." hint-size="100%,160px"></x-import>
