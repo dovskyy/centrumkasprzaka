@@ -139,6 +139,16 @@
   .ocena-pigulka { display:flex; align-items:center; gap:10px; min-height:46px; padding:10px 16px; border-radius:var(--radius-pill); background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs); text-decoration:none; color:var(--navy-900); transition:var(--transition-control); }
   .ocena-pigulka:hover { color:var(--navy-900); text-decoration:none; border-color:var(--blue-200); box-shadow:var(--shadow-sm); }
 
+  .reviews-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; width:100%; text-align:left; }
+  .swipe-indicator { display:none; }
+  @media (max-width:960px) {
+    .reviews-grid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:16px; -webkit-overflow-scrolling:touch; gap:16px; scroll-padding:0; margin:0; padding-left:0; padding-right:0; width:100%; align-self:stretch; }
+    .reviews-grid::-webkit-scrollbar { height:4px; }
+    .reviews-grid::-webkit-scrollbar-track { background:rgba(14,26,60,.05); border-radius:10px; }
+    .reviews-grid::-webkit-scrollbar-thumb { background:rgba(14,26,60,.15); border-radius:10px; }
+    .reviews-grid > div { flex:0 0 90%; scroll-snap-align:center; min-width:240px; }
+    .swipe-indicator { display:flex; font-size:13px; color:var(--text-muted); align-items:center; justify-content:center; gap:6px; margin-bottom:-16px; }
+  }
   /* Karta mapy — podgląd do kliknięcia, iframe dociąga się dopiero na żądanie */
   .mapa-karta { position:relative; height:340px; border-radius:var(--radius-photo); overflow:hidden; border:1px solid var(--border-subtle); background:var(--navy-050); }
   .mapa-karta iframe { display:block; width:100%; height:100%; border:0; }
@@ -425,12 +435,12 @@
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
               <span style="display:flex; align-items:baseline; gap:7px;">
-                <span class="u-num" style="font-family:var(--font-display); font-size:19px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); color:var(--navy-900);">4,5</span>
-                <span style="font-size:14px; color:var(--text-muted);">Google · <span class="u-num">87</span> opinii</span>
+                <span style="font-family:var(--font-display); font-size:19px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); color:var(--navy-900);">Google</span>
+                <span style="font-size:14px; color:var(--text-muted);"><span class="u-num">87</span> opinii</span>
               </span>
-              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="var(--star-rating)" style="flex-shrink:0;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span class="u-sr-only">Ocena 4,5 na 5 w Google na podstawie 87 opinii — otwiera się w nowej karcie</span>
+              <span class="u-sr-only">Zobacz opinie w Google na podstawie 87 opinii — otwiera się w nowej karcie</span>
             </a>
+
             <a class="ocena-pigulka" href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka" target="_blank" rel="noopener noreferrer">
               <img src="uploads/znany-lekarz.webp" alt="" width="20" height="20" style="width:20px; height:20px; border-radius:5px; object-fit:contain; flex-shrink:0;">
               <span style="display:flex; align-items:baseline; gap:7px;">
@@ -453,18 +463,92 @@
           zamontujWidgetOpinii(), dopiero gdy sekcja wjedzie w viewport.
           Dopóki brakuje atrybutu data-zlw-type, widget się nie montuje, a poniższy link działa jako pełnowartościowy fallback.
         -->
-        <div style="margin-top:40px; background:var(--white); border:1px solid var(--border-subtle); border-radius:var(--radius-card); box-shadow:var(--shadow-xs); padding:36px 28px; display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center;">
-          <img src="uploads/znany-lekarz.webp" alt="" width="44" height="44" style="width:44px; height:44px; border-radius:var(--radius-md); object-fit:contain;">
-          <p style="margin:0; max-width:520px; font-size:var(--text-body); line-height:var(--leading-body); color:var(--text-muted);">Pełną listę opinii — wraz z odpowiedziami placówki — prowadzimy na profilu ZnanyLekarz. Opinię może wystawić wyłącznie pacjent po odbytej wizycie.</p>
-          <a id="zl-opinie-anchor"
-             href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka"
-             target="_blank" rel="noopener noreferrer nofollow"
-             data-zl-widget-facility="centrum-medyczne-kasprzaka"
-             data-placement="inline"
-             style="display:inline-flex; align-items:center; gap:9px; min-height:46px; padding:12px 22px; border-radius:var(--radius-pill); background:var(--blue-600); color:var(--white); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:15px; text-decoration:none; transition:var(--transition-control);" style-hover="background:var(--blue-700); color:var(--white); text-decoration:none;">
-            Zobacz opinie pacjentów
-            <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-          </a>
+        <div style="margin-top:40px; background:var(--white); border:1px solid var(--border-subtle); border-radius:var(--radius-card); box-shadow:var(--shadow-xs); padding:36px 28px; display:flex; flex-direction:column; align-items:center; gap:32px; overflow:hidden;">
+          <div class="swipe-indicator">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8l4 4-4 4M7 16l-4-4 4-4M21 12H3"/></svg>
+            Przesuń, aby zobaczyć więcej
+          </div>
+          <div class="reviews-grid">
+            
+            <div style="background:var(--navy-050); border-radius:var(--radius-md); padding:24px; display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="font-family:var(--font-display); font-weight:var(--weight-bold); color:var(--navy-900); font-size:16px;">Edyta</div>
+                  <div style="font-size:12px; color:var(--success-700); background:var(--success-100); padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-weight:var(--weight-medium);">
+                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Weryfikacja wizyty
+                  </div>
+                </div>
+                <div style="color:var(--star-rating); display:flex; gap:2px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <p style="margin:0; font-size:14.5px; line-height:1.6; color:var(--navy-800);">Doktor to świetny expert i dobry człowiek. Nie zostawia pacjenta samego po operacji, kiedy wychodzą dodatkowe rzeczy do zaopiekowania. Przywraca wiarę w to, że zawód lekarza to jednak misja, a ludzie, którzy go wykonują warci są naszego zaufania. Dziękuję Doktorze</p>
+              <div style="margin-top:auto; padding-top:16px; border-top:1px solid rgba(14,26,60,.08); font-size:12.5px; color:var(--text-muted); line-height:1.45;">
+                22 lipca 2026 • lek. Sebastian Janiczek • chirurgia ortopedyczna
+              </div>
+            </div>
+
+            <div style="background:var(--navy-050); border-radius:var(--radius-md); padding:24px; display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="font-family:var(--font-display); font-weight:var(--weight-bold); color:var(--navy-900); font-size:16px;">Dariusz</div>
+                  <div style="font-size:12px; color:var(--success-700); background:var(--success-100); padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-weight:var(--weight-medium);">
+                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Weryfikacja wizyty
+                  </div>
+                </div>
+                <div style="color:var(--star-rating); display:flex; gap:2px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <p style="margin:0; font-size:14.5px; line-height:1.6; color:var(--navy-800);">Bardzo dziękuję za profesjonalne podejście. Badanie Doppler wykonane skrupulatnie i drobiazgowo. Pani Doktor ma świetne podejście do pacjenta. Gorąco polecam!</p>
+              <div style="margin-top:auto; padding-top:16px; border-top:1px solid rgba(14,26,60,.08); font-size:12.5px; color:var(--text-muted); line-height:1.45;">
+                9 lipca 2026 • dr n. med. Dagmara Gralak-Łachowska • USG / doppler
+              </div>
+            </div>
+
+            <div style="background:var(--navy-050); border-radius:var(--radius-md); padding:24px; display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <div style="font-family:var(--font-display); font-weight:var(--weight-bold); color:var(--navy-900); font-size:16px;">A.O.</div>
+                  <div style="font-size:12px; color:var(--success-700); background:var(--success-100); padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:4px; margin-top:6px; font-weight:var(--weight-medium);">
+                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Weryfikacja wizyty
+                  </div>
+                </div>
+                <div style="color:var(--star-rating); display:flex; gap:2px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <p style="margin:0; font-size:14.5px; line-height:1.6; color:var(--navy-800);">Wizyta odbyła się punktualnie, w miłej i spokojniej atmosferze, na wszystkie moje pytania i wątpliwości pani doktor udzieliła wyczerpującej odpowiedzi oraz dała zalecenia. Serdecznie polecam</p>
+              <div style="margin-top:auto; padding-top:16px; border-top:1px solid rgba(14,26,60,.08); font-size:12.5px; color:var(--text-muted); line-height:1.45;">
+                27 czerwca 2026 • dr Anna Siniarska • konsultacja okulistyczna
+              </div>
+            </div>
+          </div>
+          
+          <div style="display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center; padding-top:12px; max-width:520px;">
+            <p style="margin:0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--text-muted);">Wszystkie zweryfikowane opinie pacjentów znajdziesz na naszym profilu ZnanyLekarz.</p>
+            <a id="zl-opinie-anchor"
+               href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka"
+               target="_blank" rel="noopener noreferrer nofollow"
+               data-zl-widget-facility="centrum-medyczne-kasprzaka"
+               data-placement="inline"
+               style="display:inline-flex; align-items:center; gap:9px; min-height:46px; padding:12px 22px; border-radius:var(--radius-pill); background:var(--blue-600); color:var(--white); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:15px; text-decoration:none; transition:var(--transition-control);" style-hover="background:var(--blue-700); color:var(--white); text-decoration:none;">
+              Zobacz opinie pacjentów
+              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -574,9 +658,27 @@
   </footer>
 
   <sc-if value="{{ pokazPasek }}" hint-placeholder-val="{{ false }}">
-    <div role="region" aria-label="Szybki kontakt" style="position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--white); border-top:1px solid var(--border-subtle); box-shadow:var(--shadow-lg); display:flex; gap:10px; padding:10px 16px; white-space:nowrap;">
-      <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48727500085" variant="secondary" icon="phone" style="flex:1;" hint-size="100%,46px">Zadzwoń</x-import>
-      <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" icon="calendar-check" style="flex:1.4;" hint-size="100%,46px">Umów wizytę</x-import>
+    <sc-if value="{{ fabMenuOtwarte }}">
+      <div onClick="{{ closeFabMenu }}" aria-hidden="true" style="position:fixed; inset:0; z-index:55; background:rgba(255,255,255,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);"></div>
+    </sc-if>
+    <div role="region" aria-label="Szybki kontakt" style="position:fixed; right:20px; bottom:20px; z-index:60; display:flex; flex-direction:column; align-items:flex-end; gap:16px;">
+      
+      <sc-if value="{{ fabMenuOtwarte }}">
+        <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-end; animation:kalCardIn .2s ease-out both;">
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48727500085" onClick="{{ closeFabMenu }}" variant="secondary" icon="phone" size="lg" style="box-shadow:var(--shadow-lg); min-width:180px; justify-content:center;" hint-size="auto,56px">Zadzwoń</x-import>
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" icon="calendar-check" size="lg" style="box-shadow:var(--shadow-lg); min-width:180px; justify-content:center;" hint-size="auto,56px">Umów wizytę</x-import>
+        </div>
+      </sc-if>
+      
+      <button type="button" onClick="{{ toggleFabMenu }}" aria-label="Opcje kontaktu" aria-expanded="{{ fabMenuOtwarte }}" style="width:64px; height:64px; border-radius:50%; background:var(--action-primary); color:var(--white); border:none; box-shadow:var(--shadow-lg); display:grid; place-items:center; cursor:pointer; transition:transform .2s;" style-hover="transform:scale(1.05);">
+        <sc-if value="{{ !fabMenuOtwarte }}">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        </sc-if>
+        <sc-if value="{{ fabMenuOtwarte }}">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </sc-if>
+      </button>
+      
     </div>
   </sc-if>
 
@@ -615,12 +717,12 @@ const DNI_KIEDY = ['w niedzielę', 'w poniedziałek', 'we wtorek', 'w środę', 
 class Component extends DCLogic {
   // "teraz" nie jest nigdzie czytane — służy wyłącznie za wyzwalacz przerysowania co minutę,
   // żeby renderVals policzył status otwarcia od nowa.
-  state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, mapaWlaczona: false, teraz: Date.now() };
+  state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, mapaWlaczona: false, fabMenuOtwarte: false, teraz: Date.now() };
   aktualizuj = () => {
     const waski = window.innerWidth < 1000;
     const next = waski && window.scrollY > 420;
     if (next !== this.state.pokazPasek || !waski !== this.state.szeroki) {
-      this.setState({ pokazPasek: next, szeroki: !waski });
+      this.setState({ pokazPasek: next, szeroki: !waski, ...(next ? {} : { fabMenuOtwarte: false }) });
     }
     if (window.innerWidth > 1000 && this.state.menuOtwarte) {
       this.setState({ menuOtwarte: false });
@@ -671,10 +773,12 @@ class Component extends DCLogic {
   };
   toggleMenu = () => this.setState({ menuOtwarte: !this.state.menuOtwarte });
   closeMenu = () => this.setState({ menuOtwarte: false });
+  toggleFabMenu = () => this.setState({ fabMenuOtwarte: !this.state.fabMenuOtwarte });
+  closeFabMenu = () => this.setState({ fabMenuOtwarte: false });
   otworzKalendarz = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     document.body.style.overflow = 'hidden';
-    this.setState({ kalendarzOtwarty: true });
+    this.setState({ kalendarzOtwarty: true, fabMenuOtwarte: false });
     setTimeout(() => {
       if (!document.getElementById('zl-widget-anchor')) return;
       const stary = document.getElementById('zl-facility-widget');
@@ -742,6 +846,9 @@ class Component extends DCLogic {
       mapaWlaczona: this.state.mapaWlaczona,
       mapaWylaczona: !this.state.mapaWlaczona,
       wlaczMape: this.wlaczMape,
+      fabMenuOtwarte: this.state.fabMenuOtwarte,
+      toggleFabMenu: this.toggleFabMenu,
+      closeFabMenu: this.closeFabMenu,
       statusOtwarcia: status ? status.tekst : '',
       statusStyl: status
         ? pigulka + (status.otwarte
