@@ -465,10 +465,14 @@
         <!--
           Miejsce na oficjalny widget opinii ZnanyLekarz.
           Wygeneruj go w panelu: Mój profil → Kanały rezerwacji → Utwórz widget → widget z opiniami.
-          Z wygenerowanego snippetu przenieś TYLKO atrybuty data-zlw-* / data-zl-* na poniższy <a>
+          Z wygenerowanego snippetu przenieś WSZYSTKIE atrybuty data-zlw-* / data-zl-* naraz na poniższy <a>
           (id="zl-opinie-anchor" musi zostać). Znacznika <script> nie wklejaj — dociąga go leniwie
           zamontujWidgetOpinii(), dopiero gdy sekcja wjedzie w viewport.
-          Dopóki brakuje atrybutu data-zlw-type, widget się nie montuje, a poniższy link działa jako pełnowartościowy fallback.
+          UWAGA: nie dodawaj samego data-zl-widget-facility bez kompletu atrybutów (w tym data-zlw-type).
+          widget.js z ZnanyLekarz skanuje CAŁĄ stronę pod kątem [data-zl-widget-facility] — jeśli ten link
+          ma ten atrybut, a modal kalendarza (#zl-widget-anchor) doładuje ten sam skrypt, widget kalendarza
+          wstrzykuje się także tutaj i deformuje ten przycisk. Dopóki brakuje kompletu atrybutów, ten <a>
+          zostaje zwykłym linkiem-fallbackiem bez żadnego data-zl-*.
         -->
         <div style="margin-top:40px; background:var(--white); border:1px solid var(--border-subtle); border-radius:var(--radius-card); box-shadow:var(--shadow-xs); padding:36px 28px; display:flex; flex-direction:column; align-items:center; gap:32px; overflow:hidden;">
           <div class="swipe-indicator">
@@ -549,8 +553,6 @@
             <a id="zl-opinie-anchor"
                href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka"
                target="_blank" rel="noopener noreferrer nofollow"
-               data-zl-widget-facility="centrum-medyczne-kasprzaka"
-               data-placement="inline"
                style="display:inline-flex; align-items:center; gap:9px; min-height:46px; padding:12px 22px; border-radius:var(--radius-pill); background:var(--blue-600); color:var(--white); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:15px; text-decoration:none; transition:var(--transition-control);" style-hover="background:var(--blue-700); color:var(--white); text-decoration:none;">
               Zobacz opinie pacjentów
               <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
