@@ -108,6 +108,35 @@
     .hero-phone-label { display:none; }
   }
 
+  /* Umów wizytę — na hover ikonka kalendarza "przeobraża się" w logo ZnanyLekarz,
+     a guzik z niebieskiego przechodzi na biały. */
+  .cta-book-btn { transition:background .35s ease, border-color .35s ease, color .35s ease; }
+  .cta-book-btn:hover, .cta-book-btn:focus-visible {
+    background:var(--white) !important;
+    color:var(--success-600) !important;
+    border-color:var(--border-default) !important;
+    outline:none !important;
+  }
+  .cta-book-btn span[aria-hidden="true"] {
+    transition:transform .12s ease-in, opacity .12s ease-in;
+  }
+  .cta-book-btn:hover span[aria-hidden="true"], .cta-book-btn:focus-visible span[aria-hidden="true"] {
+    transform:scale(.3) rotate(-25deg);
+    opacity:0;
+  }
+  .cta-book-btn:hover span[aria-hidden="true"], .cta-book-btn:focus-visible span[aria-hidden="true"] {
+    -webkit-mask-image:none !important;
+    mask-image:none !important;
+    background-color:transparent !important;
+    background-image:url('uploads/znany-lekarz2.webp') !important;
+    background-size:contain !important;
+    background-position:center !important;
+    background-repeat:no-repeat !important;
+    image-rendering:auto;
+    animation:ctaIconIn .3s cubic-bezier(.34,1.56,.64,1) .12s forwards;
+  }
+  @keyframes ctaIconIn { 0% { transform:scale(.3) rotate(20deg); opacity:0; } 70% { transform:scale(1.15) rotate(0); opacity:1; } 100% { transform:scale(1) rotate(0); opacity:1; } }
+
   /* Złoto gwiazdki oceny. Wspólne dla obu platform — gwiazdka znaczy "ocena", platformę identyfikuje jej własny znak.
      Nie trafia do tokenów DS, bo to konwencja serwisów z opiniami, a nie kolor marki CMK. */
   :root { --star-rating:#F5B400; }
@@ -188,7 +217,7 @@
           <a href="#kontakt" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Kontakt</a>
         </nav>
         <div class="nav-cta" style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; white-space:nowrap;">
-          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" icon="calendar-check" hint-size="auto,46px">Umów wizytę</x-import>
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarz }}" icon="calendar-check" hint-size="auto,46px">Umów wizytę</x-import>
         </div>
         <button type="button" class="nav-toggle" aria-label="Otwórz menu" aria-expanded="{{ menuOtwarte }}" onClick="{{ toggleMenu }}">
           <svg class="icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
@@ -205,7 +234,7 @@
           <a href="#opinie" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Opinie</a>
           <a href="#kontakt" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Kontakt</a>
           <div style="margin-top:10px;">
-            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarzZMenu }}" icon="calendar-check" style="width:100%; justify-content:center;" hint-size="100%,46px">Umów wizytę</x-import>
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarzZMenu }}" icon="calendar-check" style="width:100%; justify-content:center;" hint-size="100%,46px">Umów wizytę</x-import>
           </div>
         </div>
       </div>
@@ -221,7 +250,7 @@
           <h1 id="hero-h" style="margin:0 0 20px; font-family:var(--font-display); font-size:var(--text-display-2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne Kasprzaka</h1>
           <p style="margin:0 0 32px; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78); max-width:520px; text-wrap:pretty;">Konsultacje specjalistyczne i diagnostyka USG w jednym miejscu. Termin zwykle w ciągu kilku dni, bez skierowania.</p>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
-            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę online</x-import>
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarz }}" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę online</x-import>
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="hero-phone-btn" as="a" href="tel:+48727500085" variant="onDark" size="lg" icon="phone" hint-size="auto,56px"><span class="hero-phone-label">Zadzwoń: 727 500 085</span></x-import>
           </div>
 
@@ -621,7 +650,7 @@
             <p style="margin:0; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78);">Kalendarz wizyt prowadzimy w serwisie ZnanyLekarz. Można też umówić się telefonicznie w godzinach pracy recepcji.</p>
           </div>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
-            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę</x-import>
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarz }}" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę</x-import>
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48727500085" variant="onDark" size="lg" icon="phone" hint-size="auto,56px">Zadzwoń</x-import>
           </div>
         </div>
@@ -675,7 +704,7 @@
       <sc-if value="{{ fabMenuOtwarte }}">
         <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-end; animation:kalCardIn .2s ease-out both;">
           <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48727500085" onClick="{{ closeFabMenu }}" variant="secondary" icon="phone" size="lg" style="box-shadow:var(--shadow-lg); min-width:180px; justify-content:center;" hint-size="auto,56px">Zadzwoń</x-import>
-          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" onClick="{{ otworzKalendarz }}" icon="calendar-check" size="lg" style="box-shadow:var(--shadow-lg); min-width:180px; justify-content:center;" hint-size="auto,56px">Umów wizytę</x-import>
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarz }}" icon="calendar-check" size="lg" style="box-shadow:var(--shadow-lg); min-width:180px; justify-content:center;" hint-size="auto,56px">Umów wizytę</x-import>
         </div>
       </sc-if>
       
