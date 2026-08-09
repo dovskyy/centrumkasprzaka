@@ -56,14 +56,12 @@
         "id": "beata-goralska-zaleska",
         "imie": "dr Beata Góralska-Załęska",
         "podtytul": "Dermatologia",
-        "specjalizacje": [
-            "dermatologia"
-        ],
+        "specjalizacje": [],
         "zakres": "Dermatoskopia, choroby skóry, konsultacja znamion",
         "pacjenci": "Dorośli i dzieci",
         "zdjecie": "uploads/doctor-4-transparent.webp",
         "naStronieGlownej": true,
-        "widgetHtml": null
+        "widgetHtml": "<a id=\"zl-url\" class=\"zl-url\" href=\"https://www.znanylekarz.pl/beata-goralska-zaleska/dermatolog-wenerolog-lekarze-wykonujacy-zabiegi-medycyny-estetycznej/warszawa\" rel=\"nofollow\" data-zlw-doctor=\"beata-goralska-zaleska\" data-zlw-type=\"big_with_calendar\" data-zlw-opinion=\"false\" data-zlw-hide-branding=\"true\" data-zlw-saas-only=\"true\" data-zlw-a11y-title=\"Widget umówienia wizyty lekarskiej\">Umów wizytę</a>\r\n<script>!function($_x,_s,id){var js,fjs=$_x.getElementsByTagName(_s)[0];if(!$_x.getElementById(id)){js = $_x.createElement(_s);js.id = id;js.src = \"//platform.docplanner.com/js/widget.js\";fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"zl-widget-s\");</script>"
     },
     {
         "id": "sebastian-janiczek",
