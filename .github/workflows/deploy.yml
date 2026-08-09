@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to hosting (staging)
 
 on:
   push:
@@ -6,34 +6,33 @@ on:
       - master
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: "pages"
+  group: "deploy"
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy via rsync over SSH
+        uses: easingthemes/ssh-deploy@v5
         with:
-          path: .
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          TARGET: ${{ secrets.REMOTE_PATH }}
+          SOURCE: "./"
+          ARGS: "-avzr --delete"
+          EXCLUDE: |
+            .git*
+            .github/
+            .idea/
+            _ds/
+            .thumbnail
+            cmk2.iml
+            data/
+            uploads/
