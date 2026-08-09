@@ -4,12 +4,14 @@
         "imie": "dr Renata Bokiniec",
         "podtytul": "Pediatria",
         "specjalizacje": [
-            "usg"
+            "usg",
+            "dermatologia"
         ],
         "zakres": "USG przezciemiączkowe, USG jamy brzusznej, USG bioderek",
         "pacjenci": "Dzieci",
         "zdjecie": "uploads/doctor-1-transparent.webp",
-        "naStronieGlownej": true
+        "naStronieGlownej": true,
+        "znanylekarzUrl": null
     },
     {
         "id": "joanna-chojecka-zych",
@@ -21,7 +23,8 @@
         "zakres": "USG jamy brzusznej, USG tarczycy, USG piersi",
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-2-transparent.webp",
-        "naStronieGlownej": true
+        "naStronieGlownej": true,
+        "znanylekarzUrl": null
     },
     {
         "id": "anna-dygas",
@@ -33,7 +36,8 @@
         "zakres": "Bilanse zdrowia, opieka nad noworodkiem, szczepienia",
         "pacjenci": "Dzieci",
         "zdjecie": null,
-        "naStronieGlownej": false
+        "naStronieGlownej": false,
+        "znanylekarzUrl": null
     },
     {
         "id": "wiktoria-forosenko",
@@ -45,7 +49,8 @@
         "zakres": "Konsultacja kardiologiczna, EKG, echo serca",
         "pacjenci": "Dorośli",
         "zdjecie": null,
-        "naStronieGlownej": false
+        "naStronieGlownej": false,
+        "znanylekarzUrl": null
     },
     {
         "id": "beata-goralska-zaleska",
@@ -57,7 +62,8 @@
         "zakres": "Dermatoskopia, choroby skóry, konsultacja znamion",
         "pacjenci": "Dorośli i dzieci",
         "zdjecie": "uploads/doctor-4-transparent.webp",
-        "naStronieGlownej": true
+        "naStronieGlownej": true,
+        "znanylekarzUrl": null
     },
     {
         "id": "sebastian-janiczek",
@@ -70,6 +76,7 @@
         "zakres": "Konsultacje, cytologia, USG ginekologiczne",
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-5-transparent.webp",
-        "naStronieGlownej": true
+        "naStronieGlownej": true,
+        "znanylekarzUrl": null
     }
 ]
