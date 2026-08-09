@@ -172,13 +172,13 @@
               <sc-if value="{{ l.zdjecie }}">
                 <div style="height:240px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle); position:relative;">
                   <img src="{{ l.zdjecie }}" alt="{{ l.imie }}" style="display:block; width:88%; height:auto; margin-bottom:-6%;">
-                  <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.specjalizacja }}</span>
+                  <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.podtytul }}</span>
                 </div>
               </sc-if>
               <sc-if value="{{ !l.zdjecie }}">
                 <div style="height:240px; background:var(--gradient-wash); display:grid; place-items:center; border-bottom:1px solid var(--border-subtle); position:relative;">
                   <span style="font-size:13px; line-height:1.5; color:var(--navy-300); text-align:center;">zdjęcie lekarza<br>— do uzupełnienia</span>
-                  <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.specjalizacja }}</span>
+                  <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.podtytul }}</span>
                 </div>
               </sc-if>
               <div style="padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; flex:1;">
@@ -269,9 +269,12 @@
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;domyslnyFiltr&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Wszyscy&quot;,&quot;USG&quot;,&quot;Pediatria&quot;,&quot;Kardiologia&quot;,&quot;Dermatologia&quot;,&quot;Ginekologia&quot;],&quot;default&quot;:&quot;Wszyscy&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Lista&quot;}}">
-// Treść wstrzyknięta przez PHP z data/lekarze.json (patrz inc/tresc.php) — to samo źródło co index.php.
+<script type="text/x-dc" data-dc-script data-props="{&quot;domyslnyFiltr&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Wszyscy&quot;,&quot;usg&quot;,&quot;pediatria&quot;,&quot;kardiologia&quot;,&quot;dermatologia&quot;,&quot;ginekologia&quot;],&quot;default&quot;:&quot;Wszyscy&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Lista&quot;}}">
+// Treść wstrzyknięta przez PHP z data/*.json (patrz inc/tresc.php) — to samo źródło co index.php.
+// Lekarz może mieć kilka specjalizacji naraz (l.specjalizacje to tablica id-ków) —
+// filtr dopasowuje, gdy aktywne id znajduje się w tej tablicy.
 const LEKARZE = window.TRESC.lekarze;
+const SPECJALIZACJE = window.TRESC.specjalizacje;
 
 class Component extends DCLogic {
   state = { filtr: 'Wszyscy', menuOtwarte: false, kalendarzOtwarty: false };
@@ -309,20 +312,14 @@ class Component extends DCLogic {
     };
     window.addEventListener('keydown', this.obslugaKlawiszy);
 
-    // Wejście z kafelka specjalizacji na stronie głównej: specjalisci.php?spec=Ginekologia.
-    // support.js nie mapuje query stringa na propsy, więc czytamy go tutaj. Nieznana wartość = brak filtra.
+    // Wejście z kafelka specjalizacji na stronie głównej: specjalisci.php?spec=ginekologia.
+    // support.js nie mapuje query stringa na propsy, więc czytamy go tutaj. Nieznane id = brak filtra.
     const zUrl = new URLSearchParams(location.search).get('spec');
-    if (zUrl && this.grupy().includes(zUrl)) this.setState({ filtr: zUrl });
+    if (zUrl && SPECJALIZACJE.some(s => s.id === zUrl)) this.setState({ filtr: zUrl });
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.obslugaKlawiszy);
     document.body.style.overflow = '';
-  }
-
-  grupy() {
-    const g = [];
-    LEKARZE.forEach(l => { if (!g.includes(l.grupa)) g.push(l.grupa); });
-    return g;
   }
 
   renderVals() {
@@ -332,26 +329,35 @@ class Component extends DCLogic {
 
     // sc-for iteruje bezpośrednio po przefiltrowanej liście — bez sprzężenia po indeksie
     // (dawny błąd: przestawienie kolejności lekarzy cicho psuło filtrowanie ukryty1..6).
-    const lekarzeWidoczni = LEKARZE.filter(l => aktywny === 'Wszyscy' || l.grupa === aktywny);
+    // Lekarz może wykonywać kilka specjalizacji naraz, stąd includes() zamiast ===.
+    const lekarzeWidoczni = LEKARZE.filter(l => aktywny === 'Wszyscy' || (l.specjalizacje || []).includes(aktywny));
 
     const stylBazowy = 'font-family:var(--font-display); font-size:14.5px; font-weight:var(--weight-semibold); padding:10px 18px; border-radius:var(--radius-pill); cursor:pointer; transition:var(--transition-control);';
 
-    const filtry = ['Wszyscy'].concat(this.grupy()).map(etykieta => {
-      const jest = etykieta === aktywny;
+    // Filtry pokazują tylko specjalizacje, które faktycznie wykonuje co najmniej jeden lekarz —
+    // pusta kategoria (np. dopóki nikt nie ma przypisanej Ortopedii) nie zaśmieca paska filtrów.
+    const uzywaneId = new Set();
+    LEKARZE.forEach(l => (l.specjalizacje || []).forEach(id => uzywaneId.add(id)));
+    const uzywane = SPECJALIZACJE.filter(s => uzywaneId.has(s.id));
+
+    const aktywnaNazwa = aktywny === 'Wszyscy' ? 'Wszyscy' : (uzywane.find(s => s.id === aktywny) || {}).nazwa || aktywny;
+
+    const filtry = [{ id: 'Wszyscy', nazwa: 'Wszyscy' }].concat(uzywane).map(s => {
+      const jest = s.id === aktywny;
       return {
-        etykieta,
+        etykieta: s.nazwa,
         aktywny: jest,
         styl: stylBazowy + (jest
           ? ' background:var(--navy-900); color:var(--white); border:1px solid var(--navy-900);'
           : ' background:var(--white); color:var(--navy-800); border:1px solid var(--grey-300);'),
-        onClick: () => this.setState({ filtr: etykieta })
+        onClick: () => this.setState({ filtr: s.id })
       };
     });
 
     const n = lekarzeWidoczni.length;
     const podpisWyniku = aktywny === 'Wszyscy'
       ? n + (n === 1 ? ' specjalista' : ' specjalistów') + ' przyjmuje na Kasprzaka'
-      : n + (n === 1 ? ' specjalista' : ' specjalistów') + ' — ' + aktywny;
+      : n + (n === 1 ? ' specjalista' : ' specjalistów') + ' — ' + aktywnaNazwa;
 
     return {
       lekarzeWidoczni, filtry, podpisWyniku,

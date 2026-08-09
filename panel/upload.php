@@ -30,7 +30,7 @@ function cmk_upload_zdjecie(array $plik) {
 
     $katalogUploads = __DIR__ . '/../uploads/';
     $mozeWebp = function_exists('imagewebp');
-    $nazwa = 'lekarz-' . bin2hex(random_bytes(8)) . ($mozeWebp ? '.webp' : '.jpg');
+    $nazwa = 'cmk-' . bin2hex(random_bytes(8)) . ($mozeWebp ? '.webp' : '.jpg');
     $sciezkaPelna = $katalogUploads . $nazwa;
 
     imagesavealpha($obraz, true);

@@ -53,15 +53,41 @@ function cmk_odrzuc_draft($draft) {
     if (file_exists($draft)) unlink($draft);
 }
 
+// Zamienia nazwę na identyfikator używany w relacji lekarz <-> specjalizacja
+// (np. "Medycyna estetyczna" -> "medycyna-estetyczna"), z dopiskiem -2, -3... przy kolizji.
+function cmk_unikalny_slug($nazwa, $istniejaceRekordy) {
+    $zamiana = ['ą'=>'a','ć'=>'c','ę'=>'e','ł'=>'l','ń'=>'n','ó'=>'o','ś'=>'s','ź'=>'z','ż'=>'z'];
+    $slug = strtr(mb_strtolower($nazwa, 'UTF-8'), $zamiana);
+    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+    $slug = trim($slug, '-');
+    if ($slug === '') $slug = 'specjalizacja';
+
+    $zajete = array_column($istniejaceRekordy, 'id');
+    $kandydat = $slug;
+    $i = 2;
+    while (in_array($kandydat, $zajete, true)) {
+        $kandydat = $slug . '-' . $i++;
+    }
+    return $kandydat;
+}
+
 // Schemat pol dla kolekcji plaskich (lista rekordow). Cennik (kategorie + pozycje) ma osobna obsluge nizej.
+// Lista specjalizacji jako opcje do zaznaczenia przy lekarzu (relacja wiele-do-wielu).
+// Czytana zawsze z opublikowanej wersji - zmiana nazw specjalizacji w toku (draft) nie
+// przestawia tu etykiet, dopóki nie zostanie opublikowana (rzadki, akceptowalny przypadek).
+$opcjeSpecjalizacji = [];
+foreach (cmk_wczytaj_json(__DIR__ . '/../data/specjalizacje.json') as $s) {
+    if (!empty($s['id'])) $opcjeSpecjalizacji[$s['id']] = $s['nazwa'] ?? $s['id'];
+}
+
 $schematy = [
     'lekarze' => [
         'etykieta_listy' => 'Lekarze',
         'tytul' => fn($it) => $it['imie'] ?? '(nowy lekarz)',
         'pola' => [
             'imie' => ['etykieta' => 'Imię i nazwisko', 'typ' => 'text', 'wymagane' => true],
-            'specjalizacja' => ['etykieta' => 'Specjalizacja (widoczna na karcie)', 'typ' => 'text', 'wymagane' => true],
-            'grupa' => ['etykieta' => 'Grupa filtrowania (na liście specjalistów)', 'typ' => 'text', 'wymagane' => true],
+            'podtytul' => ['etykieta' => 'Podtytuł widoczny na karcie (np. "USG dzieci")', 'typ' => 'text', 'wymagane' => true],
+            'specjalizacje' => ['etykieta' => 'Wykonywane specjalizacje', 'typ' => 'multi-wybor', 'opcje' => $opcjeSpecjalizacji],
             'zakres' => ['etykieta' => 'Zakres usług', 'typ' => 'textarea'],
             'pacjenci' => ['etykieta' => 'Pacjenci (np. Dorośli)', 'typ' => 'text'],
             'zdjecie' => ['etykieta' => 'Zdjęcie', 'typ' => 'zdjecie'],
@@ -74,8 +100,8 @@ $schematy = [
         'pola' => [
             'nazwa' => ['etykieta' => 'Nazwa', 'typ' => 'text', 'wymagane' => true],
             'opis' => ['etykieta' => 'Krótki opis', 'typ' => 'text'],
-            'ikona' => ['etykieta' => 'Ikona', 'typ' => 'wybor', 'opcje' => ['ginekologia', 'ortopedia', 'pediatria']],
-            'href' => ['etykieta' => 'Link kafla (np. specjalisci.php?spec=Ginekologia)', 'typ' => 'text'],
+            'ikona' => ['etykieta' => 'Ikona (tylko dla kafli na stronie głównej)', 'typ' => 'wybor', 'opcje' => ['ginekologia', 'ortopedia', 'pediatria']],
+            'naStronieGlownej' => ['etykieta' => 'Pokaż jako kafel na stronie głównej', 'typ' => 'checkbox'],
         ],
     ],
     'aktualnosci' => [
@@ -84,6 +110,7 @@ $schematy = [
         'pola' => [
             'id' => ['etykieta' => 'Identyfikator w adresie (bez spacji i polskich znaków)', 'typ' => 'text', 'wymagane' => true],
             'tytul' => ['etykieta' => 'Tytuł', 'typ' => 'text', 'wymagane' => true],
+            'zdjecie' => ['etykieta' => 'Zdjęcie (opcjonalnie)', 'typ' => 'zdjecie'],
             'data' => ['etykieta' => 'Data (RRRR-MM-DD)', 'typ' => 'text', 'wymagane' => true],
             'tresc' => ['etykieta' => 'Treść (pusta linia = nowy akapit)', 'typ' => 'textarea'],
         ],
@@ -117,6 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $rekord[$klucz] = isset($_POST[$klucz]);
                 continue;
             }
+            if ($def['typ'] === 'multi-wybor') {
+                $wybrane = $_POST[$klucz] ?? [];
+                $rekord[$klucz] = array_values(array_intersect($wybrane, array_keys($def['opcje'])));
+                continue;
+            }
             if ($def['typ'] === 'zdjecie') {
                 if (!empty($_FILES[$klucz]['name'])) {
                     $wynik = cmk_upload_zdjecie($_FILES[$klucz]);
@@ -134,6 +166,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $bledy[] = $def['etykieta'] . ' jest wymagane.';
             }
             $rekord[$klucz] = $wartosc;
+        }
+
+        if ($kolekcja === 'specjalizacje' && empty($rekord['id'])) {
+            $rekord['id'] = cmk_unikalny_slug($rekord['nazwa'] ?? '', $dane);
         }
 
         if (empty($bledy)) {
@@ -320,6 +356,20 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
                 <input type="checkbox" id="<?= $klucz ?>" name="<?= $klucz ?>" <?= !empty($rekord[$klucz]) ? 'checked' : '' ?>>
                 <label for="<?= $klucz ?>"><?= htmlspecialchars($def['etykieta']) ?></label>
               </div>
+            <?php elseif ($def['typ'] === 'multi-wybor'): ?>
+              <label><?= htmlspecialchars($def['etykieta']) ?></label>
+              <?php if (empty($def['opcje'])): ?>
+                <p style="font-size:13px; color:var(--text-muted); margin:0;">Brak zdefiniowanych specjalizacji — dodaj je najpierw w zakładce „Specjalizacje".</p>
+              <?php else: $wybrane = $rekord[$klucz] ?? []; ?>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <?php foreach ($def['opcje'] as $wartosc => $etykietaOpcji): ?>
+                    <div class="checkbox-row">
+                      <input type="checkbox" id="<?= $klucz . '_' . $wartosc ?>" name="<?= $klucz ?>[]" value="<?= htmlspecialchars($wartosc) ?>" <?= in_array($wartosc, $wybrane, true) ? 'checked' : '' ?>>
+                      <label for="<?= $klucz . '_' . $wartosc ?>" style="margin:0;"><?= htmlspecialchars($etykietaOpcji) ?></label>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
             <?php elseif ($def['typ'] === 'zdjecie'): ?>
               <label for="<?= $klucz ?>"><?= htmlspecialchars($def['etykieta']) ?></label>
               <?php if (!empty($rekord[$klucz])): ?>

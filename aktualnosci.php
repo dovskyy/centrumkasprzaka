@@ -168,6 +168,9 @@
       <section aria-labelledby="wpis-h" style="background:var(--white);">
         <div style="max-width:720px; margin:0 auto; padding:56px var(--gutter) 96px;">
           <h2 id="wpis-h" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">{{ wpis.tytul }}</h2>
+          <sc-if value="{{ wpis.zdjecie }}">
+            <img src="{{ wpis.zdjecie }}" alt="" style="display:block; width:100%; max-height:420px; object-fit:cover; border-radius:var(--radius-card); margin-bottom:28px;">
+          </sc-if>
           <p style="margin:0 0 28px; font-size:14px; color:var(--text-muted);">{{ wpisData }}</p>
           <div style="display:flex; flex-direction:column; gap:16px;">
             <sc-for list="{{ wpisAkapity }}" as="akapit" hint-placeholder-count="2">
@@ -193,9 +196,16 @@
               <sc-for list="{{ aktualnosci }}" as="a" hint-placeholder-count="3">
                 <a href="{{ a.href }}" style="text-decoration:none; display:block;">
                   <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" interactive="{{ true }}">
-                    <p style="margin:0 0 8px; font-size:13px; color:var(--text-muted);">{{ a.dataOpis }}</p>
-                    <h3 style="margin:0 0 8px; font-family:var(--font-display); font-size:19px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ a.tytul }}</h3>
-                    <p style="margin:0; font-size:14.5px; line-height:1.6; color:var(--text-muted);">{{ a.zajawka }}</p>
+                    <div style="display:flex; gap:18px; align-items:flex-start;">
+                      <sc-if value="{{ a.zdjecie }}">
+                        <img src="{{ a.zdjecie }}" alt="" style="display:block; width:96px; height:96px; object-fit:cover; border-radius:var(--radius-md); flex-shrink:0;">
+                      </sc-if>
+                      <div style="min-width:0;">
+                        <p style="margin:0 0 8px; font-size:13px; color:var(--text-muted);">{{ a.dataOpis }}</p>
+                        <h3 style="margin:0 0 8px; font-family:var(--font-display); font-size:19px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ a.tytul }}</h3>
+                        <p style="margin:0; font-size:14.5px; line-height:1.6; color:var(--text-muted);">{{ a.zajawka }}</p>
+                      </div>
+                    </div>
                   </x-import>
                 </a>
               </sc-for>

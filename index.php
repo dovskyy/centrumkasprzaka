@@ -328,7 +328,7 @@
         </svg>
         <div class="spec-grid">
           <sc-for list="{{ specjalizacje }}" as="s" hint-placeholder-count="3">
-            <a href="{{ s.href }}" class="spec-card">
+            <a href="specjalisci.php?spec={{ s.id }}" class="spec-card">
               <span aria-hidden="true" style="display:block; color:var(--white); opacity:.92;">
                 <svg width="64px" height="64px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon-{{ s.ikona }}"></use></svg>
               </span>
@@ -402,7 +402,7 @@
               </div>
               <div style="padding:18px 20px 20px;">
                 <h3 style="margin:0; font-family:var(--font-display); font-size:17px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ l.imie }}</h3>
-                <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">{{ l.specjalizacja }}</p>
+                <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">{{ l.podtytul }}</p>
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
                   <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
                   <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
@@ -837,7 +837,7 @@ class Component extends DCLogic {
     const pigulka = 'display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:13.5px; font-weight:var(--weight-semibold);';
     const kropka = 'width:8px; height:8px; border-radius:50%; flex-shrink:0; background:currentColor;';
     return {
-      specjalizacje: SPECJALIZACJE,
+      specjalizacje: SPECJALIZACJE.filter((s) => s.naStronieGlownej),
       lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej),
       pokazPasek: this.state.pokazPasek,
       szeroki: this.state.szeroki,
