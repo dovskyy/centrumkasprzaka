@@ -1,0 +1,44 @@
+[
+    {
+        "id": "ginekologia",
+        "nazwa": "Ginekologia",
+        "opis": "Konsultacje, cytologia, USG",
+        "ikona": "ginekologia",
+        "naStronieGlownej": false
+    },
+    {
+        "id": "ortopedia",
+        "nazwa": "Ortopedia",
+        "opis": "Diagnostyka i leczenie narządu ruchu",
+        "ikona": "ortopedia",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "pediatria",
+        "nazwa": "Pediatria",
+        "opis": "Bilanse, szczepienia, wizyty",
+        "ikona": "pediatria",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "usg",
+        "nazwa": "USG",
+        "opis": "USG dzieci i dorosłych",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "kardiologia",
+        "nazwa": "Kardiologia",
+        "opis": "Konsultacje i diagnostyka kardiologiczna",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "dermatologia",
+        "nazwa": "Dermatologia",
+        "opis": "Choroby skóry, dermatoskopia",
+        "ikona": null,
+        "naStronieGlownej": false
+    }
+]

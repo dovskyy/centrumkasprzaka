@@ -1,0 +1,8 @@
+# Katalog z tresc.json - dostepny tylko przez PHP (file_get_contents), nigdy bezposrednio z przegladarki.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>

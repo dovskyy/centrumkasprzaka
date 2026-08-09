@@ -39,3 +39,9 @@ yarn-error.log*
 .tmp/
 temp/
 *.bak
+
+# Panel (sekrety, stan lokalny — nie w repo)
+panel/config.php
+panel/_attempts.json
+data/*.draft.json
+data/_kopie/*.json

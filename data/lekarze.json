@@ -1,0 +1,75 @@
+[
+    {
+        "id": "renata-bokiniec",
+        "imie": "dr Renata Bokiniec",
+        "podtytul": "Pediatria",
+        "specjalizacje": [
+            "usg"
+        ],
+        "zakres": "USG przezciemiączkowe, USG jamy brzusznej, USG bioderek",
+        "pacjenci": "Dzieci",
+        "zdjecie": "uploads/doctor-1-transparent.webp",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "joanna-chojecka-zych",
+        "imie": "dr Joanna Chojecka-Zych",
+        "podtytul": "USG dorosłych",
+        "specjalizacje": [
+            "usg"
+        ],
+        "zakres": "USG jamy brzusznej, USG tarczycy, USG piersi",
+        "pacjenci": "Dorośli",
+        "zdjecie": "uploads/doctor-2-transparent.webp",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "anna-dygas",
+        "imie": "dr Anna Dygas",
+        "podtytul": "Pediatria i neonatologia",
+        "specjalizacje": [
+            "pediatria"
+        ],
+        "zakres": "Bilanse zdrowia, opieka nad noworodkiem, szczepienia",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "wiktoria-forosenko",
+        "imie": "dr Wiktoria Forosenko",
+        "podtytul": "Kardiologia",
+        "specjalizacje": [
+            "kardiologia"
+        ],
+        "zakres": "Konsultacja kardiologiczna, EKG, echo serca",
+        "pacjenci": "Dorośli",
+        "zdjecie": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "beata-goralska-zaleska",
+        "imie": "dr Beata Góralska-Załęska",
+        "podtytul": "Dermatologia",
+        "specjalizacje": [
+            "dermatologia"
+        ],
+        "zakres": "Dermatoskopia, choroby skóry, konsultacja znamion",
+        "pacjenci": "Dorośli i dzieci",
+        "zdjecie": "uploads/doctor-4-transparent.webp",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "sebastian-janiczek",
+        "imie": "lek. Sebastian Janiczek",
+        "podtytul": "Ortopedia",
+        "specjalizacje": [
+            "ginekologia",
+            "ortopedia"
+        ],
+        "zakres": "Konsultacje, cytologia, USG ginekologiczne",
+        "pacjenci": "Dorośli",
+        "zdjecie": "uploads/doctor-5-transparent.webp",
+        "naStronieGlownej": true
+    }
+]

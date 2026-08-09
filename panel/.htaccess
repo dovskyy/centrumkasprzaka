@@ -1,0 +1,12 @@
+# Sekrety panelu - config.php (hash hasla) i _attempts.json (licznik prob logowania)
+# nigdy nie moga byc odebrane bezposrednio, nawet gdyby serwer kiedys zaczal
+# serwowac .php jako tekst zamiast go wykonywac.
+<FilesMatch "^(config\.php|_attempts\.json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
