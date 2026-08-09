@@ -11,7 +11,7 @@
         "pacjenci": "Dzieci",
         "zdjecie": "uploads/doctor-1-transparent.webp",
         "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "widgetHtml": null
     },
     {
         "id": "joanna-chojecka-zych",
@@ -24,7 +24,7 @@
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-2-transparent.webp",
         "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "widgetHtml": null
     },
     {
         "id": "anna-dygas",
@@ -37,7 +37,7 @@
         "pacjenci": "Dzieci",
         "zdjecie": null,
         "naStronieGlownej": false,
-        "znanylekarzUrl": null
+        "widgetHtml": null
     },
     {
         "id": "wiktoria-forosenko",
@@ -50,7 +50,7 @@
         "pacjenci": "Dorośli",
         "zdjecie": null,
         "naStronieGlownej": false,
-        "znanylekarzUrl": null
+        "widgetHtml": null
     },
     {
         "id": "beata-goralska-zaleska",
@@ -63,7 +63,7 @@
         "pacjenci": "Dorośli i dzieci",
         "zdjecie": "uploads/doctor-4-transparent.webp",
         "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "widgetHtml": null
     },
     {
         "id": "sebastian-janiczek",
@@ -77,6 +77,6 @@
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-5-transparent.webp",
         "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "widgetHtml": null
     }
 ]

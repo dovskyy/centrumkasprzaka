@@ -92,7 +92,7 @@ $schematy = [
             'zakres' => ['etykieta' => 'Zakres usług', 'typ' => 'textarea'],
             'pacjenci' => ['etykieta' => 'Pacjenci (np. Dorośli)', 'typ' => 'text'],
             'zdjecie' => ['etykieta' => 'Zdjęcie', 'typ' => 'zdjecie'],
-            'znanylekarzUrl' => ['etykieta' => 'Link do profilu ZnanyLekarz (opcjonalnie — jeśli podany, przycisk „Umów” otworzy kalendarz tego lekarza zamiast ogólnego kalendarza placówki)', 'typ' => 'text'],
+            'widgetHtml' => ['etykieta' => 'Widget ZnanyLekarz tego lekarza (opcjonalnie) — wklej tu CAŁY kod widgetu skopiowany z panelu ZnanyLekarz (link + skrypt), bez zmian. Jeśli puste, przycisk „Umów” otwiera ogólny kalendarz placówki.', 'typ' => 'textarea'],
             'naStronieGlownej' => ['etykieta' => 'Pokaż na stronie głównej', 'typ' => 'checkbox'],
         ],
     ],

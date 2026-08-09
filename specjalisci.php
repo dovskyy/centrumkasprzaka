@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>window.TRESC = <?= json_encode($TRESC, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;</script>
+<script>window.TRESC = <?= json_encode($TRESC, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
 <script src="./support.js"></script>
 <style>
   #intro-reveal{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(120deg,#0e1a3c 0%,#16265c 48%,#1d4ed8 100%);animation:introOverlayOut var(--intro-duration,2s) ease forwards;}
@@ -266,6 +266,26 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ widgetLekarzaOtwarty }}" hint-placeholder-val="{{ false }}">
+    <div class="kalendarz-overlay" role="dialog" aria-modal="true" aria-labelledby="widget-lekarza-h" onClick="{{ zamknijWidgetLekarza }}" style="position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(10,19,48,.6); backdrop-filter:blur(10px) saturate(140%); -webkit-backdrop-filter:blur(10px) saturate(140%);">
+      <div class="kalendarz-card" onClick="{{ zatrzymaj }}" style="width:100%; max-width:560px; max-height:min(680px, 90vh); display:flex; flex-direction:column; background:var(--white); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); overflow:hidden; border-top:4px solid #00A99D;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; border-bottom:1px solid var(--border-subtle);">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <img src="uploads/znany-lekarz.webp" alt="ZnanyLekarz.pl" style="width:32px; height:32px; border-radius:8px; flex-shrink:0; object-fit:contain;">
+            <h2 id="widget-lekarza-h" style="margin:0; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-extrabold); color:var(--navy-900);">ZnanyLekarz.pl</h2>
+          </div>
+          <button type="button" onClick="{{ zamknijWidgetLekarza }}" aria-label="Zamknij" style="flex-shrink:0; width:36px; height:36px; border-radius:var(--radius-pill); border:1px solid var(--border-subtle); background:var(--white); color:var(--navy-800); cursor:pointer; display:grid; place-items:center;" style-hover="background:#E6F5F3; color:#00A99D; border-color:#00A99D;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </button>
+        </div>
+        <div id="zl-lekarz-widget-slot" style="padding:24px; overflow-y:auto; min-height:320px;"></div>
+        <div style="padding:16px 24px 24px; border-top:1px solid var(--border-subtle); display:flex; justify-content:flex-end;">
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" variant="secondary" onClick="{{ zamknijWidgetLekarza }}" hint-size="auto,46px">Zamknij</x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 
 </x-dc>
@@ -276,72 +296,58 @@
 const LEKARZE = window.TRESC.lekarze;
 const SPECJALIZACJE = window.TRESC.specjalizacje;
 
-// Z linku profilu ZnanyLekarz (np. https://www.znanylekarz.pl/beata-goralska-zaleska/...)
-// wyciaga slug lekarza (pierwszy segment sciezki) - to on trafia w atrybut data-zlw-doctor.
-function cmkWidgetLekarza(url) {
-  try {
-    const doctor = new URL(url).pathname.split('/').filter(Boolean)[0];
-    return doctor ? { href: url, doctor } : null;
-  } catch (e) {
-    return null;
-  }
+// Skrypty wstawione przez innerHTML sie nie wykonuja (przegladarka to blokuje) - trzeba je
+// recznie odtworzyc, zeby wklejony 1:1 z ZnanyLekarz snippet faktycznie zadzialal.
+function cmkWstrzyknijWidget(kontener, html) {
+  kontener.innerHTML = html;
+  kontener.querySelectorAll('script').forEach((stary) => {
+    const nowy = document.createElement('script');
+    for (const atrybut of stary.attributes) nowy.setAttribute(atrybut.name, atrybut.value);
+    nowy.textContent = stary.textContent;
+    stary.replaceWith(nowy);
+  });
 }
 
 class Component extends DCLogic {
-  state = { filtr: 'Wszyscy', menuOtwarte: false, kalendarzOtwarty: false };
+  state = { filtr: 'Wszyscy', menuOtwarte: false, kalendarzOtwarty: false, widgetLekarzaOtwarty: false };
 
   toggleMenu = () => this.setState({ menuOtwarte: !this.state.menuOtwarte });
   closeMenu = () => this.setState({ menuOtwarte: false });
 
-  // Bez lekarza (lub gdy lekarz nie ma wlasnego profilu ZnanyLekarz) otwiera sie ogolny
-  // kalendarz placowki; z lekarzem majacym znanylekarzUrl - kalendarz konkretnie jego.
-  // UWAGA: kotwica #zl-widget-anchor zostaje jedna, stala w markupie (tak jak pierwotnie) -
-  // atrybuty dla wariantu "lekarz" ustawiamy tu imperatywnie w JS, a nie przez sc-if z dwoma
-  // wariantami. Powod: caly markup w <x-dc> trafia do przegladarki jako zwykly tekst zanim
-  // React go zhydruje, wiec dwa warianty renderowane przez sc-if istnialyby chwilowo OBA
-  // naraz w surowym DOM (jeden z nierozwiazanym "{{ widgetLekarza.doctor }}" w atrybucie).
-  // widget.js z ZnanyLekarz skanuje CALA strone pod katem atrybutow data-zlw-* i taki
-  // duplikat psul inicjalizacje widgetu.
-  otworzKalendarz = (e, lekarz) => {
+  // Ogolny kalendarz placowki - bez zadnej logiki per-lekarz, dokladnie jak przed
+  // wprowadzeniem widgetow dla poszczegolnych lekarzy.
+  otworzKalendarz = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     document.body.style.overflow = 'hidden';
-    const widget = (lekarz && lekarz.znanylekarzUrl) ? cmkWidgetLekarza(lekarz.znanylekarzUrl) : null;
     this.setState({ kalendarzOtwarty: true });
     setTimeout(() => {
-      const kotwica = document.getElementById('zl-widget-anchor');
-      if (!kotwica) return;
-      if (widget) {
-        kotwica.removeAttribute('data-zl-widget-facility');
-        kotwica.removeAttribute('data-placement');
-        kotwica.setAttribute('href', widget.href);
-        kotwica.setAttribute('data-zlw-doctor', widget.doctor);
-        kotwica.setAttribute('data-zlw-type', 'big_with_calendar');
-        kotwica.setAttribute('data-zlw-opinion', 'false');
-        kotwica.setAttribute('data-zlw-hide-branding', 'true');
-        kotwica.setAttribute('data-zlw-saas-only', 'true');
-        kotwica.setAttribute('data-zlw-a11y-title', 'Widget umówienia wizyty lekarskiej');
-      } else {
-        kotwica.removeAttribute('data-zlw-doctor');
-        kotwica.removeAttribute('data-zlw-opinion');
-        kotwica.removeAttribute('data-zlw-hide-branding');
-        kotwica.removeAttribute('data-zlw-saas-only');
-        kotwica.removeAttribute('data-zlw-a11y-title');
-        kotwica.setAttribute('href', 'https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka');
-        kotwica.setAttribute('data-zl-widget-facility', 'centrum-medyczne-kasprzaka');
-        kotwica.setAttribute('data-placement', 'inline');
-        kotwica.setAttribute('data-zlw-type', 'facility-calendar-listing-with-saas-only');
-      }
+      if (!document.getElementById('zl-widget-anchor')) return;
       const stary = document.getElementById('zl-facility-widget');
       if (stary) stary.remove();
       const s = document.createElement('script');
       s.id = 'zl-facility-widget';
-      s.src = widget ? 'https://platform.docplanner.com/js/widget.js' : 'https://www.znanylekarz.pl/platform/js/widget.js';
+      s.src = 'https://www.znanylekarz.pl/platform/js/widget.js';
       document.body.appendChild(s);
     }, 0);
   };
   zamknijKalendarz = () => {
     document.body.style.overflow = '';
     this.setState({ kalendarzOtwarty: false });
+  };
+  // Osobny, calkowicie niezalezny modal na widget lekarza wklejony 1:1 z panelu -
+  // zero wspoldzielonych id/atrybutow z modalem ogolnego kalendarza powyzej.
+  otworzWidgetLekarza = (e, lekarz) => {
+    if (e && e.preventDefault) e.preventDefault();
+    document.body.style.overflow = 'hidden';
+    this.setState({ widgetLekarzaOtwarty: true });
+    setTimeout(() => {
+      const kontener = document.getElementById('zl-lekarz-widget-slot');
+      if (kontener) cmkWstrzyknijWidget(kontener, lekarz.widgetHtml);
+    }, 0);
+  };
+  zamknijWidgetLekarza = () => {
+    document.body.style.overflow = '';
+    this.setState({ widgetLekarzaOtwarty: false });
   };
   otworzKalendarzZMenu = (e) => {
     this.closeMenu();
@@ -352,6 +358,7 @@ class Component extends DCLogic {
   componentDidMount() {
     this.obslugaKlawiszy = (e) => {
       if (e.key === 'Escape' && this.state.kalendarzOtwarty) this.zamknijKalendarz();
+      if (e.key === 'Escape' && this.state.widgetLekarzaOtwarty) this.zamknijWidgetLekarza();
     };
     window.addEventListener('keydown', this.obslugaKlawiszy);
 
@@ -375,7 +382,10 @@ class Component extends DCLogic {
     // Lekarz może wykonywać kilka specjalizacji naraz, stąd includes() zamiast ===.
     const lekarzeWidoczni = LEKARZE
       .filter(l => aktywny === 'Wszyscy' || (l.specjalizacje || []).includes(aktywny))
-      .map(l => ({ ...l, otworzKalendarzDlaNiego: (e) => this.otworzKalendarz(e, l) }));
+      .map(l => ({
+        ...l,
+        otworzKalendarzDlaNiego: l.widgetHtml ? (e) => this.otworzWidgetLekarza(e, l) : this.otworzKalendarz
+      }));
 
     const stylBazowy = 'font-family:var(--font-display); font-size:14.5px; font-weight:var(--weight-semibold); padding:10px 18px; border-radius:var(--radius-pill); cursor:pointer; transition:var(--transition-control);';
 
@@ -411,6 +421,8 @@ class Component extends DCLogic {
       otworzKalendarz: this.otworzKalendarz,
       otworzKalendarzZMenu: this.otworzKalendarzZMenu,
       zamknijKalendarz: this.zamknijKalendarz,
+      widgetLekarzaOtwarty: this.state.widgetLekarzaOtwarty,
+      zamknijWidgetLekarza: this.zamknijWidgetLekarza,
       zatrzymaj: this.zatrzymaj
     };
   }
