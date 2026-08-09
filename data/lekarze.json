@@ -4,14 +4,12 @@
         "imie": "dr Renata Bokiniec",
         "podtytul": "Pediatria",
         "specjalizacje": [
-            "usg",
-            "dermatologia"
+            "usg"
         ],
         "zakres": "USG przezciemiączkowe, USG jamy brzusznej, USG bioderek",
         "pacjenci": "Dzieci",
         "zdjecie": "uploads/doctor-1-transparent.webp",
-        "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "naStronieGlownej": true
     },
     {
         "id": "joanna-chojecka-zych",
@@ -23,8 +21,7 @@
         "zakres": "USG jamy brzusznej, USG tarczycy, USG piersi",
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-2-transparent.webp",
-        "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "naStronieGlownej": true
     },
     {
         "id": "anna-dygas",
@@ -36,8 +33,7 @@
         "zakres": "Bilanse zdrowia, opieka nad noworodkiem, szczepienia",
         "pacjenci": "Dzieci",
         "zdjecie": null,
-        "naStronieGlownej": false,
-        "znanylekarzUrl": null
+        "naStronieGlownej": false
     },
     {
         "id": "wiktoria-forosenko",
@@ -49,8 +45,7 @@
         "zakres": "Konsultacja kardiologiczna, EKG, echo serca",
         "pacjenci": "Dorośli",
         "zdjecie": null,
-        "naStronieGlownej": false,
-        "znanylekarzUrl": null
+        "naStronieGlownej": false
     },
     {
         "id": "beata-goralska-zaleska",
@@ -62,8 +57,7 @@
         "zakres": "Dermatoskopia, choroby skóry, konsultacja znamion",
         "pacjenci": "Dorośli i dzieci",
         "zdjecie": "uploads/doctor-4-transparent.webp",
-        "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "naStronieGlownej": true
     },
     {
         "id": "sebastian-janiczek",
@@ -76,7 +70,6 @@
         "zakres": "Konsultacje, cytologia, USG ginekologiczne",
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-5-transparent.webp",
-        "naStronieGlownej": true,
-        "znanylekarzUrl": null
+        "naStronieGlownej": true
     }
 ]

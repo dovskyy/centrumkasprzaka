@@ -4,7 +4,7 @@
         "nazwa": "Ginekologia",
         "opis": "Konsultacje, cytologia, USG",
         "ikona": "gynecology",
-        "naStronieGlownej": true
+        "naStronieGlownej": false
     },
     {
         "id": "ortopedia",
@@ -31,7 +31,14 @@
         "id": "kardiologia",
         "nazwa": "Kardiologia",
         "opis": "Konsultacje i diagnostyka kardiologiczna",
-        "ikona": "coronary-care_unit",
-        "naStronieGlownej": true
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "dermatologia",
+        "nazwa": "Dermatologia",
+        "opis": "Choroby skóry, dermatoskopia",
+        "ikona": null,
+        "naStronieGlownej": false
     }
 ]
