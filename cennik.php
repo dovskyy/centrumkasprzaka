@@ -53,8 +53,8 @@
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Specjaliści — Centrum Medyczne Kasprzaka, Warszawa Wola</title>
-<meta name="description" content="Lekarze przyjmujący w Centrum Medycznym Kasprzaka przy ul. Kasprzaka 31 w Warszawie. Ginekologia, dermatologia, pediatria, kardiologia, USG dzieci i dorosłych.">
+<title>Cennik — Centrum Medyczne Kasprzaka, Warszawa Wola</title>
+<meta name="description" content="Cennik konsultacji specjalistycznych i USG w Centrum Medycznym Kasprzaka przy ul. Kasprzaka 31 w Warszawie.">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/fonts.css">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/colors.css">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/typography.css">
@@ -109,7 +109,7 @@
         </a>
         <nav class="nav-links" aria-label="Główna" style="margin-left:auto; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
           <a href="index.php#specjalizacje" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjalizacje</a>
-          <a href="#lista" aria-current="page" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-semibold); color:var(--blue-700); background:var(--blue-050); text-decoration:none; white-space:nowrap;">Specjaliści</a>
+          <a href="specjalisci.php" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjaliści</a>
           <a href="index.php#opinie" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Opinie</a>
           <a href="index.php#kontakt" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Kontakt</a>
         </nav>
@@ -127,7 +127,7 @@
       <div class="mobile-menu" style="border-top:1px solid rgba(14,26,60,.08); background:rgba(255,255,255,.98); backdrop-filter: blur(22px) saturate(180%);">
         <div style="max-width:var(--container-max); margin:0 auto; padding:10px var(--gutter) 20px; display:flex; flex-direction:column; gap:2px;">
           <a href="index.php#specjalizacje" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjalizacje</a>
-          <a href="#lista" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-semibold); color:var(--blue-700); background:var(--blue-050); text-decoration:none;">Specjaliści</a>
+          <a href="specjalisci.php" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjaliści</a>
           <a href="index.php#opinie" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Opinie</a>
           <a href="index.php#kontakt" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Kontakt</a>
           <div style="margin-top:10px;">
@@ -145,65 +145,39 @@
         <nav aria-label="Ścieżka" style="display:flex; align-items:center; gap:8px; font-size:14px; color:rgba(255,255,255,.66); margin-bottom:20px;">
           <a href="index.php" style="color:rgba(255,255,255,.82); text-decoration:none;">Strona główna</a>
           <span aria-hidden="true">/</span>
-          <span style="color:var(--white);">Specjaliści</span>
+          <span style="color:var(--white);">Cennik</span>
         </nav>
-        <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--blue-200); margin-bottom:14px;">Nasz zespół</div>
-        <h1 id="tytul" style="margin:0 0 18px; font-family:var(--font-display); font-size:var(--text-display-2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white); max-width:720px;">Lekarze przyjmujący</h1>
-
+        <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--blue-200); margin-bottom:14px;">Ile to kosztuje</div>
+        <h1 id="tytul" style="margin:0 0 18px; font-family:var(--font-display); font-size:var(--text-display-2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white); max-width:720px;">Cennik</h1>
       </div>
     </section>
 
-    <section id="lista" aria-labelledby="lista-h" style="background:var(--white);">
-      <div style="max-width:var(--container-max); margin:0 auto; padding:56px var(--gutter) 96px;">
+    <section aria-labelledby="cennik-h" style="background:var(--white);">
+      <div style="max-width:800px; margin:0 auto; padding:56px var(--gutter) 32px;">
 
-        <h2 id="lista-h" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Lista specjalistów</h2>
+        <h2 id="cennik-h" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Cennik usług</h2>
 
-        <div role="group" aria-label="Filtruj według specjalizacji" style="display:flex; flex-wrap:wrap; gap:10px; padding-bottom:28px; border-bottom:1px solid var(--border-subtle);">
-          <sc-for list="{{ filtry }}" as="f" hint-placeholder-count="6">
-            <button type="button" onClick="{{ f.onClick }}" aria-pressed="{{ f.aktywny }}" style="{{ f.styl }}">{{ f.etykieta }}</button>
-          </sc-for>
-        </div>
+        <sc-for list="{{ cennik }}" as="kat" hint-placeholder-count="3">
+          <div style="margin-bottom:36px;">
+            <h3 style="margin:0 0 8px; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ kat.kategoria }}</h3>
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" padding="8">
+              <sc-for list="{{ kat.pozycje }}" as="p" hint-placeholder-count="4">
+                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.PriceRow" service="{{ p.nazwa }}" note="{{ p.opis }}" price="{{ p.cena }}" duration="{{ p.czas }}"></x-import>
+              </sc-for>
+            </x-import>
+          </div>
+        </sc-for>
 
-        <p aria-live="polite" style="margin:22px 0 26px; font-size:15px; color:var(--text-muted);">{{ podpisWyniku }}</p>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(272px, 1fr)); gap:18px;">
-          <sc-for list="{{ lekarzeWidoczni }}" as="l" hint-placeholder-count="6">
-            <article style="height:100%; border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs); display:flex; flex-direction:column; transition:var(--transition-control);" style-hover="border-color:var(--blue-200); box-shadow:var(--shadow-md);">
-              <sc-if value="{{ l.zdjecie }}">
-                <div style="height:240px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle); position:relative;">
-                  <img src="{{ l.zdjecie }}" alt="{{ l.imie }}" style="display:block; width:88%; height:auto; margin-bottom:-6%;">
-                  <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.specjalizacja }}</span>
-                </div>
-              </sc-if>
-              <sc-if value="{{ !l.zdjecie }}">
-                <div style="height:240px; background:var(--gradient-wash); display:grid; place-items:center; border-bottom:1px solid var(--border-subtle); position:relative;">
-                  <span style="font-size:13px; line-height:1.5; color:var(--navy-300); text-align:center;">zdjęcie lekarza<br>— do uzupełnienia</span>
-                  <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.specjalizacja }}</span>
-                </div>
-              </sc-if>
-              <div style="padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; flex:1;">
-                <h3 style="margin:0; font-family:var(--font-display); font-size:17.5px; font-weight:var(--weight-bold); letter-spacing:var(--tracking-heading); color:var(--navy-900);">{{ l.imie }}</h3>
-                <p style="margin:0; font-size:14.5px; line-height:1.55; color:var(--text-muted);">{{ l.zakres }}</p>
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:auto; padding-top:14px; border-top:1px solid var(--border-subtle);">
-                  <span style="font-size:13.5px; color:var(--text-muted);">{{ l.pacjenci }}</span>
-                  <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap; transition:var(--transition-control);" style-hover="background:var(--blue-200);">Umów</button>
-                </div>
-              </div>
-            </article>
-          </sc-for>
-        </div>
-
-
-
+        <p style="margin:32px 0 0; font-size:var(--text-body-sm); line-height:1.6; color:var(--text-muted);">Ceny mają charakter informacyjny i nie stanowią oferty w rozumieniu art. 66 §1 Kodeksu cywilnego. Ostateczna cena zależy od zakresu udzielonego świadczenia i jest potwierdzana przy rejestracji.</p>
       </div>
     </section>
 
-    <section aria-labelledby="cta-h" style="background:var(--white);">
-      <div style="max-width:var(--container-max); margin:0 auto; padding:0 var(--gutter) 96px;">
+    <section aria-labelledby="cta-h" style="background:var(--surface-subtle);">
+      <div style="max-width:var(--container-max); margin:0 auto; padding:64px var(--gutter) 96px;">
         <div style="background:var(--gradient-hero); border-radius:28px; color:var(--white); padding:56px 48px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:28px;">
           <div style="max-width:600px;">
-            <h2 id="cta-h" style="margin:0 0 12px; font-family:var(--font-display); font-size:var(--text-h2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-heading); color:var(--white);">Nie wiesz, do kogo się zapisać?</h2>
-            <p style="margin:0; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78);">Zadzwoń do rejestracji — pomożemy wybrać specjalistę i najbliższy wolny termin.</p>
+            <h2 id="cta-h" style="margin:0 0 12px; font-family:var(--font-display); font-size:var(--text-h2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-heading); color:var(--white);">Masz pytanie o cenę wizyty?</h2>
+            <p style="margin:0; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78);">Zadzwoń do rejestracji — podpowiemy dokładny koszt przed umówieniem terminu.</p>
           </div>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="tel:+48727500085" size="lg" icon="phone" hint-size="auto,56px">Zadzwoń do rejestracji</x-import>
@@ -225,7 +199,7 @@
         <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--white); margin-bottom:16px;">Serwis</div>
         <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; font-size:14.5px;">
           <li><a href="index.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Strona główna</a></li>
-          <li><a href="#lista" style="color:rgba(255,255,255,.72); text-decoration:none;">Specjaliści</a></li>
+          <li><a href="specjalisci.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Specjaliści</a></li>
           <li><a href="index.php#specjalizacje" style="color:rgba(255,255,255,.72); text-decoration:none;">Zakres usług</a></li>
           <li><a href="cennik.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Cennik</a></li>
           <li><a href="aktualnosci.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Aktualności</a></li>
@@ -269,12 +243,12 @@
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;domyslnyFiltr&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Wszyscy&quot;,&quot;USG&quot;,&quot;Pediatria&quot;,&quot;Kardiologia&quot;,&quot;Dermatologia&quot;,&quot;Ginekologia&quot;],&quot;default&quot;:&quot;Wszyscy&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Lista&quot;}}">
-// Treść wstrzyknięta przez PHP z data/lekarze.json (patrz inc/tresc.php) — to samo źródło co index.php.
-const LEKARZE = window.TRESC.lekarze;
+<script type="text/x-dc" data-dc-script>
+// Treść wstrzyknięta przez PHP z data/cennik.json (patrz inc/tresc.php).
+const CENNIK = window.TRESC.cennik;
 
 class Component extends DCLogic {
-  state = { filtr: 'Wszyscy', menuOtwarte: false, kalendarzOtwarty: false };
+  state = { menuOtwarte: false, kalendarzOtwarty: false };
 
   toggleMenu = () => this.setState({ menuOtwarte: !this.state.menuOtwarte });
   closeMenu = () => this.setState({ menuOtwarte: false });
@@ -308,53 +282,15 @@ class Component extends DCLogic {
       if (e.key === 'Escape' && this.state.kalendarzOtwarty) this.zamknijKalendarz();
     };
     window.addEventListener('keydown', this.obslugaKlawiszy);
-
-    // Wejście z kafelka specjalizacji na stronie głównej: specjalisci.php?spec=Ginekologia.
-    // support.js nie mapuje query stringa na propsy, więc czytamy go tutaj. Nieznana wartość = brak filtra.
-    const zUrl = new URLSearchParams(location.search).get('spec');
-    if (zUrl && this.grupy().includes(zUrl)) this.setState({ filtr: zUrl });
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.obslugaKlawiszy);
     document.body.style.overflow = '';
   }
 
-  grupy() {
-    const g = [];
-    LEKARZE.forEach(l => { if (!g.includes(l.grupa)) g.push(l.grupa); });
-    return g;
-  }
-
   renderVals() {
-    const aktywny = this.props.domyslnyFiltr && this.state.filtr === 'Wszyscy'
-      ? this.props.domyslnyFiltr
-      : this.state.filtr;
-
-    // sc-for iteruje bezpośrednio po przefiltrowanej liście — bez sprzężenia po indeksie
-    // (dawny błąd: przestawienie kolejności lekarzy cicho psuło filtrowanie ukryty1..6).
-    const lekarzeWidoczni = LEKARZE.filter(l => aktywny === 'Wszyscy' || l.grupa === aktywny);
-
-    const stylBazowy = 'font-family:var(--font-display); font-size:14.5px; font-weight:var(--weight-semibold); padding:10px 18px; border-radius:var(--radius-pill); cursor:pointer; transition:var(--transition-control);';
-
-    const filtry = ['Wszyscy'].concat(this.grupy()).map(etykieta => {
-      const jest = etykieta === aktywny;
-      return {
-        etykieta,
-        aktywny: jest,
-        styl: stylBazowy + (jest
-          ? ' background:var(--navy-900); color:var(--white); border:1px solid var(--navy-900);'
-          : ' background:var(--white); color:var(--navy-800); border:1px solid var(--grey-300);'),
-        onClick: () => this.setState({ filtr: etykieta })
-      };
-    });
-
-    const n = lekarzeWidoczni.length;
-    const podpisWyniku = aktywny === 'Wszyscy'
-      ? n + (n === 1 ? ' specjalista' : ' specjalistów') + ' przyjmuje na Kasprzaka'
-      : n + (n === 1 ? ' specjalista' : ' specjalistów') + ' — ' + aktywny;
-
     return {
-      lekarzeWidoczni, filtry, podpisWyniku,
+      cennik: CENNIK,
       menuOtwarte: this.state.menuOtwarte, toggleMenu: this.toggleMenu, closeMenu: this.closeMenu,
       kalendarzOtwarty: this.state.kalendarzOtwarty,
       otworzKalendarz: this.otworzKalendarz,

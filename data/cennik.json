@@ -1,0 +1,27 @@
+[
+  {
+    "kategoria": "Konsultacje",
+    "pozycje": [
+      { "nazwa": "Konsultacja ginekologiczna", "cena": "250 zł", "czas": "30 min" },
+      { "nazwa": "Konsultacja pediatryczna", "cena": "200 zł", "czas": "20 min" },
+      { "nazwa": "Konsultacja kardiologiczna", "cena": "250 zł", "czas": "30 min", "opis": "Z opisem EKG" },
+      { "nazwa": "Konsultacja dermatologiczna", "cena": "220 zł", "czas": "25 min" }
+    ]
+  },
+  {
+    "kategoria": "USG",
+    "pozycje": [
+      { "nazwa": "USG jamy brzusznej", "cena": "180 zł", "czas": "20 min" },
+      { "nazwa": "USG ciąży", "cena": "200 zł", "czas": "25 min" },
+      { "nazwa": "USG tarczycy", "cena": "150 zł", "czas": "15 min" },
+      { "nazwa": "USG piersi", "cena": "180 zł", "czas": "20 min" }
+    ]
+  },
+  {
+    "kategoria": "Zabiegi",
+    "pozycje": [
+      { "nazwa": "Cytologia", "cena": "100 zł", "czas": "10 min" },
+      { "nazwa": "Dermatoskopia znamienia", "cena": "80 zł", "czas": "10 min", "opis": "Cena za jedno znamię" }
+    ]
+  }
+]

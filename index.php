@@ -631,7 +631,8 @@
         <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; font-size:14.5px;">
           <li><a href="specjalisci.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Specjaliści</a></li>
           <li><a href="#specjalizacje" style="color:rgba(255,255,255,.72); text-decoration:none;">Zakres usług</a></li>
-          <li><a href="#" style="color:rgba(255,255,255,.72); text-decoration:none;">Cennik</a></li>
+          <li><a href="cennik.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Cennik</a></li>
+          <li><a href="aktualnosci.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Aktualności</a></li>
           <li><a href="#kontakt" style="color:rgba(255,255,255,.72); text-decoration:none;">Kontakt</a></li>
         </ul>
       </nav>
