@@ -92,6 +92,7 @@ $schematy = [
             'zakres' => ['etykieta' => 'Zakres usług', 'typ' => 'textarea'],
             'pacjenci' => ['etykieta' => 'Pacjenci (np. Dorośli)', 'typ' => 'text'],
             'zdjecie' => ['etykieta' => 'Zdjęcie', 'typ' => 'zdjecie'],
+            'znanylekarzUrl' => ['etykieta' => 'Link do profilu ZnanyLekarz (opcjonalnie — jeśli podany, przycisk „Umów” otworzy kalendarz tego lekarza zamiast ogólnego kalendarza placówki)', 'typ' => 'text'],
             'naStronieGlownej' => ['etykieta' => 'Pokaż na stronie głównej', 'typ' => 'checkbox'],
         ],
     ],
