@@ -398,7 +398,7 @@
                 <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">{{ l.podtytul }}</p>
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
                   <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
-                  <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
+                  <button type="button" onClick="{{ l.otworzKalendarzDlaNiego }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
                 </div>
               </div>
             </article>
@@ -687,7 +687,12 @@
           </button>
         </div>
         <div style="padding:24px; overflow-y:auto; min-height:320px;">
-          <a id="zl-widget-anchor" href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka" data-zl-widget-facility="centrum-medyczne-kasprzaka" rel="nofollow" data-placement="inline" data-zlw-type="facility-calendar-listing-with-saas-only">Umów wizytę</a>
+          <sc-if value="{{ widgetLekarza }}">
+            <a id="zl-widget-anchor" href="{{ widgetLekarza.href }}" data-zlw-doctor="{{ widgetLekarza.doctor }}" rel="nofollow" data-zlw-type="big_with_calendar" data-zlw-opinion="false" data-zlw-hide-branding="true" data-zlw-saas-only="true" data-zlw-a11y-title="Widget umówienia wizyty lekarskiej">Umów wizytę</a>
+          </sc-if>
+          <sc-if value="{{ !widgetLekarza }}">
+            <a id="zl-widget-anchor" href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka" data-zl-widget-facility="centrum-medyczne-kasprzaka" rel="nofollow" data-placement="inline" data-zlw-type="facility-calendar-listing-with-saas-only">Umów wizytę</a>
+          </sc-if>
         </div>
         <div style="padding:16px 24px 24px; border-top:1px solid var(--border-subtle); display:flex; justify-content:flex-end;">
           <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" variant="secondary" onClick="{{ zamknijKalendarz }}" hint-size="auto,46px">Zamknij</x-import>
@@ -711,10 +716,21 @@ const DNI_KIEDY = ['w niedzielę', 'w poniedziałek', 'we wtorek', 'w środę', 
 const SPECJALIZACJE = window.TRESC.specjalizacje;
 const LEKARZE = window.TRESC.lekarze;
 
+// Z linku profilu ZnanyLekarz (np. https://www.znanylekarz.pl/beata-goralska-zaleska/...)
+// wyciaga slug lekarza (pierwszy segment sciezki) - to on trafia w atrybut data-zlw-doctor.
+function cmkWidgetLekarza(url) {
+  try {
+    const doctor = new URL(url).pathname.split('/').filter(Boolean)[0];
+    return doctor ? { href: url, doctor } : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 class Component extends DCLogic {
   // "teraz" nie jest nigdzie czytane — służy wyłącznie za wyzwalacz przerysowania co minutę,
   // żeby renderVals policzył status otwarcia od nowa.
-  state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, mapaWlaczona: false, fabMenuOtwarte: false, teraz: Date.now() };
+  state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, widgetLekarza: null, mapaWlaczona: false, fabMenuOtwarte: false, teraz: Date.now() };
   aktualizuj = () => {
     const waski = window.innerWidth < 1000;
     const next = waski && window.scrollY > 420;
@@ -772,17 +788,22 @@ class Component extends DCLogic {
   closeMenu = () => this.setState({ menuOtwarte: false });
   toggleFabMenu = () => this.setState({ fabMenuOtwarte: !this.state.fabMenuOtwarte });
   closeFabMenu = () => this.setState({ fabMenuOtwarte: false });
-  otworzKalendarz = (e) => {
+  // Bez lekarza (lub gdy lekarz nie ma wlasnego profilu ZnanyLekarz) otwiera sie ogolny
+  // kalendarz placowki; z lekarzem majacym znanylekarzUrl - kalendarz konkretnie jego.
+  // To dwa rozne widgety ZnanyLekarz (rozne atrybuty data-zlw-*, rozny skrypt), stad
+  // sc-if z dwoma wariantami kotwicy #zl-widget-anchor w modalu.
+  otworzKalendarz = (e, lekarz) => {
     if (e && e.preventDefault) e.preventDefault();
     document.body.style.overflow = 'hidden';
-    this.setState({ kalendarzOtwarty: true, fabMenuOtwarte: false });
+    const widget = (lekarz && lekarz.znanylekarzUrl) ? cmkWidgetLekarza(lekarz.znanylekarzUrl) : null;
+    this.setState({ kalendarzOtwarty: true, widgetLekarza: widget, fabMenuOtwarte: false });
     setTimeout(() => {
       if (!document.getElementById('zl-widget-anchor')) return;
-      const stary = document.getElementById('zl-facility-widget');
+      const stary = document.getElementById('zl-widget-script');
       if (stary) stary.remove();
       const s = document.createElement('script');
-      s.id = 'zl-facility-widget';
-      s.src = 'https://www.znanylekarz.pl/platform/js/widget.js';
+      s.id = 'zl-widget-script';
+      s.src = widget ? 'https://platform.docplanner.com/js/widget.js' : 'https://www.znanylekarz.pl/platform/js/widget.js';
       document.body.appendChild(s);
     }, 0);
   };
@@ -831,13 +852,16 @@ class Component extends DCLogic {
     const kropka = 'width:8px; height:8px; border-radius:50%; flex-shrink:0; background:currentColor;';
     return {
       specjalizacje: SPECJALIZACJE.filter((s) => s.naStronieGlownej),
-      lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej),
+      lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej).map((l) => ({
+        ...l, otworzKalendarzDlaNiego: (e) => this.otworzKalendarz(e, l)
+      })),
       pokazPasek: this.state.pokazPasek,
       szeroki: this.state.szeroki,
       menuOtwarte: this.state.menuOtwarte,
       toggleMenu: this.toggleMenu,
       closeMenu: this.closeMenu,
       kalendarzOtwarty: this.state.kalendarzOtwarty,
+      widgetLekarza: this.state.widgetLekarza,
       otworzKalendarz: this.otworzKalendarz,
       otworzKalendarzZMenu: this.otworzKalendarzZMenu,
       zamknijKalendarz: this.zamknijKalendarz,
