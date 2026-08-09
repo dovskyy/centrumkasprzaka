@@ -3,21 +3,21 @@
         "id": "ginekologia",
         "nazwa": "Ginekologia",
         "opis": "Konsultacje, cytologia, USG",
-        "ikona": "ginekologia",
+        "ikona": "gynecology",
         "naStronieGlownej": false
     },
     {
         "id": "ortopedia",
         "nazwa": "Ortopedia",
         "opis": "Diagnostyka i leczenie narządu ruchu",
-        "ikona": "ortopedia",
+        "ikona": "orthopaedics",
         "naStronieGlownej": true
     },
     {
         "id": "pediatria",
         "nazwa": "Pediatria",
         "opis": "Bilanse, szczepienia, wizyty",
-        "ikona": "pediatria",
+        "ikona": "pediatrics",
         "naStronieGlownej": true
     },
     {

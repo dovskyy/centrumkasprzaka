@@ -65,5 +65,16 @@
                 "opis": "Cena za jedno znamię"
             }
         ]
+    },
+    {
+        "kategoria": "Zabiegi estetyczne",
+        "pozycje": [
+            {
+                "nazwa": "Wyduszanie pryszcza",
+                "cena": "150 zł",
+                "czas": "30 min",
+                "opis": "Nie boli"
+            }
+        ]
     }
 ]

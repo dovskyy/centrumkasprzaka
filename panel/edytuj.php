@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/upload.php';
+require_once __DIR__ . '/../inc/ikony.php';
 cmk_require_login();
 
 $kolekcje = ['lekarze', 'specjalizacje', 'cennik', 'aktualnosci'];
@@ -100,7 +101,7 @@ $schematy = [
         'pola' => [
             'nazwa' => ['etykieta' => 'Nazwa', 'typ' => 'text', 'wymagane' => true],
             'opis' => ['etykieta' => 'Krótki opis', 'typ' => 'text'],
-            'ikona' => ['etykieta' => 'Ikona (tylko dla kafli na stronie głównej)', 'typ' => 'wybor', 'opcje' => ['ginekologia', 'ortopedia', 'pediatria']],
+            'ikona' => ['etykieta' => 'Ikona (tylko dla kafli na stronie głównej)', 'typ' => 'ikona-picker', 'opcje' => cmk_lista_ikon()],
             'naStronieGlownej' => ['etykieta' => 'Pokaż jako kafel na stronie głównej', 'typ' => 'checkbox'],
         ],
     ],
@@ -299,7 +300,16 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
   .form-akcje { margin-top:24px; display:flex; gap:10px; }
   .pozycja-row { display:grid; grid-template-columns:2fr 1fr 1fr 1.5fr auto; gap:8px; margin-bottom:8px; align-items:center; }
   .pozycja-row input { padding:8px 10px; font-size:14px; }
+  .pozycja-usun { background:none; border:none; color:#b42318; cursor:pointer; font-size:18px; line-height:1; padding:6px; }
   @media (max-width:640px) { .pozycja-row { grid-template-columns:1fr; } }
+
+  .ikona-picker { display:flex; flex-wrap:wrap; gap:8px; }
+  .ikona-item { display:flex; align-items:center; justify-content:center; width:52px; height:52px; border:1px solid var(--border-default); border-radius:var(--radius-md); cursor:pointer; background:var(--white); }
+  .ikona-item:hover { border-color:var(--blue-200); }
+  .ikona-item.wybrana { border-color:var(--action-primary); background:var(--blue-050); box-shadow:0 0 0 1px var(--action-primary) inset; }
+  .ikona-item--brak { width:auto; padding:0 12px; font-size:12.5px; color:var(--text-muted); }
+  .ikona-stronicowanie { display:flex; align-items:center; gap:12px; margin-top:10px; }
+  .ikona-strona-info { font-size:13px; color:var(--text-muted); }
 </style>
 </head>
 <body>
@@ -370,6 +380,29 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
                   <?php endforeach; ?>
                 </div>
               <?php endif; ?>
+            <?php elseif ($def['typ'] === 'ikona-picker'): ?>
+              <?php $ikonaWybrana = $rekord[$klucz] ?? ''; $naStrone = 15; $strony = array_chunk($def['opcje'], $naStrone); ?>
+              <label><?= htmlspecialchars($def['etykieta']) ?></label>
+              <input type="hidden" id="<?= $klucz ?>" name="<?= $klucz ?>" value="<?= htmlspecialchars($ikonaWybrana) ?>">
+              <div class="ikona-picker" data-klucz="<?= $klucz ?>">
+                <label class="ikona-item ikona-item--brak <?= $ikonaWybrana === '' ? 'wybrana' : '' ?>" data-ikona-wybor="">
+                  <span>Brak</span>
+                </label>
+                <?php foreach ($strony as $nrStrony => $ikonyNaStronie): ?>
+                  <?php foreach ($ikonyNaStronie as $ikonaId): ?>
+                    <label class="ikona-item <?= $ikonaId === $ikonaWybrana ? 'wybrana' : '' ?>" data-ikona-wybor="<?= htmlspecialchars($ikonaId) ?>" data-strona="<?= $nrStrony ?>" style="<?= $nrStrony === 0 ? '' : 'display:none;' ?>">
+                      <img src="../assets/specialties/<?= htmlspecialchars($ikonaId) ?>.svg" alt="<?= htmlspecialchars($ikonaId) ?>" width="28" height="28" loading="lazy">
+                    </label>
+                  <?php endforeach; ?>
+                <?php endforeach; ?>
+              </div>
+              <?php if (count($strony) > 1): ?>
+                <div class="ikona-stronicowanie" data-klucz="<?= $klucz ?>" data-stron="<?= count($strony) ?>">
+                  <button type="button" class="btn btn-secondary btn-small" data-ikona-strona="poprzednia">&larr; Poprzednie</button>
+                  <span class="ikona-strona-info">1 / <?= count($strony) ?></span>
+                  <button type="button" class="btn btn-secondary btn-small" data-ikona-strona="nastepna">Następne &rarr;</button>
+                </div>
+              <?php endif; ?>
             <?php elseif ($def['typ'] === 'zdjecie'): ?>
               <label for="<?= $klucz ?>"><?= htmlspecialchars($def['etykieta']) ?></label>
               <?php if (!empty($rekord[$klucz])): ?>
@@ -417,16 +450,19 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
           <div class="pozycja-row" style="font-size:12.5px; color:var(--text-muted); margin-bottom:4px;">
             <span>Nazwa</span><span>Cena</span><span>Czas</span><span>Opis (opcjonalnie)</span><span></span>
           </div>
-          <?php foreach ($pozycje as $p): ?>
-            <div class="pozycja-row">
-              <input type="text" name="pozycja_nazwa[]" value="<?= htmlspecialchars($p['nazwa'] ?? '') ?>" placeholder="np. Konsultacja">
-              <input type="text" name="pozycja_cena[]" value="<?= htmlspecialchars($p['cena'] ?? '') ?>" placeholder="np. 200 zł">
-              <input type="text" name="pozycja_czas[]" value="<?= htmlspecialchars($p['czas'] ?? '') ?>" placeholder="np. 20 min">
-              <input type="text" name="pozycja_opis[]" value="<?= htmlspecialchars($p['opis'] ?? '') ?>" placeholder="opcjonalnie">
-              <span></span>
-            </div>
-          <?php endforeach; ?>
-          <p style="font-size:13px; color:var(--text-muted); margin:8px 0 0;">Zostaw puste wiersze na dodatkowe pozycje — puste nazwy są pomijane przy zapisie. Żeby dodać więcej niż <?= count($pozycje) ?> pozycji, zapisz i wejdź w edycję ponownie.</p>
+          <div id="pozycje-lista">
+            <?php foreach ($pozycje as $p): ?>
+              <div class="pozycja-row">
+                <input type="text" name="pozycja_nazwa[]" value="<?= htmlspecialchars($p['nazwa'] ?? '') ?>" placeholder="np. Konsultacja">
+                <input type="text" name="pozycja_cena[]" value="<?= htmlspecialchars($p['cena'] ?? '') ?>" placeholder="np. 200 zł">
+                <input type="text" name="pozycja_czas[]" value="<?= htmlspecialchars($p['czas'] ?? '') ?>" placeholder="np. 20 min">
+                <input type="text" name="pozycja_opis[]" value="<?= htmlspecialchars($p['opis'] ?? '') ?>" placeholder="opcjonalnie">
+                <button type="button" class="pozycja-usun" title="Usuń pozycję" data-pozycja-usun>&times;</button>
+              </div>
+            <?php endforeach; ?>
+          </div>
+          <button type="button" class="btn btn-secondary btn-small" id="pozycja-dodaj" style="margin-top:6px;">+ Dodaj pozycję</button>
+          <p style="font-size:13px; color:var(--text-muted); margin:8px 0 0;">Puste wiersze (bez nazwy) są pomijane przy zapisie.</p>
 
           <div class="form-akcje">
             <button class="btn btn-primary" type="submit">Zapisz kategorię</button>
@@ -451,5 +487,60 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
 
   <?php endif; ?>
 </div>
+<script>
+// Picker ikon: klik na kafelek ustawia ukryte pole i podswietla wybor; strzalki przelaczaja
+// widoczna strone siatki (wszystkie ikony sa juz w DOM, stronicowanie to tylko show/hide).
+document.querySelectorAll('.ikona-picker').forEach(function (picker) {
+  var klucz = picker.dataset.klucz;
+  var ukryte = document.getElementById(klucz);
+  picker.querySelectorAll('.ikona-item').forEach(function (item) {
+    item.addEventListener('click', function () {
+      ukryte.value = item.dataset.ikonaWybor;
+      picker.querySelectorAll('.ikona-item').forEach(function (i) { i.classList.remove('wybrana'); });
+      item.classList.add('wybrana');
+    });
+  });
+});
+document.querySelectorAll('.ikona-stronicowanie').forEach(function (nav) {
+  var klucz = nav.dataset.klucz;
+  var picker = document.querySelector('.ikona-picker[data-klucz="' + klucz + '"]');
+  var strony = parseInt(nav.dataset.stron, 10);
+  var aktualna = 0;
+  var info = nav.querySelector('.ikona-strona-info');
+  function pokazStrone(nr) {
+    aktualna = nr;
+    picker.querySelectorAll('.ikona-item[data-strona]').forEach(function (item) {
+      item.style.display = (parseInt(item.dataset.strona, 10) === aktualna) ? '' : 'none';
+    });
+    info.textContent = (aktualna + 1) + ' / ' + strony;
+  }
+  nav.querySelector('[data-ikona-strona="poprzednia"]').addEventListener('click', function () {
+    pokazStrone((aktualna - 1 + strony) % strony);
+  });
+  nav.querySelector('[data-ikona-strona="nastepna"]').addEventListener('click', function () {
+    pokazStrone((aktualna + 1) % strony);
+  });
+});
+
+// Cennik: dodawanie/usuwanie wierszy pozycji bez przeladowania strony.
+var pozycjeLista = document.getElementById('pozycje-lista');
+var pozycjaDodaj = document.getElementById('pozycja-dodaj');
+if (pozycjeLista && pozycjaDodaj) {
+  function podepnijUsuwanie(wiersz) {
+    var przycisk = wiersz.querySelector('[data-pozycja-usun]');
+    przycisk.addEventListener('click', function () {
+      if (pozycjeLista.querySelectorAll('.pozycja-row').length > 1) wiersz.remove();
+      else wiersz.querySelectorAll('input').forEach(function (i) { i.value = ''; });
+    });
+  }
+  pozycjeLista.querySelectorAll('.pozycja-row').forEach(podepnijUsuwanie);
+  pozycjaDodaj.addEventListener('click', function () {
+    var wiersz = pozycjeLista.querySelector('.pozycja-row').cloneNode(true);
+    wiersz.querySelectorAll('input').forEach(function (i) { i.value = ''; });
+    pozycjeLista.appendChild(wiersz);
+    podepnijUsuwanie(wiersz);
+  });
+}
+</script>
 </body>
 </html>
