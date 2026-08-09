@@ -1,0 +1,20 @@
+[
+  {
+    "nazwa": "Ginekologia",
+    "opis": "Konsultacje, cytologia, USG",
+    "ikona": "ginekologia",
+    "href": "specjalisci.php?spec=Ginekologia"
+  },
+  {
+    "nazwa": "Ortopedia",
+    "opis": "Diagnostyka i leczenie narządu ruchu",
+    "ikona": "ortopedia",
+    "href": "specjalisci.php"
+  },
+  {
+    "nazwa": "Pediatria",
+    "opis": "Bilanse, szczepienia, wizyty",
+    "ikona": "pediatria",
+    "href": "specjalisci.php?spec=Pediatria"
+  }
+]

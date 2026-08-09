@@ -1,8 +1,10 @@
+<?php require_once __DIR__ . '/inc/tresc.php'; $TRESC = cmk_tresc(); ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>window.TRESC = <?= json_encode($TRESC, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;</script>
 <script src="./support.js"></script>
 <style>
   #intro-reveal{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(120deg,#0e1a3c 0%,#16265c 48%,#1d4ed8 100%);animation:introOverlayOut var(--intro-duration,3s) ease forwards;}
@@ -291,7 +293,7 @@
           </span>
           <span class="u-sr-only">Ocena 5,0 na 5 w serwisie ZnanyLekarz — otwiera się w nowej karcie</span>
         </a>
-        <a class="hero-proof__item" href="Specjaliści.dc.html">
+        <a class="hero-proof__item" href="specjalisci.php">
           <span class="hero-proof__value"><span class="u-num">30+</span></span>
           <span class="hero-proof__label">Lekarzy specjalistów</span>
         </a>
@@ -301,47 +303,40 @@
     <section id="specjalizacje" aria-labelledby="spec-h" style="background:var(--white);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
         <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Czym się zajmujemy" title="Wybierz specjalizację" lead="Poradnie dla dzieci i dorosłych oraz własna pracownia USG — wszystko pod jednym adresem." hint-size="100%,160px"></x-import>
+        <svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
+          <defs>
+            <symbol id="icon-ginekologia" viewBox="0 0 48 48">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M39 8H9C8.44771 8 8 8.44772 8 9V39C8 39.5523 8.44772 40 9 40H39C39.5523 40 40 39.5523 40 39V9C40 8.44771 39.5523 8 39 8ZM9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9Z" fill="currentColor"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9811 18.2836C11.7733 17.9138 11.86 17.4679 12.2544 17.0695C12.4459 16.8761 12.6485 16.7684 12.7853 16.733C12.8044 16.7281 12.8197 16.725 12.8317 16.723C13.8045 17.5817 14.4889 17.9952 15.2373 17.9994C15.4086 18.0003 15.5556 17.9794 15.6574 17.9632C15.7009 17.9562 15.7334 17.9507 15.7602 17.9462C15.8081 17.9381 15.838 17.9331 15.8808 17.9281C15.9562 17.9194 16.0516 17.9138 16.2347 17.9642L16.7653 16.0359C16.3116 15.911 15.9562 15.9061 15.6512 15.9414C15.553 15.9527 15.4461 15.9707 15.3821 15.9815L15.3421 15.9882C15.2744 15.999 15.255 15.9994 15.2485 15.9994L15.2456 15.9992C15.245 15.9991 15.2402 15.9985 15.2302 15.9956C15.2096 15.9896 15.1594 15.9721 15.0706 15.9227C14.8832 15.8182 14.585 15.6062 14.1064 15.1804C13.5408 14.6771 12.8318 14.6554 12.2852 14.7966C11.7392 14.9376 11.2308 15.2608 10.8332 15.6624C10.0494 16.454 9.4458 17.8545 10.2375 19.2634C10.6912 20.0706 11.2045 20.7404 11.6495 21.248C11.6362 20.803 11.7547 20.4029 12.0177 20.1136C12.2571 19.8502 12.5845 19.7136 12.9535 19.6946C12.6326 19.3057 12.2885 18.8306 11.9811 18.2836Z" fill="currentColor"/>
+              <path d="M16.313 21.4423C17.4553 22.5365 17.7739 24.0319 17.0246 24.7824C16.2753 25.533 14.7418 25.2544 13.5996 24.1602C12.4573 23.066 12.1387 21.5706 12.888 20.82C13.6373 20.0695 15.1707 20.3481 16.313 21.4423Z" fill="currentColor"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M36.2662 18.2836C36.474 17.9137 36.3873 17.4679 35.9928 17.0695C35.8014 16.8761 35.5987 16.7683 35.462 16.733C35.4429 16.7281 35.4276 16.725 35.4156 16.723C34.4427 17.5817 33.7583 17.9951 33.01 17.9993C32.8387 18.0003 32.6917 17.9794 32.5898 17.9631C32.5463 17.9562 32.5139 17.9507 32.4871 17.9462C32.4392 17.9381 32.4093 17.933 32.3665 17.9281C32.2911 17.9194 32.1956 17.9138 32.0125 17.9642L31.482 16.0358C31.9357 15.911 32.2911 15.9061 32.5961 15.9413C32.6943 15.9527 32.8011 15.9707 32.8651 15.9815L32.9052 15.9881C32.9728 15.999 32.9923 15.9994 32.9987 15.9993L33.0016 15.9992C33.0023 15.9991 33.0071 15.9984 33.0171 15.9955C33.0376 15.9896 33.0878 15.9721 33.1766 15.9226C33.364 15.8182 33.6622 15.6062 34.1408 15.1803C34.7065 14.6771 35.4155 14.6554 35.9621 14.7965C36.5081 14.9376 37.0165 15.2607 37.4141 15.6623C38.1978 16.454 38.8015 17.8545 38.0097 19.2634C37.5561 20.0706 37.0427 20.7403 36.5978 21.248C36.6111 20.8029 36.4926 20.4029 36.2296 20.1136C35.9902 19.8502 35.6628 19.7136 35.2937 19.6945C35.6146 19.3056 35.9588 18.8305 36.2662 18.2836Z" fill="currentColor"/>
+              <path d="M31.9342 21.4423C30.7919 22.5364 30.4733 24.0319 31.2226 24.7824C31.9719 25.5329 33.5053 25.2543 34.6476 24.1602C35.7899 23.066 36.1085 21.5705 35.3592 20.82C34.6099 20.0695 33.0765 20.3481 31.9342 21.4423Z" fill="currentColor"/>
+              <path d="M24.1101 14C13.2757 14 17.3386 22.0426 20.0472 22.0426C22.2944 22.0426 21.0537 30.9613 22.5 34C22.797 34.624 23.5717 34 24.1101 34C24.6484 34 25.2248 34.624 25.5 34C26.8404 30.9613 25.4744 22.0426 27.7215 22.0426C30.4301 22.0426 34.9445 14 24.1101 14Z" fill="currentColor"/>
+            </symbol>
+            <symbol id="icon-ortopedia" viewBox="0 0 48 48">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M20 4C20.5523 4 21 4.44772 21 5V13.3431C21 14.6692 20.4732 15.941 19.5355 16.8787L19.0317 17.3826C18.1384 18.2758 18.1384 19.7242 19.0317 20.6174C19.7279 21.3136 20.7914 21.4862 21.6721 21.0459L21.9145 20.9247C23.2273 20.2683 24.7727 20.2683 26.0855 20.9247L26.3279 21.0459C27.2086 21.4862 28.2721 21.3136 28.9683 20.6174C29.8616 19.7242 29.8616 18.2758 28.9683 17.3826L28.4645 16.8787C27.5268 15.941 27 14.6692 27 13.3431V5C27 4.44772 27.4477 4 28 4C28.5523 4 29 4.44772 29 5V6.70355C36.5086 8.87023 42 15.7938 42 24C42 32.2062 36.5086 39.1298 29 41.2965V43C29 43.5523 28.5523 44 28 44C27.4477 44 27 43.5523 27 43V34.6569C27 33.3308 27.5268 32.059 28.4645 31.1213L28.9683 30.6174C29.8616 29.7242 29.8616 28.2758 28.9683 27.3826C28.2721 26.6864 27.2086 26.5138 26.3279 26.9541L26.0855 27.0753C24.7727 27.7317 23.2273 27.7317 21.9145 27.0753L21.6721 26.9541C20.7914 26.5138 19.7279 26.6864 19.0317 27.3826C18.1384 28.2758 18.1384 29.7242 19.0317 30.6174L19.5355 31.1213C20.4732 32.059 21 33.3308 21 34.6569V43C21 43.5523 20.5523 44 20 44C19.4477 44 19 43.5523 19 43V41.2965C11.4914 39.1298 6 32.2062 6 24C6 15.7938 11.4914 8.87023 19 6.70355V5C19 4.44772 19.4477 4 20 4ZM19 8.79677C12.6121 10.8964 8 16.9096 8 24C8 31.0905 12.6121 37.1037 19 39.2033V34.6569C19 33.8612 18.6839 33.0981 18.1213 32.5355L17.6174 32.0317C15.9431 30.3573 15.9431 27.6427 17.6174 25.9683C18.9224 24.6634 20.9159 24.3399 22.5665 25.1652L22.8089 25.2864C23.5587 25.6613 24.4413 25.6613 25.1911 25.2864L25.4335 25.1652C27.0841 24.3399 29.0776 24.6634 30.3826 25.9683C32.0569 27.6427 32.0569 30.3573 30.3826 32.0317L29.8787 32.5355C29.3161 33.0981 29 33.8612 29 34.6569V39.2033C35.3879 37.1037 40 31.0905 40 24C40 16.9096 35.3879 10.8964 29 8.79677V13.3431C29 14.1388 29.3161 14.9019 29.8787 15.4645L30.3826 15.9683C32.0569 17.6427 32.0569 20.3573 30.3826 22.0317C29.0776 23.3366 27.0841 23.6601 25.4335 22.8348L25.1911 22.7136C24.4413 22.3387 23.5587 22.3387 22.8089 22.7136L22.5665 22.8348C20.9159 23.6601 18.9224 23.3366 17.6174 22.0317C15.9431 20.3573 15.9431 17.6427 17.6174 15.9683L18.1213 15.4645C18.6839 14.9019 19 14.1388 19 13.3431V8.79677Z" fill="currentColor"/>
+            </symbol>
+            <symbol id="icon-pediatria" viewBox="0 0 48 48">
+              <path d="M28.0555 14.2778C28.0555 16.6403 26.1403 18.5555 23.7777 18.5555C21.4152 18.5555 19.5 16.6403 19.5 14.2778C19.5 11.9152 21.4152 10 23.7777 10C26.1403 10 28.0555 11.9152 28.0555 14.2778Z" fill="currentColor"/>
+              <path d="M27.6667 27.8422C27.6667 28.3348 27.223 29.5999 25.8618 30.2061C25.706 30.2754 25.5309 30.3624 25.3735 30.4405L25.2809 30.4864C25.0875 30.582 24.9004 30.6724 24.7111 30.7526C24.3164 30.9198 24.0085 30.9997 23.7778 30.9997C23.547 30.9997 23.2392 30.9198 22.8445 30.7526C22.6552 30.6724 22.468 30.582 22.2747 30.4864L22.1821 30.4405C22.0247 30.3624 21.8496 30.2754 21.6938 30.2061C20.3326 29.5999 19.8889 28.3348 19.8889 27.8422V26.3332H27.6667V27.8422Z" fill="currentColor"/>
+              <path d="M27.6667 23.3098C29.028 23.1157 30.4573 22.822 32.0357 22.4315C33.108 22.1663 33.7622 21.082 33.497 20.0098C33.2317 18.9375 32.1475 18.2833 31.0752 18.5486C28.1306 19.277 25.9341 19.5983 23.7852 19.5901C21.6305 19.5819 19.4266 19.2423 16.4585 18.5433C15.3833 18.2901 14.3065 18.9564 14.0533 20.0316C13.8 21.1067 14.4664 22.1836 15.5415 22.4368C17.1094 22.806 18.532 23.0938 19.8889 23.2896V24.7776H27.6667V23.3098Z" fill="currentColor"/>
+              <path d="M17.2248 34.1027C17.2248 33.0133 17.4844 32.0888 17.9736 31.2922C18.0031 31.2442 18.0334 31.1967 18.0646 31.1496C18.3435 30.7279 18.6889 30.3427 19.096 29.9884C19.2585 30.2632 19.4681 30.5386 19.7295 30.7966L19.7441 30.8108C19.8333 30.898 19.9284 30.9831 20.0296 31.0654L20.0428 31.076C20.3174 31.2976 20.6368 31.4989 21.0045 31.666C20.8665 31.7965 20.7344 31.9478 20.6095 32.1337C20.4514 32.369 20.3024 32.6268 20.1812 32.8952L20.1666 32.9278C19.9975 33.3104 19.8861 33.7134 19.8861 34.1027C19.8861 34.719 20.1389 35.2492 20.3305 35.6508L20.3444 35.6802C20.5559 36.124 20.6895 36.4226 20.6895 36.7384C20.6895 37.4482 20.0795 37.9997 19.3589 37.9997C18.6872 37.9997 18.1558 37.5524 17.76 36.6866C17.3735 35.8411 17.2248 34.7979 17.2248 34.1027Z" fill="currentColor"/>
+              <path d="M28.4595 29.988C28.297 30.2628 28.0874 30.5382 27.826 30.7962L27.8114 30.8104C27.7223 30.8976 27.6271 30.9827 27.5259 31.065L27.5128 31.0756C27.2381 31.2972 26.9187 31.4985 26.551 31.6656C26.689 31.7961 26.8211 31.9473 26.946 32.1332C27.104 32.3685 27.2531 32.6264 27.3743 32.8948L27.3889 32.9274C27.5579 33.31 27.6694 33.713 27.6694 34.1022C27.6694 34.7185 27.4165 35.2487 27.225 35.6504L27.211 35.6797C26.9996 36.1235 26.8659 36.4222 26.8659 36.7379C26.8659 37.4478 27.476 37.9993 28.1966 37.9993C28.8682 37.9993 29.3997 37.552 29.7955 36.6862C30.182 35.8407 30.3307 34.7975 30.3307 34.1022C30.3307 33.0128 30.0711 32.0884 29.5818 31.2918C29.5524 31.2438 29.5221 31.1963 29.491 31.1492C29.212 30.7275 28.8666 30.3424 28.4595 29.988Z" fill="currentColor"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M6 9C6 7.34315 7.34315 6 9 6H39C40.6569 6 42 7.34315 42 9V39C42 40.6569 40.6569 42 39 42H9C7.34315 42 6 40.6569 6 39V9ZM8 9C8 8.44772 8.44771 8 9 8H39C39.5523 8 40 8.44771 40 9V39C40 39.5523 39.5523 40 39 40H9C8.44772 40 8 39.5523 8 39V9Z" fill="currentColor"/>
+            </symbol>
+          </defs>
+        </svg>
         <div class="spec-grid">
-          <a href="Specjaliści.dc.html?spec=Ginekologia" class="spec-card">
-            <span aria-hidden="true" style="display:block; color:var(--white); opacity:.92;">
-              <svg width="64px" height="64px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M39 8H9C8.44771 8 8 8.44772 8 9V39C8 39.5523 8.44772 40 9 40H39C39.5523 40 40 39.5523 40 39V9C40 8.44771 39.5523 8 39 8ZM9 6C7.34315 6 6 7.34315 6 9V39C6 40.6569 7.34315 42 9 42H39C40.6569 42 42 40.6569 42 39V9C42 7.34315 40.6569 6 39 6H9Z" fill="currentColor"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9811 18.2836C11.7733 17.9138 11.86 17.4679 12.2544 17.0695C12.4459 16.8761 12.6485 16.7684 12.7853 16.733C12.8044 16.7281 12.8197 16.725 12.8317 16.723C13.8045 17.5817 14.4889 17.9952 15.2373 17.9994C15.4086 18.0003 15.5556 17.9794 15.6574 17.9632C15.7009 17.9562 15.7334 17.9507 15.7602 17.9462C15.8081 17.9381 15.838 17.9331 15.8808 17.9281C15.9562 17.9194 16.0516 17.9138 16.2347 17.9642L16.7653 16.0359C16.3116 15.911 15.9562 15.9061 15.6512 15.9414C15.553 15.9527 15.4461 15.9707 15.3821 15.9815L15.3421 15.9882C15.2744 15.999 15.255 15.9994 15.2485 15.9994L15.2456 15.9992C15.245 15.9991 15.2402 15.9985 15.2302 15.9956C15.2096 15.9896 15.1594 15.9721 15.0706 15.9227C14.8832 15.8182 14.585 15.6062 14.1064 15.1804C13.5408 14.6771 12.8318 14.6554 12.2852 14.7966C11.7392 14.9376 11.2308 15.2608 10.8332 15.6624C10.0494 16.454 9.4458 17.8545 10.2375 19.2634C10.6912 20.0706 11.2045 20.7404 11.6495 21.248C11.6362 20.803 11.7547 20.4029 12.0177 20.1136C12.2571 19.8502 12.5845 19.7136 12.9535 19.6946C12.6326 19.3057 12.2885 18.8306 11.9811 18.2836Z" fill="currentColor"/>
-                <path d="M16.313 21.4423C17.4553 22.5365 17.7739 24.0319 17.0246 24.7824C16.2753 25.533 14.7418 25.2544 13.5996 24.1602C12.4573 23.066 12.1387 21.5706 12.888 20.82C13.6373 20.0695 15.1707 20.3481 16.313 21.4423Z" fill="currentColor"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M36.2662 18.2836C36.474 17.9137 36.3873 17.4679 35.9928 17.0695C35.8014 16.8761 35.5987 16.7683 35.462 16.733C35.4429 16.7281 35.4276 16.725 35.4156 16.723C34.4427 17.5817 33.7583 17.9951 33.01 17.9993C32.8387 18.0003 32.6917 17.9794 32.5898 17.9631C32.5463 17.9562 32.5139 17.9507 32.4871 17.9462C32.4392 17.9381 32.4093 17.933 32.3665 17.9281C32.2911 17.9194 32.1956 17.9138 32.0125 17.9642L31.482 16.0358C31.9357 15.911 32.2911 15.9061 32.5961 15.9413C32.6943 15.9527 32.8011 15.9707 32.8651 15.9815L32.9052 15.9881C32.9728 15.999 32.9923 15.9994 32.9987 15.9993L33.0016 15.9992C33.0023 15.9991 33.0071 15.9984 33.0171 15.9955C33.0376 15.9896 33.0878 15.9721 33.1766 15.9226C33.364 15.8182 33.6622 15.6062 34.1408 15.1803C34.7065 14.6771 35.4155 14.6554 35.9621 14.7965C36.5081 14.9376 37.0165 15.2607 37.4141 15.6623C38.1978 16.454 38.8015 17.8545 38.0097 19.2634C37.5561 20.0706 37.0427 20.7403 36.5978 21.248C36.6111 20.8029 36.4926 20.4029 36.2296 20.1136C35.9902 19.8502 35.6628 19.7136 35.2937 19.6945C35.6146 19.3056 35.9588 18.8305 36.2662 18.2836Z" fill="currentColor"/>
-                <path d="M31.9342 21.4423C30.7919 22.5364 30.4733 24.0319 31.2226 24.7824C31.9719 25.5329 33.5053 25.2543 34.6476 24.1602C35.7899 23.066 36.1085 21.5705 35.3592 20.82C34.6099 20.0695 33.0765 20.3481 31.9342 21.4423Z" fill="currentColor"/>
-                <path d="M24.1101 14C13.2757 14 17.3386 22.0426 20.0472 22.0426C22.2944 22.0426 21.0537 30.9613 22.5 34C22.797 34.624 23.5717 34 24.1101 34C24.6484 34 25.2248 34.624 25.5 34C26.8404 30.9613 25.4744 22.0426 27.7215 22.0426C30.4301 22.0426 34.9445 14 24.1101 14Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">Ginekologia</span>
-            <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">Konsultacje, cytologia, USG</span>
-          </a>
-          <!-- Bez ?spec=Ortopedia: w ZESPOL (Specjaliści.dc.html) żaden lekarz nie ma grupy "Ortopedia",
-               więc filtr dałby pustą listę. Po poprawieniu rekordu lek. Sebastiana Janiczka dopisać ?spec=Ortopedia. -->
-          <a href="Specjaliści.dc.html" class="spec-card">
-            <span aria-hidden="true" style="display:block; color:var(--white); opacity:.92;">
-              <svg width="64px" height="64px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M20 4C20.5523 4 21 4.44772 21 5V13.3431C21 14.6692 20.4732 15.941 19.5355 16.8787L19.0317 17.3826C18.1384 18.2758 18.1384 19.7242 19.0317 20.6174C19.7279 21.3136 20.7914 21.4862 21.6721 21.0459L21.9145 20.9247C23.2273 20.2683 24.7727 20.2683 26.0855 20.9247L26.3279 21.0459C27.2086 21.4862 28.2721 21.3136 28.9683 20.6174C29.8616 19.7242 29.8616 18.2758 28.9683 17.3826L28.4645 16.8787C27.5268 15.941 27 14.6692 27 13.3431V5C27 4.44772 27.4477 4 28 4C28.5523 4 29 4.44772 29 5V6.70355C36.5086 8.87023 42 15.7938 42 24C42 32.2062 36.5086 39.1298 29 41.2965V43C29 43.5523 28.5523 44 28 44C27.4477 44 27 43.5523 27 43V34.6569C27 33.3308 27.5268 32.059 28.4645 31.1213L28.9683 30.6174C29.8616 29.7242 29.8616 28.2758 28.9683 27.3826C28.2721 26.6864 27.2086 26.5138 26.3279 26.9541L26.0855 27.0753C24.7727 27.7317 23.2273 27.7317 21.9145 27.0753L21.6721 26.9541C20.7914 26.5138 19.7279 26.6864 19.0317 27.3826C18.1384 28.2758 18.1384 29.7242 19.0317 30.6174L19.5355 31.1213C20.4732 32.059 21 33.3308 21 34.6569V43C21 43.5523 20.5523 44 20 44C19.4477 44 19 43.5523 19 43V41.2965C11.4914 39.1298 6 32.2062 6 24C6 15.7938 11.4914 8.87023 19 6.70355V5C19 4.44772 19.4477 4 20 4ZM19 8.79677C12.6121 10.8964 8 16.9096 8 24C8 31.0905 12.6121 37.1037 19 39.2033V34.6569C19 33.8612 18.6839 33.0981 18.1213 32.5355L17.6174 32.0317C15.9431 30.3573 15.9431 27.6427 17.6174 25.9683C18.9224 24.6634 20.9159 24.3399 22.5665 25.1652L22.8089 25.2864C23.5587 25.6613 24.4413 25.6613 25.1911 25.2864L25.4335 25.1652C27.0841 24.3399 29.0776 24.6634 30.3826 25.9683C32.0569 27.6427 32.0569 30.3573 30.3826 32.0317L29.8787 32.5355C29.3161 33.0981 29 33.8612 29 34.6569V39.2033C35.3879 37.1037 40 31.0905 40 24C40 16.9096 35.3879 10.8964 29 8.79677V13.3431C29 14.1388 29.3161 14.9019 29.8787 15.4645L30.3826 15.9683C32.0569 17.6427 32.0569 20.3573 30.3826 22.0317C29.0776 23.3366 27.0841 23.6601 25.4335 22.8348L25.1911 22.7136C24.4413 22.3387 23.5587 22.3387 22.8089 22.7136L22.5665 22.8348C20.9159 23.6601 18.9224 23.3366 17.6174 22.0317C15.9431 20.3573 15.9431 17.6427 17.6174 15.9683L18.1213 15.4645C18.6839 14.9019 19 14.1388 19 13.3431V8.79677Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">Ortopedia</span>
-            <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">Diagnostyka i leczenie narządu ruchu</span>
-          </a>
-          <a href="Specjaliści.dc.html?spec=Pediatria" class="spec-card">
-            <span aria-hidden="true" style="display:block; color:var(--white); opacity:.92;">
-              <svg width="64px" height="64px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M28.0555 14.2778C28.0555 16.6403 26.1403 18.5555 23.7777 18.5555C21.4152 18.5555 19.5 16.6403 19.5 14.2778C19.5 11.9152 21.4152 10 23.7777 10C26.1403 10 28.0555 11.9152 28.0555 14.2778Z" fill="currentColor"/>
-                <path d="M27.6667 27.8422C27.6667 28.3348 27.223 29.5999 25.8618 30.2061C25.706 30.2754 25.5309 30.3624 25.3735 30.4405L25.2809 30.4864C25.0875 30.582 24.9004 30.6724 24.7111 30.7526C24.3164 30.9198 24.0085 30.9997 23.7778 30.9997C23.547 30.9997 23.2392 30.9198 22.8445 30.7526C22.6552 30.6724 22.468 30.582 22.2747 30.4864L22.1821 30.4405C22.0247 30.3624 21.8496 30.2754 21.6938 30.2061C20.3326 29.5999 19.8889 28.3348 19.8889 27.8422V26.3332H27.6667V27.8422Z" fill="currentColor"/>
-                <path d="M27.6667 23.3098C29.028 23.1157 30.4573 22.822 32.0357 22.4315C33.108 22.1663 33.7622 21.082 33.497 20.0098C33.2317 18.9375 32.1475 18.2833 31.0752 18.5486C28.1306 19.277 25.9341 19.5983 23.7852 19.5901C21.6305 19.5819 19.4266 19.2423 16.4585 18.5433C15.3833 18.2901 14.3065 18.9564 14.0533 20.0316C13.8 21.1067 14.4664 22.1836 15.5415 22.4368C17.1094 22.806 18.532 23.0938 19.8889 23.2896V24.7776H27.6667V23.3098Z" fill="currentColor"/>
-                <path d="M17.2248 34.1027C17.2248 33.0133 17.4844 32.0888 17.9736 31.2922C18.0031 31.2442 18.0334 31.1967 18.0646 31.1496C18.3435 30.7279 18.6889 30.3427 19.096 29.9884C19.2585 30.2632 19.4681 30.5386 19.7295 30.7966L19.7441 30.8108C19.8333 30.898 19.9284 30.9831 20.0296 31.0654L20.0428 31.076C20.3174 31.2976 20.6368 31.4989 21.0045 31.666C20.8665 31.7965 20.7344 31.9478 20.6095 32.1337C20.4514 32.369 20.3024 32.6268 20.1812 32.8952L20.1666 32.9278C19.9975 33.3104 19.8861 33.7134 19.8861 34.1027C19.8861 34.719 20.1389 35.2492 20.3305 35.6508L20.3444 35.6802C20.5559 36.124 20.6895 36.4226 20.6895 36.7384C20.6895 37.4482 20.0795 37.9997 19.3589 37.9997C18.6872 37.9997 18.1558 37.5524 17.76 36.6866C17.3735 35.8411 17.2248 34.7979 17.2248 34.1027Z" fill="currentColor"/>
-                <path d="M28.4595 29.988C28.297 30.2628 28.0874 30.5382 27.826 30.7962L27.8114 30.8104C27.7223 30.8976 27.6271 30.9827 27.5259 31.065L27.5128 31.0756C27.2381 31.2972 26.9187 31.4985 26.551 31.6656C26.689 31.7961 26.8211 31.9473 26.946 32.1332C27.104 32.3685 27.2531 32.6264 27.3743 32.8948L27.3889 32.9274C27.5579 33.31 27.6694 33.713 27.6694 34.1022C27.6694 34.7185 27.4165 35.2487 27.225 35.6504L27.211 35.6797C26.9996 36.1235 26.8659 36.4222 26.8659 36.7379C26.8659 37.4478 27.476 37.9993 28.1966 37.9993C28.8682 37.9993 29.3997 37.552 29.7955 36.6862C30.182 35.8407 30.3307 34.7975 30.3307 34.1022C30.3307 33.0128 30.0711 32.0884 29.5818 31.2918C29.5524 31.2438 29.5221 31.1963 29.491 31.1492C29.212 30.7275 28.8666 30.3424 28.4595 29.988Z" fill="currentColor"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M6 9C6 7.34315 7.34315 6 9 6H39C40.6569 6 42 7.34315 42 9V39C42 40.6569 40.6569 42 39 42H9C7.34315 42 6 40.6569 6 39V9ZM8 9C8 8.44772 8.44771 8 9 8H39C39.5523 8 40 8.44771 40 9V39C40 39.5523 39.5523 40 39 40H9C8.44772 40 8 39.5523 8 39V9Z" fill="currentColor"/>
-              </svg>
-            </span>
-            <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">Pediatria</span>
-            <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">Bilanse, szczepienia, wizyty</span>
-          </a>
-          <a href="Specjaliści.dc.html" class="spec-card">
+          <sc-for list="{{ specjalizacje }}" as="s" hint-placeholder-count="3">
+            <a href="{{ s.href }}" class="spec-card">
+              <span aria-hidden="true" style="display:block; color:var(--white); opacity:.92;">
+                <svg width="64px" height="64px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon-{{ s.ikona }}"></use></svg>
+              </span>
+              <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">{{ s.nazwa }}</span>
+              <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">{{ s.opis }}</span>
+            </a>
+          </sc-for>
+          <a href="specjalisci.php" class="spec-card">
             <span aria-hidden="true" style="display:grid; place-items:center; width:64px; height:64px; border-radius:var(--radius-pill); background:rgba(255,255,255,.05); color:var(--white); border:1px solid rgba(255,255,255,.12);"><x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="chevron-right" size="32px" hint-size="32px,32px"></x-import></span>
             <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">Wszystkie specjalizacje</span>
             <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">Kardiologia, USG i&nbsp;więcej</span>
@@ -400,62 +395,24 @@
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
         <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Nasz zespół" title="Specjaliści" lead="Zdjęcia lekarzy do uzupełnienia — karty działają także bez fotografii." hint-size="100%,160px"></x-import>
         <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:18px; margin-top:40px;">
-          <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
-            <div style="height:230px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle);">
-              <img src="uploads/doctor-1-transparent.webp" alt="dr Renata Bokiniec" style="display:block; width:86%; height:auto; margin-bottom:-6%;">
-            </div>
-            <div style="padding:18px 20px 20px;">
-              <h3 style="margin:0; font-family:var(--font-display); font-size:17px; font-weight:var(--weight-bold); color:var(--navy-900);">dr Renata Bokiniec</h3>
-              <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">USG dzieci</p>
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
-                <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
-                <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
+          <sc-for list="{{ lekarzeTeaser }}" as="l" hint-placeholder-count="4">
+            <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
+              <div style="height:230px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle);">
+                <img src="{{ l.zdjecie }}" alt="{{ l.imie }}" style="display:block; width:86%; height:auto; margin-bottom:-6%;">
               </div>
-            </div>
-          </article>
-          <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
-            <div style="height:230px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle);">
-              <img src="uploads/doctor-2-transparent.webp" alt="dr Joanna Chojecka-Zych" style="display:block; width:86%; height:auto; margin-bottom:-6%;">
-            </div>
-            <div style="padding:18px 20px 20px;">
-              <h3 style="margin:0; font-family:var(--font-display); font-size:17px; font-weight:var(--weight-bold); color:var(--navy-900);">dr Joanna Chojecka-Zych</h3>
-              <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">USG dorosłych</p>
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
-                <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
-                <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
+              <div style="padding:18px 20px 20px;">
+                <h3 style="margin:0; font-family:var(--font-display); font-size:17px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ l.imie }}</h3>
+                <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">{{ l.specjalizacja }}</p>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
+                  <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
+                  <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
+                </div>
               </div>
-            </div>
-          </article>
-
-          <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
-            <div style="height:230px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle);">
-              <img src="uploads/doctor-4-transparent.webp" alt="dr Beata Góralska-Załęska" style="display:block; width:86%; height:auto; margin-bottom:-6%;">
-            </div>
-            <div style="padding:18px 20px 20px;">
-              <h3 style="margin:0; font-family:var(--font-display); font-size:17px; font-weight:var(--weight-bold); color:var(--navy-900);">dr Beata Góralska-Załęska</h3>
-              <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">Dermatologia</p>
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
-                <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
-                <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
-              </div>
-            </div>
-          </article>
-          <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
-            <div style="height:230px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle);">
-              <img src="uploads/doctor-5-transparent.webp" alt="lek. Sebastian Janiczek" style="display:block; width:86%; height:auto; margin-bottom:-6%;">
-            </div>
-            <div style="padding:18px 20px 20px;">
-              <h3 style="margin:0; font-family:var(--font-display); font-size:17px; font-weight:var(--weight-bold); color:var(--navy-900);">lek. Sebastian Janiczek</h3>
-              <p style="margin:2px 0 0; font-size:14.5px; color:var(--text-muted);">Ginekologia</p>
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid var(--border-subtle);">
-                <span style="font-size:14px; color:var(--text-muted);">Terminy online</span>
-                <button type="button" onClick="{{ otworzKalendarz }}" style="background:var(--blue-100); color:var(--blue-700); font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14px; padding:9px 16px; border-radius:var(--radius-pill); border:none; cursor:pointer; white-space:nowrap;" style-hover="background:var(--blue-200);">Umów</button>
-              </div>
-            </div>
-          </article>
+            </article>
+          </sc-for>
         </div>
         <div style="display:flex; justify-content:center; margin-top:32px; white-space:nowrap;">
-          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="Specjaliści.dc.html" variant="secondary" icon-after="chevron-right" hint-size="auto,46px">Zobacz wszystkich specjalistów</x-import>
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="specjalisci.php" variant="secondary" icon-after="chevron-right" hint-size="auto,46px">Zobacz wszystkich specjalistów</x-import>
         </div>
       </div>
     </section>
@@ -672,7 +629,7 @@
       <nav aria-label="Stopka — serwis">
         <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--white); margin-bottom:16px;">Serwis</div>
         <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; font-size:14.5px;">
-          <li><a href="Specjaliści.dc.html" style="color:rgba(255,255,255,.72); text-decoration:none;">Specjaliści</a></li>
+          <li><a href="specjalisci.php" style="color:rgba(255,255,255,.72); text-decoration:none;">Specjaliści</a></li>
           <li><a href="#specjalizacje" style="color:rgba(255,255,255,.72); text-decoration:none;">Zakres usług</a></li>
           <li><a href="#" style="color:rgba(255,255,255,.72); text-decoration:none;">Cennik</a></li>
           <li><a href="#kontakt" style="color:rgba(255,255,255,.72); text-decoration:none;">Kontakt</a></li>
@@ -754,6 +711,11 @@
 const GODZINY = { 1: [8, 20], 2: [8, 20], 3: [8, 20], 4: [8, 20], 5: [8, 20], 6: [8, 14], 0: null };
 // Z przyimkiem w tablicy, bo wtorek wymaga "we", a nie "w".
 const DNI_KIEDY = ['w niedzielę', 'w poniedziałek', 'we wtorek', 'w środę', 'w czwartek', 'w piątek', 'w sobotę'];
+
+// Treść wstrzyknięta przez PHP z data/*.json (patrz inc/tresc.php) — jedyne źródło prawdy,
+// współdzielone z specjalisci.php.
+const SPECJALIZACJE = window.TRESC.specjalizacje;
+const LEKARZE = window.TRESC.lekarze;
 
 class Component extends DCLogic {
   // "teraz" nie jest nigdzie czytane — służy wyłącznie za wyzwalacz przerysowania co minutę,
@@ -874,6 +836,8 @@ class Component extends DCLogic {
     const pigulka = 'display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:13.5px; font-weight:var(--weight-semibold);';
     const kropka = 'width:8px; height:8px; border-radius:50%; flex-shrink:0; background:currentColor;';
     return {
+      specjalizacje: SPECJALIZACJE,
+      lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej),
       pokazPasek: this.state.pokazPasek,
       szeroki: this.state.szeroki,
       menuOtwarte: this.state.menuOtwarte,
