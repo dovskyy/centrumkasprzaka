@@ -95,15 +95,18 @@
     gap:24px;
     margin-bottom:32px;
   }
-  @media (max-width:640px) {
-    .spec-header-wrap { flex-direction:column; align-items:flex-start; gap:16px; }
-  }
   .spec-slider-controls {
     display:flex;
     align-items:center;
     gap:10px;
     flex-shrink:0;
     margin-bottom:8px;
+  }
+  .spec-swipe-indicator { display:none; }
+  @media (max-width:760px) {
+    .spec-header-wrap { flex-direction:column; align-items:flex-start; gap:16px; margin-bottom:12px; }
+    .spec-slider-controls { display:none !important; }
+    .spec-swipe-indicator { display:flex; font-size:13px; color:var(--text-muted); align-items:center; justify-content:center; gap:6px; margin:-4px 0 16px; }
   }
   .spec-slider-btn {
     width:44px;
@@ -480,6 +483,10 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
           </div>
+        </div>
+        <div class="spec-swipe-indicator">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8l4 4-4 4M7 16l-4-4 4-4M21 12H3"/></svg>
+          Przesuń, aby zobaczyć więcej
         </div>
         <svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
           <defs>
