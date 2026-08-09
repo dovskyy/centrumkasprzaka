@@ -1,11 +1,13 @@
 [
     {
         "id": "renata-bokiniec",
-        "imie": "dr Renata Bokiniec",
-        "podtytul": "Pediatria",
+        "tytul": "dr hab. n. med.",
+        "imie": "Renata Bokiniec",
+        "podtytul": "Ultrasonografista, Pediatra, Neonatolog",
         "specjalizacje": [
             "usg",
-            "dermatologia"
+            "pediatria",
+            "neonatologia"
         ],
         "zakres": "USG przezciemiączkowe, USG jamy brzusznej, USG bioderek",
         "pacjenci": "Dzieci",
@@ -15,9 +17,11 @@
     },
     {
         "id": "joanna-chojecka-zych",
-        "imie": "dr Joanna Chojecka-Zych",
-        "podtytul": "USG dorosłych",
+        "tytul": "lek.",
+        "imie": "Joanna Chojecka-Zych",
+        "podtytul": "Radiolog",
         "specjalizacje": [
+            "radiologia",
             "usg"
         ],
         "zakres": "USG jamy brzusznej, USG tarczycy, USG piersi",
@@ -28,21 +32,23 @@
     },
     {
         "id": "anna-dygas",
-        "imie": "dr Anna Dygas",
-        "podtytul": "Pediatria i neonatologia",
+        "tytul": "lek.",
+        "imie": "Anna Dygas",
+        "podtytul": "Lekarz rodzinny",
         "specjalizacje": [
-            "pediatria"
+            "medycyna-rodzinna"
         ],
-        "zakres": "Bilanse zdrowia, opieka nad noworodkiem, szczepienia",
-        "pacjenci": "Dzieci",
+        "zakres": "",
+        "pacjenci": "",
         "zdjecie": null,
         "naStronieGlownej": false,
         "widgetHtml": null
     },
     {
         "id": "wiktoria-forosenko",
-        "imie": "dr Wiktoria Forosenko",
-        "podtytul": "Kardiologia",
+        "tytul": "lek.",
+        "imie": "Wiktoria Forosenko",
+        "podtytul": "Kardiolog",
         "specjalizacje": [
             "kardiologia"
         ],
@@ -54,9 +60,13 @@
     },
     {
         "id": "beata-goralska-zaleska",
-        "imie": "dr Beata Góralska-Załęska",
-        "podtytul": "Dermatologia",
-        "specjalizacje": [],
+        "tytul": "dr",
+        "imie": "Beata Góralska-Załęska",
+        "podtytul": "Dermatolog, Wenerolog",
+        "specjalizacje": [
+            "dermatologia",
+            "wenerologia"
+        ],
         "zakres": "Dermatoskopia, choroby skóry, konsultacja znamion",
         "pacjenci": "Dorośli i dzieci",
         "zdjecie": "uploads/doctor-4-transparent.webp",
@@ -65,16 +75,382 @@
     },
     {
         "id": "sebastian-janiczek",
-        "imie": "lek. Sebastian Janiczek",
-        "podtytul": "Ortopedia",
+        "tytul": "lek.",
+        "imie": "Sebastian Janiczek",
+        "podtytul": "Ortopeda",
         "specjalizacje": [
-            "ginekologia",
             "ortopedia"
         ],
-        "zakres": "Konsultacje, cytologia, USG ginekologiczne",
+        "zakres": "Konsultacje ortopedyczne",
         "pacjenci": "Dorośli",
         "zdjecie": "uploads/doctor-5-transparent.webp",
         "naStronieGlownej": true,
+        "widgetHtml": null
+    },
+    {
+        "id": "agnieszka-greloch",
+        "tytul": "lek.",
+        "imie": "Agnieszka Greloch",
+        "podtytul": "Ginekolog, Endokrynolog",
+        "specjalizacje": [
+            "ginekologia",
+            "endokrynologia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "tomasz-wacikowski",
+        "tytul": "lek.",
+        "imie": "Tomasz Wacikowski",
+        "podtytul": "Radiolog, Ultrasonografista",
+        "specjalizacje": [
+            "radiologia",
+            "usg"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "magdalena-katarzyna-szkiladz-skiba",
+        "tytul": "lek.",
+        "imie": "Magdalena Katarzyna Szkiłądź-Skiba",
+        "podtytul": "Pediatra",
+        "specjalizacje": [
+            "pediatria"
+        ],
+        "zakres": "",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "janusz-bronarski",
+        "tytul": "dr hab. n. med.",
+        "imie": "Janusz Bronarski",
+        "podtytul": "Ortopeda",
+        "specjalizacje": [
+            "ortopedia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "marek-szkiladz",
+        "tytul": "dr n. med.",
+        "imie": "Marek Szkiłądź",
+        "podtytul": "Chirurg, Chirurg naczyniowy",
+        "specjalizacje": [
+            "chirurgia",
+            "chirurgia-naczyniowa"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "malgorzata-reinholz-jaskolska",
+        "tytul": "dr n. med.",
+        "imie": "Małgorzata Reinholz-Jaskólska",
+        "podtytul": "Ginekolog, Onkolog",
+        "specjalizacje": [
+            "ginekologia",
+            "onkologia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "sylwia-maria-szkudlinska-pawlak",
+        "tytul": "dr",
+        "imie": "Sylwia Maria Szkudlińska-Pawlak",
+        "podtytul": "Radiolog",
+        "specjalizacje": [
+            "radiologia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "grzegorz-samul",
+        "tytul": "lek.",
+        "imie": "Grzegorz Samul",
+        "podtytul": "Ortopeda",
+        "specjalizacje": [
+            "ortopedia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "anna-siniarska",
+        "tytul": "dr",
+        "imie": "Anna Siniarska",
+        "podtytul": "Okulista",
+        "specjalizacje": [
+            "okulistyka"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "magdalena-kurzatkowska",
+        "tytul": null,
+        "imie": "Magdalena Kurzątkowska",
+        "podtytul": "Neonatolog",
+        "specjalizacje": [
+            "pediatria",
+            "neonatologia"
+        ],
+        "zakres": "",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "dagmara-gralak-lachowska",
+        "tytul": "dr n. med.",
+        "imie": "Dagmara Gralak-Łachowska",
+        "podtytul": "Kardiolog, Flebolog, Internista",
+        "specjalizacje": [
+            "kardiologia",
+            "flebologia",
+            "interna"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "anna-balicka",
+        "tytul": "mgr",
+        "imie": "Anna Balicka",
+        "podtytul": "Logopeda",
+        "specjalizacje": [
+            "logopedia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "henryk-wojtaszek",
+        "tytul": "mgr",
+        "imie": "Henryk Wojtaszek",
+        "podtytul": "Psycholog, Psychotraumatolog",
+        "specjalizacje": [
+            "psychologia",
+            "psychotraumatologia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "klaudia-obsznajczyk",
+        "tytul": "dr",
+        "imie": "Klaudia Obsznajczyk",
+        "podtytul": "Pediatra, Kardiolog dziecięcy",
+        "specjalizacje": [
+            "pediatria",
+            "kardiologia",
+            "kardiologia-dziecieca"
+        ],
+        "zakres": "",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "anna-tarasiuk",
+        "tytul": "lek.",
+        "imie": "Anna Tarasiuk",
+        "podtytul": "Pediatra, Neonatolog",
+        "specjalizacje": [
+            "pediatria",
+            "neonatologia"
+        ],
+        "zakres": "",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "radoslaw-pietrzak",
+        "tytul": "dr hab. n. med.",
+        "imie": "Radosław Pietrzak",
+        "podtytul": "Kardiolog dziecięcy",
+        "specjalizacje": [
+            "kardiologia",
+            "pediatria",
+            "kardiologia-dziecieca"
+        ],
+        "zakres": "",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "bartosz-glogowski",
+        "tytul": "lek.",
+        "imie": "Bartosz Głogowski",
+        "podtytul": "Chirurg naczyniowy",
+        "specjalizacje": [
+            "chirurgia",
+            "chirurgia-naczyniowa"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "anna-pekalak-czernek",
+        "tytul": "lek.",
+        "imie": "Anna Pękalak-Czernek",
+        "podtytul": "Ginekolog",
+        "specjalizacje": [
+            "ginekologia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "krzysztof-berbeka",
+        "tytul": "lek.",
+        "imie": "Krzysztof Berbeka",
+        "podtytul": "Ginekolog, Ultrasonografista",
+        "specjalizacje": [
+            "ginekologia",
+            "usg"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "aneta-samul",
+        "tytul": "lek.",
+        "imie": "Aneta Samul",
+        "podtytul": "Okulista",
+        "specjalizacje": [
+            "okulistyka"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "martyna-micek",
+        "tytul": "lek.",
+        "imie": "Martyna Micek",
+        "podtytul": "Ginekolog",
+        "specjalizacje": [
+            "ginekologia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "kiril-kozmin",
+        "tytul": "lek.",
+        "imie": "Kiril Kozmin",
+        "podtytul": "Ortopeda",
+        "specjalizacje": [
+            "ortopedia"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "magdalena-romiszewska",
+        "tytul": "dr n. med. i n. o zdr.",
+        "imie": "Magdalena Romiszewska",
+        "podtytul": "Pediatra",
+        "specjalizacje": [
+            "pediatria"
+        ],
+        "zakres": "",
+        "pacjenci": "Dzieci",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "katarzyna-malinowska",
+        "tytul": "lek.",
+        "imie": "Katarzyna Malinowska",
+        "podtytul": "Okulista",
+        "specjalizacje": [
+            "okulistyka"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
+        "widgetHtml": null
+    },
+    {
+        "id": "joanna-grzeszczuk",
+        "tytul": "lek.",
+        "imie": "Joanna Grzeszczuk",
+        "podtytul": "Radiolog, Ultrasonografista",
+        "specjalizacje": [
+            "radiologia",
+            "usg"
+        ],
+        "zakres": "",
+        "pacjenci": "",
+        "zdjecie": null,
+        "naStronieGlownej": false,
         "widgetHtml": null
     }
 ]

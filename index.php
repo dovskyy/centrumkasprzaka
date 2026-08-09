@@ -88,13 +88,181 @@
     .brand-text { max-width:120px; font-size:13.5px; }
   }
 
-  .spec-grid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:18px; margin-top:40px; }
-  .spec-card { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; aspect-ratio:1/1; padding:26px 20px; border-radius:var(--radius-card); text-decoration:none !important; text-align:center; transition:var(--transition-control); background:linear-gradient(135deg, var(--navy-800), var(--navy-900)); box-shadow:var(--shadow-sm); border:1px solid rgba(255,255,255,.12); }
-  .spec-card:hover { text-decoration:none !important; }
-  @media (max-width:760px) {
-    .spec-grid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; gap:14px; margin:40px calc(var(--gutter) * -1) 0; padding:0 16px 10px; }
-    .spec-card { flex:0 0 auto; width:44vw; scroll-snap-align:start; }
+  .spec-header-wrap {
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    margin-bottom:32px;
   }
+  @media (max-width:640px) {
+    .spec-header-wrap { flex-direction:column; align-items:flex-start; gap:16px; }
+  }
+  .spec-slider-controls {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+    margin-bottom:8px;
+  }
+  .spec-slider-btn {
+    width:44px;
+    height:44px;
+    border-radius:var(--radius-pill);
+    border:1px solid rgba(14,26,60,.14);
+    background:var(--white);
+    color:var(--navy-900);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    transition:all .35s cubic-bezier(.16,1,.3,1);
+    box-shadow:0 2px 6px rgba(14,26,60,.04);
+  }
+  .spec-slider-btn:hover {
+    background:var(--blue-600);
+    color:var(--white);
+    border-color:var(--blue-600);
+    transform:translateY(-2px);
+    box-shadow:0 6px 16px rgba(15,98,208,.22);
+  }
+  .spec-slider-btn:active { transform:scale(.96); }
+
+  .spec-grid { 
+    display:flex; 
+    gap:18px; 
+    overflow-x:auto; 
+    scroll-snap-type:x mandatory; 
+    scroll-behavior:smooth; 
+    -webkit-overflow-scrolling:touch; 
+    padding:6px 4px 20px; 
+    margin-top:0; 
+    scrollbar-width:none; 
+  }
+  .spec-grid::-webkit-scrollbar { display:none; }
+
+  .spec-card { 
+    flex:0 0 310px; 
+    scroll-snap-align:start; 
+    position:relative; 
+    display:flex; 
+    flex-direction:column; 
+    justify-content:space-between; 
+    gap:20px; 
+    padding:24px 24px 22px; 
+    border-radius:var(--radius-card); 
+    text-decoration:none !important; 
+    background:linear-gradient(135deg, #EBF3FD 0%, #E0EEFD 100%); 
+    border:1px solid #B6D4F9; 
+    box-shadow:0 4px 14px -2px rgba(15,98,208,.08); 
+    transition:all .35s cubic-bezier(.16,1,.3,1); 
+    overflow:hidden; 
+  }
+
+  .spec-card::before {
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:4px;
+    background:linear-gradient(90deg, var(--blue-600), var(--teal-500));
+    opacity:1;
+    transition:opacity .35s ease;
+  }
+
+  .spec-card:hover { 
+    text-decoration:none !important; 
+    transform:translateY(-4px); 
+    background:linear-gradient(135deg, #DEEBFD 0%, #D3E5FC 100%); 
+    border-color:var(--blue-500); 
+    box-shadow:0 14px 28px -6px rgba(15,98,208,.18); 
+  }
+
+  /* Static Background Watermark Icon - NO ANIMATIONS */
+  .spec-card__bg-icon {
+    position:absolute;
+    right:-18px;
+    bottom:-22px;
+    width:140px;
+    height:140px;
+    color:var(--blue-600);
+    opacity:0.14;
+    filter:none;
+    pointer-events:none;
+    transform:rotate(-6deg);
+    z-index:0;
+  }
+
+  .spec-card__header { display:flex; align-items:center; justify-content:space-between; width:100%; position:relative; z-index:1; }
+  
+  .spec-card__icon { 
+    width:56px; 
+    height:56px; 
+    border-radius:16px; 
+    display:grid; 
+    place-items:center; 
+    background:var(--white); 
+    color:var(--blue-600); 
+    border:1px solid rgba(27,118,238,.22); 
+    box-shadow:0 3px 10px rgba(15,98,208,.12); 
+    transition:all .35s cubic-bezier(.16,1,.3,1); 
+  }
+  .spec-card:hover .spec-card__icon { 
+    background:var(--blue-600); 
+    color:var(--white); 
+    border-color:var(--blue-600); 
+    transform:scale(1.05); 
+    box-shadow:0 6px 16px rgba(15,98,208,.25); 
+  }
+
+  .spec-card__action { 
+    width:34px; 
+    height:34px; 
+    border-radius:50%; 
+    display:grid; 
+    place-items:center; 
+    background:var(--white); 
+    color:var(--blue-600); 
+    border:1px solid rgba(27,118,238,.2); 
+    box-shadow:0 2px 6px rgba(15,98,208,.08); 
+    transition:all .35s cubic-bezier(.16,1,.3,1); 
+  }
+  .spec-card:hover .spec-card__action { 
+    background:var(--blue-600); 
+    color:var(--white); 
+    border-color:var(--blue-600); 
+    transform:translateX(4px); 
+  }
+
+  .spec-card__body { display:flex; flex-direction:column; gap:6px; position:relative; z-index:1; }
+  .spec-card__title { 
+    font-family:var(--font-display); 
+    font-size:22.5px; 
+    line-height:1.25; 
+    font-weight:var(--weight-bold); 
+    letter-spacing:-0.018em; 
+    color:var(--navy-900); 
+    transition:color .25s ease; 
+  }
+  .spec-card:hover .spec-card__title { color:var(--blue-700); }
+  .spec-card__desc { font-size:14px; line-height:1.5; color:var(--navy-800); opacity:.82; }
+
+  .spec-card--more { 
+    background:linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%); 
+    border:1px solid var(--navy-700); 
+  }
+  .spec-card--more .spec-card__bg-icon { color:var(--white); opacity:0.1; }
+  .spec-card--more .spec-card__title { color:var(--white); }
+  .spec-card--more .spec-card__desc { color:rgba(255,255,255,.8); opacity:1; }
+  .spec-card--more .spec-card__icon { 
+    background:rgba(255,255,255,.1); 
+    color:var(--white); 
+    border-color:rgba(255,255,255,.15); 
+    box-shadow:none; 
+  }
+  .spec-card--more:hover .spec-card__icon { background:var(--blue-600); color:var(--white); }
+  .spec-card--more .spec-card__action { background:rgba(255,255,255,.08); color:rgba(255,255,255,.8); border-color:transparent; }
+  .spec-card--more:hover .spec-card__action { background:var(--white); color:var(--navy-900); }
 
   .visit-photo-wrap { min-height:420px; }
   .visit-photo { height:480px; }
@@ -302,7 +470,17 @@
 
     <section id="specjalizacje" aria-labelledby="spec-h" style="background:var(--white);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
-        <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Czym się zajmujemy" title="Wybierz specjalizację" lead="Poradnie dla dzieci i dorosłych oraz własna pracownia USG — wszystko pod jednym adresem." hint-size="100%,160px"></x-import>
+        <div class="spec-header-wrap">
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Czym się zajmujemy" title="Wybierz specjalizację" lead="Poradnie dla dzieci i dorosłych oraz własna pracownia USG — wszystko pod jednym adresem." hint-size="100%,160px"></x-import>
+          <div class="spec-slider-controls">
+            <button type="button" class="spec-slider-btn spec-slider-btn--prev" aria-label="Poprzednie specjalizacje" onClick="{{ przewinSpecjalizacjeLewo }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            </button>
+            <button type="button" class="spec-slider-btn spec-slider-btn--next" aria-label="Następne specjalizacje" onClick="{{ przewinSpecjalizacjePrawo }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
+        </div>
         <svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
           <defs>
             <?php
@@ -322,17 +500,39 @@
         <div class="spec-grid">
           <sc-for list="{{ specjalizacje }}" as="s" hint-placeholder-count="3">
             <a href="specjalisci.php?spec={{ s.id }}" class="spec-card">
-              <span aria-hidden="true" style="display:block; color:var(--white); opacity:.92;">
-                <svg width="64px" height="64px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon-{{ s.ikona }}"></use></svg>
+              <span class="spec-card__bg-icon" aria-hidden="true">
+                <svg width="140" height="140" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon-{{ s.ikona }}"></use></svg>
               </span>
-              <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">{{ s.nazwa }}</span>
-              <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">{{ s.opis }}</span>
+              <div class="spec-card__header">
+                <span class="spec-card__icon" aria-hidden="true">
+                  <svg width="38" height="38" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon-{{ s.ikona }}"></use></svg>
+                </span>
+                <span class="spec-card__action" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
+              </div>
+              <div class="spec-card__body">
+                <span class="spec-card__title">{{ s.nazwa }}</span>
+                <span class="spec-card__desc">{{ s.opis }}</span>
+              </div>
             </a>
           </sc-for>
-          <a href="specjalisci.php" class="spec-card">
-            <span aria-hidden="true" style="display:grid; place-items:center; width:64px; height:64px; border-radius:var(--radius-pill); background:rgba(255,255,255,.05); color:var(--white); border:1px solid rgba(255,255,255,.12);"><x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="chevron-right" size="32px" hint-size="32px,32px"></x-import></span>
-            <span style="display:block; font-family:var(--font-display); font-size:20px; font-weight:var(--weight-bold); letter-spacing:0.02em; text-transform:uppercase; color:var(--white);">Wszystkie specjalizacje</span>
-            <span style="display:block; font-size:14px; line-height:1.5; color:rgba(255,255,255,.62);">Kardiologia, USG i&nbsp;więcej</span>
+          <a href="specjalisci.php" class="spec-card spec-card--more">
+            <span class="spec-card__bg-icon" aria-hidden="true">
+              <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="chevron-right" size="130px" hint-size="130px,130px"></x-import>
+            </span>
+            <div class="spec-card__header">
+              <span class="spec-card__icon" aria-hidden="true">
+                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="chevron-right" size="28px" hint-size="28px,28px"></x-import>
+              </span>
+              <span class="spec-card__action" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </span>
+            </div>
+            <div class="spec-card__body">
+              <span class="spec-card__title">Wszystkie specjalizacje</span>
+              <span class="spec-card__desc">Kardiologia, USG i&nbsp;więcej</span>
+            </div>
           </a>
         </div>
       </div>
@@ -843,6 +1043,14 @@ class Component extends DCLogic {
     document.body.style.overflow = '';
     this.setState({ widgetLekarzaOtwarty: false });
   };
+  przewinSpecjalizacjeLewo = () => {
+    const el = document.querySelector('.spec-grid');
+    if (el) el.scrollBy({ left: -320, behavior: 'smooth' });
+  };
+  przewinSpecjalizacjePrawo = () => {
+    const el = document.querySelector('.spec-grid');
+    if (el) el.scrollBy({ left: 320, behavior: 'smooth' });
+  };
   zatrzymaj = (e) => { if (e && e.stopPropagation) e.stopPropagation(); };
   obslugaKlawiszy = (e) => {
     if (e.key === 'Escape' && this.state.kalendarzOtwarty) this.zamknijKalendarz();
@@ -881,6 +1089,8 @@ class Component extends DCLogic {
     const kropka = 'width:8px; height:8px; border-radius:50%; flex-shrink:0; background:currentColor;';
     return {
       specjalizacje: SPECJALIZACJE.filter((s) => s.naStronieGlownej),
+      przewinSpecjalizacjeLewo: this.przewinSpecjalizacjeLewo,
+      przewinSpecjalizacjePrawo: this.przewinSpecjalizacjePrawo,
       // Lekarz z wklejonym widgetem dostaje przycisk otwierajacy jego wlasny modal,
       // reszta dziala jak dotychczas - wspolny kalendarz placowki.
       lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej).map((l) => ({

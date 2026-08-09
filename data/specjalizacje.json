@@ -24,8 +24,8 @@
         "id": "usg",
         "nazwa": "USG",
         "opis": "USG dzieci i dorosłych",
-        "ikona": null,
-        "naStronieGlownej": false
+        "ikona": "opthalmology",
+        "naStronieGlownej": true
     },
     {
         "id": "kardiologia",
@@ -33,5 +33,117 @@
         "opis": "Konsultacje i diagnostyka kardiologiczna",
         "ikona": "coronary-care_unit",
         "naStronieGlownej": true
+    },
+    {
+        "id": "chirurgia",
+        "nazwa": "Chirurgia",
+        "opis": "",
+        "ikona": "general-surgery",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "chirurgia-naczyniowa",
+        "nazwa": "Chirurgia naczyniowa",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "dermatologia",
+        "nazwa": "Dermatologia",
+        "opis": "",
+        "ikona": "social-work",
+        "naStronieGlownej": true
+    },
+    {
+        "id": "endokrynologia",
+        "nazwa": "Endokrynologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "flebologia",
+        "nazwa": "Flebologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "interna",
+        "nazwa": "Interna",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "kardiologia-dziecieca",
+        "nazwa": "Kardiologia dziecięca",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "logopedia",
+        "nazwa": "Logopedia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "medycyna-rodzinna",
+        "nazwa": "Medycyna rodzinna",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "neonatologia",
+        "nazwa": "Neonatologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "okulistyka",
+        "nazwa": "Okulistyka",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "onkologia",
+        "nazwa": "Onkologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "psychologia",
+        "nazwa": "Psychologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "psychotraumatologia",
+        "nazwa": "Psychotraumatologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "radiologia",
+        "nazwa": "Radiologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
+    },
+    {
+        "id": "wenerologia",
+        "nazwa": "Wenerologia",
+        "opis": "",
+        "ikona": null,
+        "naStronieGlownej": false
     }
 ]
