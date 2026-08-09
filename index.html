@@ -247,7 +247,10 @@
       <div style="max-width:var(--container-max); margin:0 auto; padding:72px var(--gutter) 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:48px; align-items:end;">
         <div class="hero-copy" style="max-width:620px; padding-bottom:88px;">
 
-          <h1 id="hero-h" style="margin:0 0 20px; font-family:var(--font-display); font-size:var(--text-display-2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne Kasprzaka</h1>
+          <div style="display: flex; align-items: center; gap: 24px; margin: 0 0 20px;">
+            <img src="uploads/assets-1786096163757-0x49.webp" alt="Logo CMK" style="height: clamp(80px, 9vw, 120px); width: auto; object-fit: contain; flex-shrink: 0;">
+            <h1 id="hero-h" style="margin:0; font-family:var(--font-display); font-size:45px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne Kasprzaka</h1>
+          </div>
           <p style="margin:0 0 32px; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78); max-width:520px; text-wrap:pretty;">Konsultacje specjalistyczne i diagnostyka USG w jednym miejscu. Termin zwykle w ciągu kilku dni, bez skierowania.</p>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarz }}" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę online</x-import>
@@ -289,7 +292,7 @@
           <span class="u-sr-only">Ocena 5,0 na 5 w serwisie ZnanyLekarz — otwiera się w nowej karcie</span>
         </a>
         <a class="hero-proof__item" href="Specjaliści.dc.html">
-          <span class="hero-proof__value"><span class="u-num">20+</span></span>
+          <span class="hero-proof__value"><span class="u-num">30+</span></span>
           <span class="hero-proof__label">Lekarzy specjalistów</span>
         </a>
       </div>
