@@ -821,10 +821,10 @@ class Component extends DCLogic {
         kotwica.setAttribute('data-placement', 'inline');
         kotwica.setAttribute('data-zlw-type', 'facility-calendar-listing-with-saas-only');
       }
-      const stary = document.getElementById('zl-widget-script');
+      const stary = document.getElementById('zl-facility-widget');
       if (stary) stary.remove();
       const s = document.createElement('script');
-      s.id = 'zl-widget-script';
+      s.id = 'zl-facility-widget';
       s.src = widget ? 'https://platform.docplanner.com/js/widget.js' : 'https://www.znanylekarz.pl/platform/js/widget.js';
       document.body.appendChild(s);
     }, 0);
