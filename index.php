@@ -6,12 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.TRESC = <?= json_encode($TRESC, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
 <script src="./support.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
+  :root{--font-logo:"Oswald","Segoe UI",system-ui,sans-serif;}
   #intro-reveal{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:linear-gradient(120deg,#0e1a3c 0%,#16265c 48%,#1d4ed8 100%);animation:introOverlayOut var(--intro-duration,3s) ease forwards;}
   #intro-reveal .intro-reveal__mark{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;}
   #intro-reveal .intro-reveal__ring{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.35);opacity:0;transform:scale(.3);animation:introRing .9s cubic-bezier(.16,1,.3,1) .05s forwards;}
   #intro-reveal .intro-reveal__logo{position:relative;width:96px;height:96px;opacity:0;transform:scale(.72);filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));animation:introLogoIn .7s cubic-bezier(.16,1,.3,1) .15s forwards;}
-  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-display,inherit);font-weight:var(--weight-extrabold,800);font-size:18px;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
+  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-logo,inherit);font-weight:300;text-transform:uppercase;font-size:18px;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
   @keyframes introLogoIn{0%{opacity:0;transform:scale(.72);}65%{opacity:1;transform:scale(1.08);}100%{opacity:1;transform:scale(1);}}
   @keyframes introRing{0%{opacity:.6;transform:scale(.3);}70%{opacity:0;transform:scale(1.7);}100%{opacity:0;transform:scale(1.7);}}
   @keyframes introTextIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
@@ -398,7 +402,7 @@
       <div style="max-width:var(--container-max); margin:0 auto; padding:14px var(--gutter); display:flex; align-items:center; gap:24px;">
         <a href="#" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--navy-900);">
           <img src="uploads/assets-1786096163757-0x49.webp" alt="Centrum Medyczne Kasprzaka" width="42" height="42" style="display:block; width:42px; height:42px; flex-shrink:0;">
-          <span class="brand-text" style="font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:15px; letter-spacing:var(--tracking-heading); line-height:1.2; max-width:170px;">Centrum Medyczne Kasprzaka</span>
+          <span class="brand-text" style="font-family:var(--font-logo); font-weight:400; text-transform:uppercase; font-size:15px; letter-spacing:var(--tracking-heading); line-height:1.2; max-width:170px;">Centrum Medyczne <span style="font-weight:200;">Kasprzaka</span></span>
         </a>
         <nav class="nav-links" aria-label="Główna" style="margin-left:auto; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
           <a href="#specjalizacje" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjalizacje</a>
@@ -449,7 +453,7 @@
 
           <div class="hero-header-wrap" style="display: flex; align-items: center; gap: 24px; margin: 0 0 20px;">
             <img src="uploads/assets-1786096163757-0x49.webp" alt="Logo CMK" style="height: clamp(80px, 9vw, 120px); width: auto; object-fit: contain; flex-shrink: 0;">
-            <h1 class="hero-h1" id="hero-h" style="margin:0; font-family:var(--font-display); font-size:45px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne Kasprzaka</h1>
+            <h1 class="hero-h1" id="hero-h" style="margin:0; font-family:var(--font-logo); font-size:45px; font-weight:400; text-transform:uppercase; letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne <span style="font-weight:200;">Kasprzaka</span></h1>
           </div>
           <p style="margin:0 0 32px; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78); max-width:520px; text-wrap:pretty;">Konsultacje specjalistyczne i diagnostyka USG w jednym miejscu. Termin zwykle w ciągu kilku dni, bez skierowania.</p>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
