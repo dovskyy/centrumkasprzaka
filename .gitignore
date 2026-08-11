@@ -43,5 +43,7 @@ temp/
 # Panel (sekrety, stan lokalny — nie w repo)
 panel/config.php
 panel/_attempts.json
-data/*.draft.json
+
+# Dane (baza treści — różna lokalnie i na serwerze, nie trackujemy)
+data/*.json
 data/_kopie/*.json
