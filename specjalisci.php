@@ -164,10 +164,18 @@
 
         <h2 id="lista-h" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Lista specjalistów</h2>
 
-        <div role="group" aria-label="Filtruj według specjalizacji" style="display:flex; flex-wrap:wrap; gap:10px; padding-bottom:28px; border-bottom:1px solid var(--border-subtle);">
-          <sc-for list="{{ filtry }}" as="f" hint-placeholder-count="6">
-            <button type="button" onClick="{{ f.onClick }}" aria-pressed="{{ f.aktywny }}" style="{{ f.styl }}">{{ f.etykieta }}</button>
-          </sc-for>
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding-bottom:28px; border-bottom:1px solid var(--border-subtle);">
+          <label for="filtr-specjalizacja" style="font-family:var(--font-display); font-size:14.5px; font-weight:var(--weight-semibold); color:var(--navy-800); white-space:nowrap;">Specjalizacja</label>
+          <div style="position:relative; width:100%; max-width:260px;">
+            <select id="filtr-specjalizacja" value="{{ filtr }}" onChange="{{ ustawFiltr }}" aria-label="Filtruj według specjalizacji" style="width:100%; height:46px; padding:0 40px 0 18px; border-radius:var(--radius-pill); border:1px solid var(--border-default); background:var(--white); font-family:var(--font-display); font-size:14.5px; font-weight:var(--weight-semibold); color:var(--navy-900); appearance:none; -webkit-appearance:none; cursor:pointer; outline:none; transition:var(--transition-control);" style-focus="border-color:var(--border-focus); box-shadow:0 0 0 3px var(--blue-100);" style-hover="border-color:var(--navy-300);">
+              <sc-for list="{{ opcje }}" as="o" hint-placeholder-count="8">
+                <option value="{{ o.id }}">{{ o.nazwa }}</option>
+              </sc-for>
+            </select>
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--navy-700)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); pointer-events:none;">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
         </div>
 
         <p aria-live="polite" style="margin:22px 0 26px; font-size:15px; color:var(--text-muted);">{{ podpisWyniku }}</p>
@@ -198,8 +206,6 @@
             </article>
           </sc-for>
         </div>
-
-
 
       </div>
     </section>
@@ -320,6 +326,8 @@ class Component extends DCLogic {
   toggleMenu = () => this.setState({ menuOtwarte: !this.state.menuOtwarte });
   closeMenu = () => this.setState({ menuOtwarte: false });
 
+  ustawFiltr = (e) => this.setState({ filtr: e.target.value });
+
   // Ogolny kalendarz placowki - bez zadnej logiki per-lekarz, dokladnie jak przed
   // wprowadzeniem widgetow dla poszczegolnych lekarzy.
   otworzKalendarz = (e) => {
@@ -393,27 +401,17 @@ class Component extends DCLogic {
         otworzKalendarzDlaNiego: l.widgetHtml ? (e) => this.otworzWidgetLekarza(e, l) : this.otworzKalendarz
       }));
 
-    const stylBazowy = 'font-family:var(--font-display); font-size:14.5px; font-weight:var(--weight-semibold); padding:10px 18px; border-radius:var(--radius-pill); cursor:pointer; transition:var(--transition-control);';
-
-    // Filtry pokazują tylko specjalizacje, które faktycznie wykonuje co najmniej jeden lekarz —
-    // pusta kategoria (np. dopóki nikt nie ma przypisanej Ortopedii) nie zaśmieca paska filtrów.
+    // Lista specjalizacji jest długa (20+ pozycji) — zamiast ściany przycisków-filtrów
+    // jeden dropdown, alfabetycznie, żeby łatwo znaleźć pozycję po nazwie.
     const uzywaneId = new Set();
     LEKARZE.forEach(l => (l.specjalizacje || []).forEach(id => uzywaneId.add(id)));
-    const uzywane = SPECJALIZACJE.filter(s => uzywaneId.has(s.id));
+    const uzywane = SPECJALIZACJE
+      .filter(s => uzywaneId.has(s.id))
+      .slice()
+      .sort((a, b) => a.nazwa.localeCompare(b.nazwa, 'pl'));
 
     const aktywnaNazwa = aktywny === 'Wszyscy' ? 'Wszyscy' : (uzywane.find(s => s.id === aktywny) || {}).nazwa || aktywny;
-
-    const filtry = [{ id: 'Wszyscy', nazwa: 'Wszyscy' }].concat(uzywane).map(s => {
-      const jest = s.id === aktywny;
-      return {
-        etykieta: s.nazwa,
-        aktywny: jest,
-        styl: stylBazowy + (jest
-          ? ' background:var(--navy-900); color:var(--white); border:1px solid var(--navy-900);'
-          : ' background:var(--white); color:var(--navy-800); border:1px solid var(--grey-300);'),
-        onClick: () => this.setState({ filtr: s.id })
-      };
-    });
+    const opcje = [{ id: 'Wszyscy', nazwa: 'Wszyscy' }].concat(uzywane);
 
     const n = lekarzeWidoczni.length;
     const podpisWyniku = aktywny === 'Wszyscy'
@@ -421,7 +419,7 @@ class Component extends DCLogic {
       : n + (n === 1 ? ' specjalista' : ' specjalistów') + ' — ' + aktywnaNazwa;
 
     return {
-      lekarzeWidoczni, filtry, podpisWyniku,
+      lekarzeWidoczni, opcje, filtr: aktywny, ustawFiltr: this.ustawFiltr, podpisWyniku,
       menuOtwarte: this.state.menuOtwarte, toggleMenu: this.toggleMenu, closeMenu: this.closeMenu,
       kalendarzOtwarty: this.state.kalendarzOtwarty,
       otworzKalendarz: this.otworzKalendarz,
