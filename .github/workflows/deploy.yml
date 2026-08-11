@@ -27,5 +27,5 @@ jobs:
           TARGET: ${{ secrets.REMOTE_PATH }}
           SOURCE: "./"
           ARGS: "-avzr --delete"
-          EXCLUDE: "/.git*, /.github/, /.idea/, /.thumbnail, /cmk2.iml, /data/, /uploads/, /panel.php"
+          EXCLUDE: "/.git*, /.github/, /.idea/, /.thumbnail, /cmk2.iml, /data/, /uploads/, /panel.php, /panel/config.php, /panel/_attempts.json"
           SCRIPT_BEFORE: "mkdir -p ${{ secrets.REMOTE_PATH }}"
