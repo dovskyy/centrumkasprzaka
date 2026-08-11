@@ -149,7 +149,7 @@
     position:relative; 
     display:flex; 
     flex-direction:column; 
-    justify-content:space-between; 
+    justify-content:flex-start; 
     gap:20px; 
     padding:24px 24px 22px; 
     border-radius:var(--radius-card); 
