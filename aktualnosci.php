@@ -101,7 +101,7 @@
 <div lang="pl" style="min-height:100vh; background:var(--white);">
 
   <header style="position:sticky; top:0; z-index:50;">
-    <div style="background:rgba(255,255,255,.68); backdrop-filter:blur(22px) saturate(180%); -webkit-backdrop-filter:blur(22px) saturate(180%); border-bottom:1px solid rgba(14,26,60,.08);">
+    <div style="background:rgba(255,255,255,.98); backdrop-filter:blur(22px) saturate(180%); -webkit-backdrop-filter:blur(22px) saturate(180%); border-bottom:1px solid rgba(14,26,60,.08);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:14px var(--gutter); display:flex; align-items:center; gap:24px;">
         <a href="index.php" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--navy-900);">
           <img src="uploads/assets-1786096163757-0x49.webp" alt="Centrum Medyczne Kasprzaka" width="42" height="42" style="display:block; width:42px; height:42px; flex-shrink:0;">
