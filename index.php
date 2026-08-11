@@ -144,7 +144,7 @@
   .spec-grid::-webkit-scrollbar { display:none; }
 
   .spec-card { 
-    flex:0 0 310px; 
+    flex:0 0 222px; 
     scroll-snap-align:start; 
     position:relative; 
     display:flex; 
@@ -186,10 +186,10 @@
     position:absolute;
     right:-18px;
     bottom:-22px;
-    width:140px;
-    height:140px;
+    width:105px;
+    height:105px;
     color:var(--blue-600);
-    opacity:0.14;
+    opacity:0.08;
     filter:none;
     pointer-events:none;
     transform:rotate(-6deg);
@@ -222,7 +222,7 @@
     width:34px; 
     height:34px; 
     border-radius:50%; 
-    display:grid; 
+    display:none; 
     place-items:center; 
     background:var(--white); 
     color:var(--blue-600); 
