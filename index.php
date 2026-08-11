@@ -276,9 +276,26 @@
 
   .hero-phone-btn { flex-shrink:0; }
   @media (max-width:760px) {
-    .hero-copy { padding-bottom:48px !important; }
+    .hero-copy { padding-bottom:48px !important; margin-top:-25px !important; }
     .hero-phone-btn { width:56px !important; padding:0 !important; }
     .hero-phone-label { display:none; }
+  }
+
+  @media (max-width: 900px) {
+    .hero-bg-img {
+      width: 100% !important;
+      transform: none !important;
+      -webkit-mask-image: none !important;
+      mask-image: none !important;
+      opacity: 0.3 !important;
+      object-position: center center !important;
+    }
+    .hero-bg-grad-x {
+      background: linear-gradient(to bottom, #0e1a3c 0%, rgba(14,26,60,0.85) 35%, rgba(14,26,60,0.2) 65%, transparent 100%) !important;
+    }
+    .hero-header-wrap {
+      gap: 16px !important;
+    }
   }
 
   /* Umów wizytę — na hover ikonka kalendarza "przeobraża się" w logo ZnanyLekarz,
@@ -416,13 +433,23 @@
 
   <main id="tresc">
 
-    <section aria-labelledby="hero-h" style="background:var(--gradient-hero); color:var(--white);">
-      <div style="max-width:var(--container-max); margin:0 auto; padding:72px var(--gutter) 0; display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:48px; align-items:end;">
-        <div class="hero-copy" style="max-width:620px; padding-bottom:88px;">
+    <section aria-labelledby="hero-h" style="position: relative; overflow: hidden; background: #0e1a3c; color: var(--white);">
+      
+      <!-- Tło ze zdjęciem po prawej stronie (zmniejszona skala) -->
+      <div aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; background: #0e1a3c;">
+        <img class="hero-bg-img" src="uploads/cmk_exterior.webp" alt="" style="position: absolute; right: 0; top: 0; bottom: 0; width: 75%; max-width: 1150px; height: 100%; object-fit: cover; object-position: right center; filter: brightness(0.9) contrast(1.15) saturate(0.9); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%); mask-image: linear-gradient(to right, transparent 0%, black 30%); transform: translateY(-20px) rotate(-3.5deg) scale(1.15); transform-origin: right center;">
+        <!-- Gradient z lewej łagodnie tonujący zdjęcie -->
+        <div class="hero-bg-grad-x" style="position: absolute; inset: 0; background: linear-gradient(to right, #0e1a3c 0%, rgba(14,26,60,0.95) 25%, rgba(14,26,60,0.3) 60%, transparent 100%); pointer-events: none;"></div>
+        <!-- Gradient od dołu do przyciemnienia sekcji -->
+        <div class="hero-bg-grad-y" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(14,26,60,0.9) 0%, rgba(14,26,60,0.3) 30%, transparent 100%); pointer-events: none;"></div>
+      </div>
 
-          <div style="display: flex; align-items: center; gap: 24px; margin: 0 0 20px;">
+      <div style="position: relative; z-index: 1; max-width: var(--container-max); margin: 0 auto; padding: 72px var(--gutter) 0; display: flex; align-items: center; min-height: 540px;">
+        <div class="hero-copy" style="max-width: 620px; padding-bottom: 88px; flex-shrink: 1;">
+
+          <div class="hero-header-wrap" style="display: flex; align-items: center; gap: 24px; margin: 0 0 20px;">
             <img src="uploads/assets-1786096163757-0x49.webp" alt="Logo CMK" style="height: clamp(80px, 9vw, 120px); width: auto; object-fit: contain; flex-shrink: 0;">
-            <h1 id="hero-h" style="margin:0; font-family:var(--font-display); font-size:45px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne Kasprzaka</h1>
+            <h1 class="hero-h1" id="hero-h" style="margin:0; font-family:var(--font-display); font-size:45px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne Kasprzaka</h1>
           </div>
           <p style="margin:0 0 32px; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78); max-width:520px; text-wrap:pretty;">Konsultacje specjalistyczne i diagnostyka USG w jednym miejscu. Termin zwykle w ciągu kilku dni, bez skierowania.</p>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
@@ -431,13 +458,14 @@
           </div>
 
         </div>
-        <div style="position: relative; align-self: end; display: flex; justify-content: center">
 
-          <span aria-hidden="true" style="position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:min(360px, 84%); aspect-ratio:1/1.06; border-radius:999px 999px 28px 28px; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.20);"></span>
-
-          <img src="uploads/doctor-2-transparent.webp" alt="Lekarka Centrum Medycznego Kasprzaka w granatowym uniformie" style="position: relative; display: block; max-width: 440px; height: auto; filter: drop-shadow(0 30px 60px rgba(14,26,60,.45)); width: 100%; flex-grow: 15; object-fit: fill">
-
+        <!-- Backup postaci lekarza (zakomentowany, by nie wpływał na układ flex):
+        <div style="position: relative; align-self: flex-end; display: flex; justify-content: center; margin-left: auto;">
+          <div aria-hidden="true" style="position: absolute; left: 50%; bottom: -10%; width: 160%; aspect-ratio: 1; transform: translateX(calc(-50% - 20px)); background: radial-gradient(circle, rgba(14,26,60, 0.85) 0%, rgba(14,26,60, 0.3) 50%, transparent 75%); pointer-events: none; z-index: 0; mix-blend-mode: multiply;"></div>
+          <div aria-hidden="true" style="position: absolute; left: 50%; bottom: 10%; width: 100%; aspect-ratio: 1; transform: translateX(calc(-50% - 20px)); background: radial-gradient(circle, rgba(255,255,255, 0.1) 0%, transparent 60%); pointer-events: none; z-index: 0; mix-blend-mode: overlay;"></div>
+          <img src="uploads/doctor-5-transparent.webp" alt="Lekarz Centrum Medycznego Kasprzaka" style="position: relative; z-index: 1; display: block; max-width: 374px; height: auto; filter: drop-shadow(0 0 20px rgba(14,26,60, 0.8)) drop-shadow(0 25px 45px rgba(0,0,0, 0.5)); width: 100%; flex-grow: 15; object-fit: fill; transform: translateX(-20px);">
         </div>
+        -->
       </div>
     </section>
 
