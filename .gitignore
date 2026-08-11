@@ -4,6 +4,7 @@
 *.iws
 *.ipr
 .vscode/
+.claude/
 *.swp
 *.swo
 *~
