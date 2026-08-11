@@ -426,21 +426,22 @@
   }
 
   .ak-featured { position:relative; }
-  .ak-featured-slide { position:absolute; inset:0; display:block; opacity:0; pointer-events:none; text-decoration:none; transition:opacity .8s ease; }
+  .ak-featured-slide { position:absolute; inset:0; display:block; opacity:0; pointer-events:none; text-decoration:none !important; transition:opacity 2.2s ease-in-out; }
+  .ak-featured-slide:hover, .ak-featured-slide * { text-decoration:none !important; cursor:pointer !important; }
   .ak-featured-slide.ak-aktywny { position:relative; opacity:1; pointer-events:auto; }
-  .ak-featured-inner { display:flex; align-items:stretch; }
-  .ak-featured-img { width:44%; flex-shrink:0; display:flex; align-items:center; justify-content:center; object-fit:cover; min-height:340px; }
-  .ak-featured-content { flex:1; min-width:0; padding:44px 48px; display:flex; flex-direction:column; justify-content:center; }
+  .ak-featured-inner { display:flex; align-items:stretch; height: 420px; }
+  .ak-featured-img { width:45%; flex-shrink:0; display:flex; align-items:center; justify-content:center; object-fit:cover; min-height:0; height:100%; border-radius: var(--radius-card) 0 0 var(--radius-card); -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%); mask-image: linear-gradient(to right, black 80%, transparent 100%); }
+  .ak-featured-content { flex:1; min-width:0; padding:44px 48px; display:flex; flex-direction:column; justify-content:center; margin-left:-5%; z-index:2; }
   .ak-featured-tytul { margin:0 0 16px; font-family:var(--font-display); font-size:26px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:1.25; color:var(--navy-900); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .ak-featured-zajawka { margin:0 0 22px; font-size:15.5px; line-height:1.65; color:var(--text-muted); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .ak-featured-cta { display:inline-flex; align-items:center; gap:7px; font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14.5px; color:var(--blue-600); }
   .ak-featured-slide:hover .ak-featured-cta { color:var(--blue-700); }
-  .ak-kropka { width:9px; height:9px; border-radius:50%; border:none; padding:0; background:var(--border-default); cursor:pointer; transition:background .25s ease, transform .25s ease; }
+  .ak-kropka { width:9px; height:9px; border-radius:50%; border:none; padding:0; background:var(--border-default); cursor:pointer; transition:background .5s ease, transform .5s ease; }
   .ak-kropka.ak-aktywny { background:var(--blue-600); transform:scale(1.35); }
   @media (max-width:760px) {
-    .ak-featured-inner { flex-direction:column; }
-    .ak-featured-img { width:100%; min-height:220px; }
-    .ak-featured-content { padding:28px 26px; }
+    .ak-featured-inner { flex-direction:column; height: auto; }
+    .ak-featured-img { width:100%; min-height:0; height:240px; border-radius: var(--radius-card) var(--radius-card) 0 0; -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%); mask-image: linear-gradient(to bottom, black 80%, transparent 100%); }
+    .ak-featured-content { padding:28px 26px; margin-left:0; margin-top:-5%; }
     .ak-featured-tytul { font-size:21px; }
   }
   @media (prefers-reduced-motion: reduce) { .ak-featured-slide { transition:none; } }
@@ -462,7 +463,6 @@
           <a href="#zespol" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjaliści</a>
           <a href="#opinie" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Opinie</a>
           <a href="cennik.php" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Cennik</a>
-          <a href="aktualnosci.php" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Aktualności</a>
           <a href="#kontakt" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Kontakt</a>
         </nav>
         <div class="nav-cta" style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; white-space:nowrap;">
@@ -482,7 +482,6 @@
           <a href="#zespol" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjaliści</a>
           <a href="#opinie" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Opinie</a>
           <a href="cennik.php" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Cennik</a>
-          <a href="aktualnosci.php" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Aktualności</a>
           <a href="#kontakt" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Kontakt</a>
           <div style="margin-top:10px;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarzZMenu }}" icon="calendar-check" style="width:100%; justify-content:center;" hint-size="100%,46px">Umów wizytę</x-import>
@@ -843,12 +842,21 @@
     <sc-if value="{{ saAktualnosci }}">
       <section id="aktualnosci" aria-labelledby="aktualnosci-h" style="background:var(--white);">
         <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
-          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Co u nas słychać" title="Aktualności i promocje" hint-size="100%,90px" style="margin-bottom:40px;"></x-import>
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; gap:20px; flex-wrap:wrap;">
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Co u nas słychać" title="Aktualności" hint-size="100%,90px" style="margin-bottom:0; flex:1;"></x-import>
+            <sc-if value="{{ pokazKropki }}">
+              <div style="display:flex; gap:10px; margin-bottom:12px;">
+                <sc-for list="{{ aktualnosciKropki }}" as="k" hint-placeholder-count="3">
+                  <button type="button" aria-label="{{ k.etykieta }}" onClick="{{ k.wybierz }}" class="ak-kropka {{ k.aktywnaKlasa }}"></button>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
 
           <div class="ak-featured" onMouseEnter="{{ zatrzymajKaruzele }}" onMouseLeave="{{ wznowKaruzele }}">
             <sc-for list="{{ aktualnosciTeaser }}" as="a" hint-placeholder-count="1">
               <a href="{{ a.href }}" class="ak-featured-slide {{ a.aktywnaKlasa }}">
-                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" style="height:100%; padding:0; overflow:hidden;">
+                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" padding="0" style="height:100%; overflow:hidden; cursor:pointer !important;">
                   <div class="ak-featured-inner">
                     <sc-if value="{{ a.miniatura }}">
                       <img src="{{ a.miniatura }}" alt="" loading="lazy" class="ak-featured-img">
@@ -874,14 +882,6 @@
               </a>
             </sc-for>
           </div>
-
-          <sc-if value="{{ pokazKropki }}">
-            <div style="display:flex; justify-content:center; gap:10px; margin-top:24px;">
-              <sc-for list="{{ aktualnosciKropki }}" as="k" hint-placeholder-count="3">
-                <button type="button" aria-label="{{ k.etykieta }}" onClick="{{ k.wybierz }}" class="ak-kropka {{ k.aktywnaKlasa }}"></button>
-              </sc-for>
-            </div>
-          </sc-if>
 
           <div style="display:flex; justify-content:center; margin-top:36px;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="aktualnosci.php" variant="secondary" icon-after="chevron-right" hint-size="auto,46px">Zobacz wszystkie</x-import>
@@ -1106,7 +1106,7 @@ class Component extends DCLogic {
     if (liczba <= 1) return;
     this.karuzelaTimer = setInterval(() => {
       this.setState((s) => ({ aktualnosciAktywny: (s.aktualnosciAktywny + 1) % liczba }));
-    }, 6000);
+    }, 10000);
   };
   aktualizuj = () => {
     const waski = window.innerWidth < 1120;
