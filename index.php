@@ -823,7 +823,7 @@
     </section>
 
     <sc-if value="{{ saAktualnosci }}">
-      <section id="aktualnosci" aria-labelledby="aktualnosci-h" style="background:var(--gradient-wash);">
+      <section id="aktualnosci" aria-labelledby="aktualnosci-h" style="background:var(--white);">
         <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
           <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Co u nas słychać" title="Aktualności i promocje" hint-size="100%,90px" style="margin-bottom:40px;"></x-import>
           <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">
