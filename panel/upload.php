@@ -36,6 +36,9 @@ function cmk_upload_zdjecie(array $plik, $maxSzerokosc = CMK_UPLOAD_MAX_SZEROKOS
     if ($plik['size'] > CMK_UPLOAD_MAX_BAJTOW) {
         return ['blad' => 'Plik jest zbyt duży (limit ' . (CMK_UPLOAD_MAX_BAJTOW / 1024 / 1024) . ' MB).'];
     }
+    if (!extension_loaded('gd')) {
+        return ['blad' => 'Serwer nie ma zainstalowanego rozszerzenia GD do obsługi zdjęć — skontaktuj się z administratorem.'];
+    }
     // getimagesize czyta naglowek pliku, nie ufa rozszerzeniu - odrzuca np. .php zmienione na .jpg.
     $info = @getimagesize($plik['tmp_name']);
     if ($info === false || !in_array($info[2], CMK_UPLOAD_DOZWOLONE_TYPY, true)) {
