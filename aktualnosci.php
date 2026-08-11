@@ -1,9 +1,45 @@
-<?php require_once __DIR__ . '/inc/tresc.php'; $TRESC = cmk_tresc(); ?>
+<?php
+require_once __DIR__ . '/inc/tresc.php';
+$TRESC = cmk_tresc();
+
+// Strona renderuje sie po stronie klienta, wiec Google/scraper Facebooka widza tylko to,
+// co jest w tym prawdziwym <head> - <helmet> w <x-dc> ponizej przetwarza dopiero przegladarka.
+$slug = isset($_GET['post']) ? (string) $_GET['post'] : '';
+$wpisPhp = null;
+if ($slug !== '') {
+    foreach ($TRESC['aktualnosci'] as $a) {
+        if ($a['id'] === $slug) { $wpisPhp = $a; break; }
+    }
+    if ($wpisPhp === null) http_response_code(404); // martwy link po wygasłej/usunietej promocji
+}
+
+if ($wpisPhp !== null) {
+    $seoTytul = $wpisPhp['tytul'] . ' — Centrum Medyczne Kasprzaka';
+    $seoOpis = $wpisPhp['zajawka'] !== '' ? $wpisPhp['zajawka'] : 'Aktualności i ogłoszenia Centrum Medycznego Kasprzaka przy ul. Kasprzaka 31 w Warszawie.';
+    $seoObrazek = !empty($wpisPhp['zdjecia'][0]) ? CMK_BAZOWY_URL . '/' . $wpisPhp['zdjecia'][0] : CMK_BAZOWY_URL . '/uploads/assets-1786096163757-0x49.webp';
+    $seoTyp = 'article';
+    $seoUrl = CMK_BAZOWY_URL . '/aktualnosci.php?post=' . rawurlencode($wpisPhp['id']);
+} else {
+    $seoTytul = 'Aktualności — Centrum Medyczne Kasprzaka, Warszawa Wola';
+    $seoOpis = 'Aktualności i ogłoszenia Centrum Medycznego Kasprzaka przy ul. Kasprzaka 31 w Warszawie.';
+    $seoObrazek = CMK_BAZOWY_URL . '/uploads/assets-1786096163757-0x49.webp';
+    $seoTyp = 'website';
+    $seoUrl = CMK_BAZOWY_URL . '/aktualnosci.php';
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?= htmlspecialchars($seoTytul) ?></title>
+<meta name="description" content="<?= htmlspecialchars($seoOpis) ?>">
+<link rel="canonical" href="<?= htmlspecialchars($seoUrl) ?>">
+<meta property="og:type" content="<?= htmlspecialchars($seoTyp) ?>">
+<meta property="og:title" content="<?= htmlspecialchars($seoTytul) ?>">
+<meta property="og:description" content="<?= htmlspecialchars($seoOpis) ?>">
+<meta property="og:image" content="<?= htmlspecialchars($seoObrazek) ?>">
+<meta property="og:url" content="<?= htmlspecialchars($seoUrl) ?>">
 <script>window.TRESC = <?= json_encode($TRESC, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?>;</script>
 <script src="./support.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -99,6 +135,22 @@
   @media (prefers-reduced-motion: reduce) {
     .kalendarz-overlay, .kalendarz-card { animation:none; }
   }
+
+  .wpis-galeria { display:grid; grid-template-columns:1fr; gap:12px; margin-bottom:28px; }
+  .wpis-galeria img { display:block; width:100%; object-fit:cover; border-radius:var(--radius-card); }
+  .wpis-galeria:not(.wpis-galeria-2):not(.wpis-galeria-3plus) img { max-height:460px; }
+  .wpis-galeria-2 { grid-template-columns:1fr 1fr; }
+  .wpis-galeria-2 img { height:280px; }
+  .wpis-galeria-3plus { grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); }
+  .wpis-galeria-3plus img { height:220px; }
+  .wpis-galeria-3plus img:first-child { grid-column:1 / -1; height:340px; }
+  @media (max-width:640px) {
+    .wpis-galeria-2, .wpis-galeria-3plus { grid-template-columns:1fr; }
+    .wpis-galeria-3plus img:first-child { height:220px; }
+  }
+
+  .ak-filtry { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
+  .ak-filtr { padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:14px; font-weight:var(--weight-medium); cursor:pointer; transition:var(--transition-control); }
 </style>
 </helmet>
 
@@ -172,17 +224,49 @@
       <section aria-labelledby="wpis-h" style="background:var(--white);">
         <div style="max-width:720px; margin:0 auto; padding:56px var(--gutter) 96px;">
           <h2 id="wpis-h" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">{{ wpis.tytul }}</h2>
-          <sc-if value="{{ wpis.zdjecie }}">
-            <img src="{{ wpis.zdjecie }}" alt="" style="display:block; width:100%; max-height:420px; object-fit:cover; border-radius:var(--radius-card); margin-bottom:28px;">
-          </sc-if>
-          <p style="margin:0 0 28px; font-size:14px; color:var(--text-muted);">{{ wpisData }}</p>
-          <div style="display:flex; flex-direction:column; gap:16px;">
-            <sc-for list="{{ wpisAkapity }}" as="akapit" hint-placeholder-count="2">
-              <p style="margin:0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--navy-800);">{{ akapit }}</p>
-            </sc-for>
+
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Badge" tone="{{ wpis.typTone }}">{{ wpis.typEtykieta }}</x-import>
+            <sc-if value="{{ wpis.dataOpis }}">
+              <span style="font-size:14px; color:var(--text-muted);">{{ wpis.dataOpis }}</span>
+            </sc-if>
+            <sc-if value="{{ wpis.dataDoOpis }}">
+              <span style="font-size:14px; color:var(--text-muted);">· Ważne do {{ wpis.dataDoOpis }}</span>
+            </sc-if>
           </div>
-          <div style="margin-top:40px;">
+
+          <sc-if value="{{ wpisMaZdjecia }}">
+            <div class="wpis-galeria {{ wpisGaleriaKlasa }}">
+              <sc-for list="{{ wpis.zdjecia }}" as="src" hint-placeholder-count="1">
+                <img src="{{ src }}" alt="" loading="lazy">
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ wpisMaTresc }}">
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <sc-for list="{{ wpis.akapity }}" as="akapit" hint-placeholder-count="2">
+                <p style="margin:0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--navy-800);">{{ akapit }}</p>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ wpis.ctaUrl }}">
+            <div style="margin-top:32px;">
+              <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="{{ wpis.ctaUrl }}" icon-after="chevron-right" hint-size="auto,46px">{{ wpisCtaEtykieta }}</x-import>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:40px; padding-top:32px; border-top:1px solid var(--border-subtle); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="aktualnosci.php" variant="secondary" icon="chevron-left" hint-size="auto,46px">Wszystkie aktualności</x-import>
+            <div style="display:flex; gap:10px;">
+              <sc-if value="{{ wpisPoprzedni }}">
+                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="{{ wpisPoprzedniHref }}" variant="ghost" icon="chevron-left" hint-size="auto,46px">Poprzedni</x-import>
+              </sc-if>
+              <sc-if value="{{ wpisNastepny }}">
+                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="{{ wpisNastepnyHref }}" variant="ghost" icon-after="chevron-right" hint-size="auto,46px">Następny</x-import>
+              </sc-if>
+            </div>
           </div>
         </div>
       </section>
@@ -192,20 +276,41 @@
       <section aria-labelledby="lista-h" style="background:var(--white);">
         <div style="max-width:800px; margin:0 auto; padding:56px var(--gutter) 96px;">
           <h2 id="lista-h" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Lista aktualności</h2>
+
+          <sc-if value="{{ pokazFiltry }}">
+            <div class="ak-filtry">
+              <sc-for list="{{ filtry }}" as="f" hint-placeholder-count="3">
+                <button type="button" class="ak-filtr" onClick="{{ f.wybierz }}" style="{{ f.styl }}">{{ f.etykieta }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+
           <sc-if value="{{ brakAktualnosci }}">
             <p style="margin:0; font-size:var(--text-body); color:var(--text-muted);">Na razie nie mamy żadnych ogłoszeń — zaglądaj tu od czasu do czasu.</p>
           </sc-if>
-          <sc-if value="{{ !brakAktualnosci }}">
+          <sc-if value="{{ brakWynikowFiltra }}">
+            <p style="margin:0; font-size:var(--text-body); color:var(--text-muted);">Brak wpisów w tej kategorii.</p>
+          </sc-if>
+
+          <sc-if value="{{ pokazListe }}">
             <div style="display:flex; flex-direction:column; gap:18px;">
-              <sc-for list="{{ aktualnosci }}" as="a" hint-placeholder-count="3">
+              <sc-for list="{{ aktualnosciWidoczne }}" as="a" hint-placeholder-count="3">
                 <a href="{{ a.href }}" style="text-decoration:none; display:block;">
                   <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" interactive="{{ true }}">
                     <div style="display:flex; gap:18px; align-items:flex-start;">
-                      <sc-if value="{{ a.zdjecie }}">
-                        <img src="{{ a.zdjecie }}" alt="" style="display:block; width:96px; height:96px; object-fit:cover; border-radius:var(--radius-md); flex-shrink:0;">
+                      <sc-if value="{{ a.miniatura }}">
+                        <div style="position:relative; flex-shrink:0;">
+                          <img src="{{ a.miniatura }}" alt="" loading="lazy" style="display:block; width:96px; height:96px; object-fit:cover; border-radius:var(--radius-md);">
+                          <sc-if value="{{ a.wiecejZdjec }}">
+                            <span style="position:absolute; right:4px; bottom:4px; padding:2px 6px; border-radius:var(--radius-pill); background:rgba(14,26,60,.72); color:var(--white); font-size:11px; font-weight:var(--weight-semibold);">{{ a.wiecejZdjec }}</span>
+                          </sc-if>
+                        </div>
                       </sc-if>
                       <div style="min-width:0;">
-                        <p style="margin:0 0 8px; font-size:13px; color:var(--text-muted);">{{ a.dataOpis }}</p>
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+                          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Badge" tone="{{ a.typTone }}">{{ a.typEtykieta }}</x-import>
+                          <span style="font-size:13px; color:var(--text-muted);">{{ a.dataOpis }}</span>
+                        </div>
                         <h3 style="margin:0 0 8px; font-family:var(--font-display); font-size:19px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ a.tytul }}</h3>
                         <p style="margin:0; font-size:14.5px; line-height:1.6; color:var(--text-muted);">{{ a.zajawka }}</p>
                       </div>
@@ -276,20 +381,27 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-// Treść wstrzyknięta przez PHP z data/aktualnosci.json (patrz inc/tresc.php).
+// Treść wstrzyknięta przez PHP z data/aktualnosci.json, juz znormalizowana i posortowana
+// (patrz inc/aktualnosci.php: cmk_normalizuj_aktualnosci) - zero duplikowania tej logiki tutaj.
 const AKTUALNOSCI = window.TRESC.aktualnosci;
-const MIESIACE = ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia'];
 
-function formatujDate(iso) {
-  const [rok, miesiac, dzien] = iso.split('-').map(Number);
-  return Number(dzien) + ' ' + MIESIACE[miesiac - 1] + ' ' + rok;
+// Kolejnosc i etykiety filtrow w archiwum; TYP_TONE steruje kolorem Badge (patrz DS Badge.jsx).
+const TYP_KOLEJNOSC = ['promocja', 'aktualnosc', 'wydarzenie'];
+const TYP_FILTR_ETYKIETA = { promocja: 'Promocje', aktualnosc: 'Aktualności', wydarzenie: 'Wydarzenia' };
+const TYP_TONE = { promocja: 'brand', wydarzenie: 'teal', aktualnosc: 'neutral' };
+
+function chipStyl(aktywny) {
+  return 'border:1px solid ' + (aktywny ? 'var(--blue-600)' : 'var(--border-default)')
+    + '; background:' + (aktywny ? 'var(--blue-600)' : 'var(--white)')
+    + '; color:' + (aktywny ? 'var(--white)' : 'var(--navy-800)') + ';';
 }
 
 class Component extends DCLogic {
-  state = { menuOtwarte: false, kalendarzOtwarty: false };
+  state = { menuOtwarte: false, kalendarzOtwarty: false, filtr: 'wszystkie' };
 
   toggleMenu = () => this.setState({ menuOtwarte: !this.state.menuOtwarte });
   closeMenu = () => this.setState({ menuOtwarte: false });
+  ustawFiltr = (kod) => this.setState({ filtr: kod });
 
   otworzKalendarz = (e) => {
     if (e && e.preventDefault) e.preventDefault();
@@ -340,29 +452,47 @@ class Component extends DCLogic {
     };
 
     if (wpisZrodlo) {
+      const n = wpisZrodlo.zdjecia.length;
+      const indeks = AKTUALNOSCI.indexOf(wpisZrodlo);
+      const poprzedni = AKTUALNOSCI[indeks + 1] || null;
+      const nastepny = AKTUALNOSCI[indeks - 1] || null;
       return {
         ...wspolne,
-        wpis: wpisZrodlo,
-        wpisData: formatujDate(wpisZrodlo.data),
-        wpisAkapity: wpisZrodlo.tresc.split('\n\n')
+        wpis: { ...wpisZrodlo, typTone: TYP_TONE[wpisZrodlo.typ] || 'neutral' },
+        wpisMaZdjecia: n > 0,
+        wpisGaleriaKlasa: n === 2 ? 'wpis-galeria-2' : (n >= 3 ? 'wpis-galeria-3plus' : ''),
+        wpisMaTresc: wpisZrodlo.akapity.length > 0,
+        wpisCtaEtykieta: wpisZrodlo.ctaEtykieta || 'Dowiedz się więcej',
+        wpisPoprzedni: poprzedni,
+        wpisPoprzedniHref: poprzedni ? poprzedni.href : '',
+        wpisNastepny: nastepny,
+        wpisNastepnyHref: nastepny ? nastepny.href : ''
       };
     }
 
-    const aktualnosci = AKTUALNOSCI
-      .slice()
-      .sort((a, b) => a.data < b.data ? 1 : -1)
+    const typyObecne = TYP_KOLEJNOSC.filter(typ => AKTUALNOSCI.some(a => a.typ === typ));
+    const filtry = [{ kod: 'wszystkie', etykieta: 'Wszystkie' }]
+      .concat(typyObecne.map(typ => ({ kod: typ, etykieta: TYP_FILTR_ETYKIETA[typ] })))
+      .map(f => ({ ...f, wybierz: () => this.ustawFiltr(f.kod), styl: chipStyl(f.kod === this.state.filtr) }));
+
+    const aktualnosciWidoczne = AKTUALNOSCI
+      .filter(a => this.state.filtr === 'wszystkie' || a.typ === this.state.filtr)
       .map(a => ({
         ...a,
-        href: 'aktualnosci.php?post=' + encodeURIComponent(a.id),
-        dataOpis: formatujDate(a.data),
-        zajawka: a.tresc.split('\n\n')[0]
+        typTone: TYP_TONE[a.typ] || 'neutral',
+        miniatura: a.zdjecia[0] || null,
+        wiecejZdjec: a.zdjecia.length > 1 ? ('+' + (a.zdjecia.length - 1)) : ''
       }));
 
     return {
       ...wspolne,
       wpis: null,
-      aktualnosci,
-      brakAktualnosci: aktualnosci.length === 0
+      pokazFiltry: typyObecne.length > 1,
+      filtry,
+      aktualnosciWidoczne,
+      pokazListe: aktualnosciWidoczne.length > 0,
+      brakAktualnosci: AKTUALNOSCI.length === 0,
+      brakWynikowFiltra: AKTUALNOSCI.length > 0 && aktualnosciWidoczne.length === 0
     };
   }
 }

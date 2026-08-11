@@ -81,11 +81,11 @@
   .nav-toggle[aria-expanded="true"] .icon-menu { display:none; }
   .nav-toggle[aria-expanded="true"] .icon-close { display:block; }
   .mobile-menu a:hover { background:var(--navy-050); }
-  @media (max-width:1000px) {
+  @media (max-width:1120px) {
     .nav-links, .nav-cta { display:none !important; }
     .nav-toggle { display:inline-flex !important; margin-left:auto; }
   }
-  @media (min-width:1001px) {
+  @media (min-width:1121px) {
     .mobile-menu { display:none !important; }
   }
   @media (max-width:400px) {
@@ -424,6 +424,8 @@
   @media (prefers-reduced-motion: reduce) {
     .kalendarz-overlay, .kalendarz-card { animation:none; }
   }
+
+  .ak-teaser-tytul, .ak-teaser-zajawka { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 </style>
 </helmet>
 
@@ -442,6 +444,7 @@
           <a href="#zespol" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjaliści</a>
           <a href="#opinie" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Opinie</a>
           <a href="cennik.php" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Cennik</a>
+          <a href="aktualnosci.php" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Aktualności</a>
           <a href="#kontakt" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Kontakt</a>
         </nav>
         <div class="nav-cta" style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; white-space:nowrap;">
@@ -461,6 +464,7 @@
           <a href="#zespol" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjaliści</a>
           <a href="#opinie" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Opinie</a>
           <a href="cennik.php" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Cennik</a>
+          <a href="aktualnosci.php" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Aktualności</a>
           <a href="#kontakt" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Kontakt</a>
           <div style="margin-top:10px;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarzZMenu }}" icon="calendar-check" style="width:100%; justify-content:center;" hint-size="100%,46px">Umów wizytę</x-import>
@@ -818,6 +822,41 @@
       </div>
     </section>
 
+    <sc-if value="{{ saAktualnosci }}">
+      <section id="aktualnosci" aria-labelledby="aktualnosci-h" style="background:var(--gradient-wash);">
+        <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Co u nas słychać" title="Aktualności i promocje" hint-size="100%,90px" style="margin-bottom:40px;"></x-import>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:20px;">
+            <sc-for list="{{ aktualnosciTeaser }}" as="a" hint-placeholder-count="3">
+              <a href="{{ a.href }}" style="text-decoration:none; display:block; height:100%;">
+                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" interactive="{{ true }}" style="height:100%; display:flex; flex-direction:column; padding:0; overflow:hidden;">
+                  <sc-if value="{{ a.miniatura }}">
+                    <img src="{{ a.miniatura }}" alt="" loading="lazy" style="display:block; width:100%; aspect-ratio:16/9; object-fit:cover;">
+                  </sc-if>
+                  <sc-if value="{{ !a.miniatura }}">
+                    <div style="display:flex; align-items:center; justify-content:center; aspect-ratio:16/9; background:var(--gradient-hero);">
+                      <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="{{ a.ikona }}" size="34px" color="rgba(255,255,255,.85)" hint-size="34px,34px"></x-import>
+                    </div>
+                  </sc-if>
+                  <div style="padding:22px;">
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                      <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Badge" tone="{{ a.typTone }}">{{ a.typEtykieta }}</x-import>
+                      <span style="font-size:12.5px; color:var(--text-muted);">{{ a.dataOpis }}</span>
+                    </div>
+                    <h3 class="ak-teaser-tytul" style="margin:0 0 8px; font-family:var(--font-display); font-size:18px; font-weight:var(--weight-bold); color:var(--navy-900);">{{ a.tytul }}</h3>
+                    <p class="ak-teaser-zajawka" style="margin:0; font-size:14px; line-height:1.6; color:var(--text-muted);">{{ a.zajawka }}</p>
+                  </div>
+                </x-import>
+              </a>
+            </sc-for>
+          </div>
+          <div style="display:flex; justify-content:center; margin-top:36px;">
+            <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" as="a" href="aktualnosci.php" variant="secondary" icon-after="chevron-right" hint-size="auto,46px">Zobacz wszystkie</x-import>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
     <section id="kontakt" aria-labelledby="info-h" style="background:var(--white);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
         <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Zanim przyjdziesz" title="Praktyczne informacje" hint-size="100%,110px"></x-import>
@@ -1004,6 +1043,9 @@ const DNI_KIEDY = ['w niedzielę', 'w poniedziałek', 'we wtorek', 'w środę', 
 // współdzielone z specjalisci.php.
 const SPECJALIZACJE = window.TRESC.specjalizacje;
 const LEKARZE = window.TRESC.lekarze;
+const AKTUALNOSCI = window.TRESC.aktualnosci;
+const AK_TYP_TONE = { promocja: 'brand', wydarzenie: 'teal', aktualnosc: 'neutral' };
+const AK_TYP_IKONA = { promocja: 'percent', wydarzenie: 'calendar-days', aktualnosc: 'newspaper' };
 
 // Skrypty wstawione przez innerHTML sie nie wykonuja (przegladarka to blokuje) - trzeba je
 // recznie odtworzyc, zeby wklejony 1:1 z ZnanyLekarz snippet faktycznie zadzialal.
@@ -1022,12 +1064,12 @@ class Component extends DCLogic {
   // żeby renderVals policzył status otwarcia od nowa.
   state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, widgetLekarzaOtwarty: false, mapaWlaczona: false, fabMenuOtwarte: false, teraz: Date.now() };
   aktualizuj = () => {
-    const waski = window.innerWidth < 1000;
+    const waski = window.innerWidth < 1120;
     const next = waski && window.scrollY > 420;
     if (next !== this.state.pokazPasek || !waski !== this.state.szeroki) {
       this.setState({ pokazPasek: next, szeroki: !waski, ...(next ? {} : { fabMenuOtwarte: false }) });
     }
-    if (window.innerWidth > 1000 && this.state.menuOtwarte) {
+    if (window.innerWidth > 1120 && this.state.menuOtwarte) {
       this.setState({ menuOtwarte: false });
     }
   };
@@ -1170,6 +1212,14 @@ class Component extends DCLogic {
       lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej).map((l) => ({
         ...l,
         otworzKalendarzDlaNiego: l.widgetHtml ? (e) => this.otworzWidgetLekarza(e, l) : this.otworzKalendarz
+      })),
+      // AKTUALNOSCI przychodzi z PHP juz znormalizowane i posortowane (patrz inc/aktualnosci.php).
+      saAktualnosci: AKTUALNOSCI.length > 0,
+      aktualnosciTeaser: AKTUALNOSCI.slice(0, 3).map((a) => ({
+        ...a,
+        typTone: AK_TYP_TONE[a.typ] || 'neutral',
+        ikona: AK_TYP_IKONA[a.typ] || 'newspaper',
+        miniatura: a.zdjecia[0] || null
       })),
       pokazPasek: this.state.pokazPasek,
       szeroki: this.state.szeroki,
