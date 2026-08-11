@@ -425,25 +425,55 @@
     .kalendarz-overlay, .kalendarz-card { animation:none; }
   }
 
-  .ak-featured { position:relative; }
-  .ak-featured-slide { position:absolute; inset:0; display:block; opacity:0; pointer-events:none; text-decoration:none; transition:opacity .8s ease; }
-  .ak-featured-slide.ak-aktywny { position:relative; opacity:1; pointer-events:auto; }
-  .ak-featured-inner { display:flex; align-items:stretch; }
-  .ak-featured-img { width:44%; flex-shrink:0; display:flex; align-items:center; justify-content:center; object-fit:cover; min-height:340px; }
-  .ak-featured-content { flex:1; min-width:0; padding:44px 48px; display:flex; flex-direction:column; justify-content:center; }
-  .ak-featured-tytul { margin:0 0 16px; font-family:var(--font-display); font-size:26px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:1.25; color:var(--navy-900); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .ak-featured-zajawka { margin:0 0 22px; font-size:15.5px; line-height:1.65; color:var(--text-muted); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-  .ak-featured-cta { display:inline-flex; align-items:center; gap:7px; font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:14.5px; color:var(--blue-600); }
+  /* Featured aktualnosci: wysokosc sekcji jest STALA (patrz .ak-featured height per breakpoint) -
+     wszystkie slajdy sa position:absolute na pelnej wysokosci kontenera, wiec zmiana tresci/zdjecia
+     miedzy wpisami nigdy nie zmienia rozmiaru sekcji. */
+  .ak-featured { position:relative; height:480px; border-radius:26px; overflow:hidden; background:var(--white); border:1px solid rgba(14,26,60,.06); box-shadow:0 26px 60px -24px rgba(14,26,60,.28), 0 8px 20px -8px rgba(14,26,60,.08); }
+  .ak-featured-slide { position:absolute; inset:0; height:100%; display:block; opacity:0; transform:translateY(10px); pointer-events:none; text-decoration:none; transition:opacity .9s ease, transform .9s ease; }
+  .ak-featured-slide.ak-aktywny { opacity:1; transform:translateY(0); pointer-events:auto; z-index:1; }
+  .ak-featured-inner { display:flex; align-items:stretch; height:100%; }
+  .ak-featured-media { position:relative; width:46%; flex-shrink:0; height:100%; overflow:hidden; background:var(--navy-900); }
+  .ak-featured-img { display:block; width:100%; height:100%; object-fit:cover; transition:transform 8s ease; }
+  .ak-featured-img--brak { display:flex; align-items:center; justify-content:center; }
+  .ak-featured-slide.ak-aktywny .ak-featured-img { transform:scale(1.06); }
+  .ak-featured-scrim { position:absolute; inset:0; background:linear-gradient(to top, rgba(9,16,38,.78) 0%, rgba(9,16,38,.28) 42%, transparent 62%); pointer-events:none; }
+  .ak-featured-numeral { position:absolute; top:22px; right:26px; font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:58px; line-height:1; letter-spacing:-.02em; color:rgba(255,255,255,.24); pointer-events:none; user-select:none; }
+  .ak-featured-badge-row { position:absolute; left:26px; bottom:24px; right:26px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .ak-featured-data { font-size:13px; font-weight:var(--weight-semibold); color:rgba(255,255,255,.92); text-shadow:0 1px 4px rgba(0,0,0,.4); }
+  .ak-featured-strzalka { position:absolute; top:50%; transform:translateY(-50%); z-index:2; opacity:0; transition:opacity .3s ease, background .3s ease, color .3s ease, border-color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .ak-featured-strzalka--lewo { left:16px; }
+  .ak-featured-strzalka--prawo { right:16px; }
+  .ak-featured:hover .ak-featured-strzalka { opacity:1; }
+  .ak-featured-strzalka:hover { transform:translateY(-2px); }
+  .ak-featured-content { flex:1; min-width:0; height:100%; box-sizing:border-box; padding:48px 56px; display:flex; flex-direction:column; justify-content:center; background:var(--white); }
+  .ak-featured-tytul { margin:0 0 18px; font-family:var(--font-display); font-size:28px; font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:1.24; color:var(--navy-900); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .ak-featured-zajawka { margin:0 0 26px; font-size:16px; line-height:1.75; color:var(--text-muted); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .ak-featured-cta { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-display); font-weight:var(--weight-semibold); font-size:15px; color:var(--blue-600); width:fit-content; }
+  .ak-featured-cta svg { transition:transform .3s cubic-bezier(.16,1,.3,1); }
   .ak-featured-slide:hover .ak-featured-cta { color:var(--blue-700); }
-  .ak-kropka { width:9px; height:9px; border-radius:50%; border:none; padding:0; background:var(--border-default); cursor:pointer; transition:background .25s ease, transform .25s ease; }
-  .ak-kropka.ak-aktywny { background:var(--blue-600); transform:scale(1.35); }
-  @media (max-width:760px) {
-    .ak-featured-inner { flex-direction:column; }
-    .ak-featured-img { width:100%; min-height:220px; }
-    .ak-featured-content { padding:28px 26px; }
-    .ak-featured-tytul { font-size:21px; }
+  .ak-featured-slide:hover .ak-featured-cta svg { transform:translateX(5px); }
+
+  .ak-progress-row { display:flex; justify-content:center; gap:10px; margin-top:28px; }
+  .ak-progress { position:relative; width:52px; height:4px; border-radius:999px; background:var(--navy-050); border:none; padding:0; cursor:pointer; overflow:hidden; }
+  .ak-progress:hover { background:var(--border-default); }
+  .ak-progress-fill { position:absolute; inset:0; width:0%; background:var(--blue-600); border-radius:999px; }
+  .ak-progress.ak-aktywny .ak-progress-fill { animation:akProgressFill 6s linear forwards; }
+  .ak-progress-row.ak-wstrzymana .ak-progress-fill { animation-play-state:paused; }
+  @keyframes akProgressFill { from { width:0%; } to { width:100%; } }
+
+  @media (max-width:900px) {
+    .ak-featured { height:420px; }
+    .ak-featured-content { padding:36px 40px; }
+    .ak-featured-numeral { font-size:44px; }
   }
-  @media (prefers-reduced-motion: reduce) { .ak-featured-slide { transition:none; } }
+  @media (max-width:760px) {
+    .ak-featured { height:600px; border-radius:22px; }
+    .ak-featured-inner { flex-direction:column; }
+    .ak-featured-media { width:100%; height:240px; }
+    .ak-featured-content { padding:30px 26px; height:auto; flex:1; }
+    .ak-featured-tytul { font-size:22px; }
+    .ak-featured-strzalka { display:none; }
+  }
 </style>
 </helmet>
 
@@ -848,37 +878,49 @@
           <div class="ak-featured" onMouseEnter="{{ zatrzymajKaruzele }}" onMouseLeave="{{ wznowKaruzele }}">
             <sc-for list="{{ aktualnosciTeaser }}" as="a" hint-placeholder-count="1">
               <a href="{{ a.href }}" class="ak-featured-slide {{ a.aktywnaKlasa }}">
-                <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Card" style="height:100%; padding:0; overflow:hidden;">
-                  <div class="ak-featured-inner">
+                <div class="ak-featured-inner">
+                  <div class="ak-featured-media">
                     <sc-if value="{{ a.miniatura }}">
                       <img src="{{ a.miniatura }}" alt="" loading="lazy" class="ak-featured-img">
                     </sc-if>
                     <sc-if value="{{ !a.miniatura }}">
                       <div class="ak-featured-img ak-featured-img--brak" style="background:var(--gradient-hero);">
-                        <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="{{ a.ikona }}" size="48px" color="rgba(255,255,255,.85)" hint-size="48px,48px"></x-import>
+                        <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Icon" name="{{ a.ikona }}" size="52px" color="rgba(255,255,255,.8)" hint-size="52px,52px"></x-import>
                       </div>
                     </sc-if>
-                    <div class="ak-featured-content">
-                      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
-                        <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Badge" tone="{{ a.typTone }}">{{ a.typEtykieta }}</x-import>
-                        <span style="font-size:13px; color:var(--text-muted);">{{ a.dataOpis }}</span>
-                      </div>
-                      <h3 class="ak-featured-tytul">{{ a.tytul }}</h3>
-                      <p class="ak-featured-zajawka">{{ a.zajawka }}</p>
-                      <span class="ak-featured-cta">Czytaj więcej
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                      </span>
+                    <div class="ak-featured-scrim"></div>
+                    <span class="ak-featured-numeral">{{ a.numer }}</span>
+                    <div class="ak-featured-badge-row">
+                      <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Badge" tone="{{ a.typTone }}">{{ a.typEtykieta }}</x-import>
+                      <span class="ak-featured-data">{{ a.dataOpis }}</span>
                     </div>
+                    <sc-if value="{{ pokazStrzalki }}">
+                      <button type="button" class="spec-slider-btn ak-featured-strzalka ak-featured-strzalka--lewo" aria-label="Poprzedni wpis" onClick="{{ poprzedniSlajd }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                      </button>
+                      <button type="button" class="spec-slider-btn ak-featured-strzalka ak-featured-strzalka--prawo" aria-label="Następny wpis" onClick="{{ nastepnySlajd }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </sc-if>
                   </div>
-                </x-import>
+                  <div class="ak-featured-content">
+                    <h3 class="ak-featured-tytul">{{ a.tytul }}</h3>
+                    <p class="ak-featured-zajawka">{{ a.zajawka }}</p>
+                    <span class="ak-featured-cta">Czytaj więcej
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </span>
+                  </div>
+                </div>
               </a>
             </sc-for>
           </div>
 
           <sc-if value="{{ pokazKropki }}">
-            <div style="display:flex; justify-content:center; gap:10px; margin-top:24px;">
+            <div class="ak-progress-row {{ karuzelaWstrzymanaKlasa }}">
               <sc-for list="{{ aktualnosciKropki }}" as="k" hint-placeholder-count="3">
-                <button type="button" aria-label="{{ k.etykieta }}" onClick="{{ k.wybierz }}" class="ak-kropka {{ k.aktywnaKlasa }}"></button>
+                <button type="button" aria-label="{{ k.etykieta }}" onClick="{{ k.wybierz }}" class="ak-progress {{ k.aktywnaKlasa }}">
+                  <span class="ak-progress-fill"></span>
+                </button>
               </sc-for>
             </div>
           </sc-if>
@@ -1095,14 +1137,32 @@ function cmkWstrzyknijWidget(kontener, html) {
 class Component extends DCLogic {
   // "teraz" nie jest nigdzie czytane — służy wyłącznie za wyzwalacz przerysowania co minutę,
   // żeby renderVals policzył status otwarcia od nowa.
-  state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, widgetLekarzaOtwarty: false, mapaWlaczona: false, fabMenuOtwarte: false, teraz: Date.now(), aktualnosciAktywny: 0 };
+  state = { pokazPasek: false, szeroki: true, menuOtwarte: false, kalendarzOtwarty: false, widgetLekarzaOtwarty: false, mapaWlaczona: false, fabMenuOtwarte: false, teraz: Date.now(), aktualnosciAktywny: 0, karuzelaWstrzymana: false };
   // Karuzela aktualności: co 6s przechodzi na kolejny wpis (fade w miejsce poprzedniego,
   // realizowany czystym CSS - patrz .ak-featured-slide), zatrzymuje się pod kursorem.
+  // karuzelaWstrzymana steruje wylacznie animation-play-state paska postepu (.ak-progress-fill) -
+  // sam timer jest zatrzymywany/wznawiany osobno przez zatrzymajKaruzele/wznowKaruzele.
   ustawAktywnyWpis = (i) => this.setState({ aktualnosciAktywny: i });
-  zatrzymajKaruzele = () => { if (this.karuzelaTimer) { clearInterval(this.karuzelaTimer); this.karuzelaTimer = null; } };
+  akLiczbaSlajdow = () => Math.min(3, AKTUALNOSCI.length);
+  poprzedniSlajd = (e) => {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    const n = this.akLiczbaSlajdow();
+    this.setState((s) => ({ aktualnosciAktywny: (s.aktualnosciAktywny - 1 + n) % n }));
+    this.wznowKaruzele();
+  };
+  nastepnySlajd = (e) => {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    const n = this.akLiczbaSlajdow();
+    this.setState((s) => ({ aktualnosciAktywny: (s.aktualnosciAktywny + 1) % n }));
+    this.wznowKaruzele();
+  };
+  // Wersja bez setState - bezpieczna do wywolania z componentWillUnmount.
+  zatrzymajTimer = () => { if (this.karuzelaTimer) { clearInterval(this.karuzelaTimer); this.karuzelaTimer = null; } };
+  zatrzymajKaruzele = () => { this.zatrzymajTimer(); this.setState({ karuzelaWstrzymana: true }); };
   wznowKaruzele = () => {
-    this.zatrzymajKaruzele();
-    const liczba = Math.min(3, AKTUALNOSCI.length);
+    this.zatrzymajTimer();
+    this.setState({ karuzelaWstrzymana: false });
+    const liczba = this.akLiczbaSlajdow();
     if (liczba <= 1) return;
     this.karuzelaTimer = setInterval(() => {
       this.setState((s) => ({ aktualnosciAktywny: (s.aktualnosciAktywny + 1) % liczba }));
@@ -1242,7 +1302,7 @@ class Component extends DCLogic {
     window.removeEventListener('resize', this.aktualizuj);
     window.removeEventListener('keydown', this.obslugaKlawiszy);
     if (this.zegar) clearInterval(this.zegar);
-    this.zatrzymajKaruzele();
+    this.zatrzymajTimer();
     if (this.obserwatorOpinii) this.obserwatorOpinii.disconnect();
     document.body.style.overflow = '';
   }
@@ -1269,9 +1329,14 @@ class Component extends DCLogic {
         typTone: AK_TYP_TONE[a.typ] || 'neutral',
         ikona: AK_TYP_IKONA[a.typ] || 'newspaper',
         miniatura: a.zdjecia[0] || null,
+        numer: String(i + 1).padStart(2, '0'),
         aktywnaKlasa: i === this.state.aktualnosciAktywny ? 'ak-aktywny' : ''
       })),
       pokazKropki: Math.min(3, AKTUALNOSCI.length) > 1,
+      pokazStrzalki: Math.min(3, AKTUALNOSCI.length) > 1,
+      poprzedniSlajd: this.poprzedniSlajd,
+      nastepnySlajd: this.nastepnySlajd,
+      karuzelaWstrzymanaKlasa: this.state.karuzelaWstrzymana ? 'ak-wstrzymana' : '',
       aktualnosciKropki: AKTUALNOSCI.slice(0, 3).map((a, i) => ({
         etykieta: 'Pokaż: ' + a.tytul,
         aktywnaKlasa: i === this.state.aktualnosciAktywny ? 'ak-aktywny' : '',
