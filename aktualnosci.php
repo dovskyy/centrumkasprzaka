@@ -15,7 +15,7 @@
   #intro-reveal .intro-reveal__mark{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;}
   #intro-reveal .intro-reveal__ring{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.35);opacity:0;transform:scale(.3);animation:introRing .9s cubic-bezier(.16,1,.3,1) .05s forwards;}
   #intro-reveal .intro-reveal__logo{position:relative;width:96px;height:96px;opacity:0;transform:scale(.72);filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));animation:introLogoIn .7s cubic-bezier(.16,1,.3,1) .15s forwards;}
-  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-logo,inherit);font-weight:300;text-transform:uppercase;font-size:18px;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
+  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-logo,inherit);font-weight:300;text-transform:uppercase;font-size:26px;line-height:1.15;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
   @keyframes introLogoIn{0%{opacity:0;transform:scale(.72);}65%{opacity:1;transform:scale(1.08);}100%{opacity:1;transform:scale(1);}}
   @keyframes introRing{0%{opacity:.6;transform:scale(.3);}70%{opacity:0;transform:scale(1.7);}100%{opacity:0;transform:scale(1.7);}}
   @keyframes introTextIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
@@ -40,7 +40,7 @@
     <div class="intro-reveal__ring"></div>
     <img src="uploads/assets-1786096163757-0x49.webp" alt="" class="intro-reveal__logo" width="96" height="96">
   </div>
-  <div class="intro-reveal__text">Centrum Medyczne Kasprzaka</div>
+  <div class="intro-reveal__text">Centrum Medyczne<br><span style="font-weight:200;">Kasprzaka</span></div>
 </div>
 <script>
 (function(){

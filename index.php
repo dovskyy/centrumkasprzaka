@@ -15,7 +15,7 @@
   #intro-reveal .intro-reveal__mark{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;}
   #intro-reveal .intro-reveal__ring{position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.35);opacity:0;transform:scale(.3);animation:introRing .9s cubic-bezier(.16,1,.3,1) .05s forwards;}
   #intro-reveal .intro-reveal__logo{position:relative;width:96px;height:96px;opacity:0;transform:scale(.72);filter:drop-shadow(0 12px 30px rgba(0,0,0,.35));animation:introLogoIn .7s cubic-bezier(.16,1,.3,1) .15s forwards;}
-  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-logo,inherit);font-weight:300;text-transform:uppercase;font-size:18px;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
+  #intro-reveal .intro-reveal__text{opacity:0;transform:translateY(8px);font-family:var(--font-logo,inherit);font-weight:300;text-transform:uppercase;font-size:26px;line-height:1.15;letter-spacing:.02em;color:#fff;text-align:center;animation:introTextIn .6s ease .5s forwards;}
   @keyframes introLogoIn{0%{opacity:0;transform:scale(.72);}65%{opacity:1;transform:scale(1.08);}100%{opacity:1;transform:scale(1);}}
   @keyframes introRing{0%{opacity:.6;transform:scale(.3);}70%{opacity:0;transform:scale(1.7);}100%{opacity:0;transform:scale(1.7);}}
   @keyframes introTextIn{0%{opacity:0;transform:translateY(8px);}100%{opacity:1;transform:translateY(0);}}
@@ -40,7 +40,7 @@
     <div class="intro-reveal__ring"></div>
     <img src="uploads/assets-1786096163757-0x49.webp" alt="" class="intro-reveal__logo" width="96" height="96">
   </div>
-  <div class="intro-reveal__text">Centrum Medyczne Kasprzaka</div>
+  <div class="intro-reveal__text">Centrum Medyczne<br><span style="font-weight:200;">Kasprzaka</span></div>
 </div>
 <script>
 (function(){
@@ -278,7 +278,22 @@
     .visit-photo { height:280px; }
   }
 
-  .hero-phone-btn { flex-shrink:0; }
+  .hero-phone-btn { 
+    flex-shrink:0; 
+    background: var(--white) !important;
+    color: var(--navy-900) !important;
+    border: 1px solid var(--border-subtle) !important;
+    transition: all 0.35s ease !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .hero-phone-btn:hover, .hero-phone-btn:focus-visible {
+    background: var(--white) !important;
+    color: var(--navy-700) !important;
+    border-color: var(--grey-300) !important;
+    box-shadow: 0 8px 24px rgba(14, 26, 60, 0.12), 0 2px 8px rgba(14, 26, 60, 0.06) !important;
+    transform: translateY(-2px);
+    outline: none !important;
+  }
   @media (max-width:760px) {
     .hero-copy { padding-bottom:48px !important; margin-top:-25px !important; }
     .hero-phone-btn { width:56px !important; padding:0 !important; }
@@ -310,6 +325,24 @@
     color:var(--success-600) !important;
     border-color:var(--border-default) !important;
     outline:none !important;
+  }
+
+  /* Styl Premium dla guzików w sekcji Hero i na pasku nawigacji (Header) */
+  .hero-copy .cta-book-btn, header .cta-book-btn { 
+    transition: background .35s ease, border-color .35s ease, color .35s ease, box-shadow .35s ease;
+    background: var(--teal-500) !important;
+    color: var(--white) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(20, 168, 160, 0.25) !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .hero-copy .cta-book-btn:hover, .hero-copy .cta-book-btn:focus-visible,
+  header .cta-book-btn:hover, header .cta-book-btn:focus-visible {
+    background: var(--white) !important;
+    color: var(--teal-600) !important;
+    border-color: var(--teal-500) !important;
+    box-shadow: 0 0 0 2px var(--teal-500), 0 4px 12px rgba(20, 168, 160, 0.25) !important;
+    outline: none !important;
   }
   .cta-book-btn span[aria-hidden="true"] {
     transition:transform .12s ease-in, opacity .12s ease-in;
@@ -408,6 +441,7 @@
           <a href="#specjalizacje" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjalizacje</a>
           <a href="#zespol" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Specjaliści</a>
           <a href="#opinie" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Opinie</a>
+          <a href="cennik.php" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Cennik</a>
           <a href="#kontakt" style="padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:15px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none; white-space:nowrap; transition:var(--transition-control);" style-hover="background:rgba(255,255,255,.75); box-shadow:inset 0 0 0 1px rgba(14,26,60,.08);">Kontakt</a>
         </nav>
         <div class="nav-cta" style="margin-left:auto; display:flex; align-items:center; gap:10px; flex-shrink:0; white-space:nowrap;">
@@ -426,6 +460,7 @@
           <a href="#specjalizacje" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjalizacje</a>
           <a href="#zespol" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Specjaliści</a>
           <a href="#opinie" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Opinie</a>
+          <a href="cennik.php" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Cennik</a>
           <a href="#kontakt" onClick="{{ closeMenu }}" style="padding:13px 14px; border-radius:var(--radius-md); font-family:var(--font-display); font-size:16px; font-weight:var(--weight-medium); color:var(--navy-800); text-decoration:none;">Kontakt</a>
           <div style="margin-top:10px;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarzZMenu }}" icon="calendar-check" style="width:100%; justify-content:center;" hint-size="100%,46px">Umów wizytę</x-import>
