@@ -1,4 +1,8 @@
 <?php
+require_once __DIR__ . '/aktualnosci.php';
+
+define('CMK_BAZOWY_URL', 'https://cmkasprzaka.pl');
+
 function cmk_tresc() {
     $katalog = __DIR__ . '/../data/';
     $kolekcje = ['specjalizacje', 'lekarze', 'cennik', 'aktualnosci'];
@@ -18,5 +22,6 @@ function cmk_tresc() {
         $plik = ($pokazDrafty && file_exists($plikDraft)) ? $plikDraft : $plikOpublikowany;
         $tresc[$nazwa] = file_exists($plik) ? json_decode(file_get_contents($plik), true) : [];
     }
+    $tresc['aktualnosci'] = cmk_normalizuj_aktualnosci($tresc['aktualnosci']);
     return $tresc;
 }

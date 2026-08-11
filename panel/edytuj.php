@@ -2,6 +2,7 @@
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/upload.php';
 require_once __DIR__ . '/../inc/ikony.php';
+require_once __DIR__ . '/../inc/aktualnosci.php';
 cmk_require_login();
 
 $kolekcje = ['lekarze', 'specjalizacje', 'cennik', 'aktualnosci'];
@@ -52,6 +53,33 @@ function cmk_przytnij_kopie($kolekcja, $katalogKopii) {
 
 function cmk_odrzuc_draft($draft) {
     if (file_exists($draft)) unlink($draft);
+}
+
+// $_FILES z polem name="x[]" multiple ma ksztalt "tablica per klucz" ('name'=>[...], 'tmp_name'=>[...]);
+// przepakowuje na "tablica per plik", jak w pojedynczym uploadzie, zeby cmk_upload_zdjecie() dzialalo bez zmian.
+function cmk_przepakuj_pliki($pliki) {
+    if (!is_array($pliki) || !isset($pliki['name']) || !is_array($pliki['name'])) return [];
+    $wynik = [];
+    foreach ($pliki['name'] as $i => $nazwa) {
+        $wynik[] = [
+            'name' => $nazwa,
+            'type' => $pliki['type'][$i],
+            'tmp_name' => $pliki['tmp_name'][$i],
+            'error' => $pliki['error'][$i],
+            'size' => $pliki['size'][$i],
+        ];
+    }
+    return $wynik;
+}
+
+// Parsuje wartosci php.ini jak "64M"/"8M" na bajty (do wstrzykniecia limitu do JS).
+function cmk_ini_bajty($wartosc) {
+    $wartosc = trim((string) $wartosc);
+    if ($wartosc === '') return 0;
+    $mnoznik = ['g' => 1024 * 1024 * 1024, 'm' => 1024 * 1024, 'k' => 1024];
+    $ostatni = strtolower(substr($wartosc, -1));
+    if (isset($mnoznik[$ostatni])) return (int) $wartosc * $mnoznik[$ostatni];
+    return (int) $wartosc;
 }
 
 // Zamienia nazwę na identyfikator używany w relacji lekarz <-> specjalizacja
@@ -108,13 +136,34 @@ $schematy = [
     ],
     'aktualnosci' => [
         'etykieta_listy' => 'Aktualności',
-        'tytul' => fn($it) => $it['tytul'] ?? '(nowa aktualność)',
+        'tytul' => fn($it) => $it['tytul'] ?? '(nowy wpis)',
+        'miniatura' => function ($it) {
+            if (!empty($it['zdjecia'][0]) && is_string($it['zdjecia'][0])) return $it['zdjecia'][0];
+            if (!empty($it['zdjecie']) && is_string($it['zdjecie'])) return $it['zdjecie'];
+            return null;
+        },
+        'podtytul' => function ($it) {
+            $typ = $it['typ'] ?? 'aktualnosc';
+            if (!array_key_exists($typ, CMK_TYPY_AKTUALNOSCI)) $typ = 'aktualnosc';
+            $bity = [htmlspecialchars(CMK_TYPY_AKTUALNOSCI[$typ])];
+            if (!empty($it['data'])) $bity[] = htmlspecialchars($it['data']);
+            $tekst = implode(' · ', $bity);
+            $dataDo = (string) ($it['dataDo'] ?? '');
+            if ($dataDo !== '' && $dataDo < date('Y-m-d')) {
+                $tekst .= ' <span style="color:#b42318; font-weight:var(--weight-semibold);">— Nie pokazuje się na stronie, minął termin (widoczne do ' . htmlspecialchars($dataDo) . ')</span>';
+            }
+            return $tekst;
+        },
         'pola' => [
-            'id' => ['etykieta' => 'Identyfikator w adresie (bez spacji i polskich znaków)', 'typ' => 'text', 'wymagane' => true],
-            'tytul' => ['etykieta' => 'Tytuł', 'typ' => 'text', 'wymagane' => true],
-            'zdjecie' => ['etykieta' => 'Zdjęcie (opcjonalnie)', 'typ' => 'zdjecie'],
-            'data' => ['etykieta' => 'Data (RRRR-MM-DD)', 'typ' => 'text', 'wymagane' => true],
-            'tresc' => ['etykieta' => 'Treść (pusta linia = nowy akapit)', 'typ' => 'textarea'],
+            'tytul'       => ['etykieta' => 'Tytuł', 'typ' => 'text', 'wymagane' => true],
+            'typ'         => ['etykieta' => 'Rodzaj wpisu', 'typ' => 'wybor', 'opcje' => CMK_TYPY_AKTUALNOSCI],
+            'data'        => ['etykieta' => 'Data wpisu', 'typ' => 'data', 'wymagane' => true],
+            'dataDo'      => ['etykieta' => 'Widoczne do (opcjonalnie) — po tym dniu wpis sam zniknie ze strony', 'typ' => 'data'],
+            'tresc'       => ['etykieta' => 'Treść (pusta linia = nowy akapit). Można zostawić puste, jeśli wpis to samo zdjęcie.', 'typ' => 'textarea'],
+            'zdjecia'     => ['etykieta' => 'Zdjęcia (można dodać kilka naraz; wpis działa też bez żadnego)', 'typ' => 'galeria'],
+            'ctaEtykieta' => ['etykieta' => 'Napis na przycisku (opcjonalnie, np. „Umów badanie")', 'typ' => 'text'],
+            'ctaUrl'      => ['etykieta' => 'Adres przycisku (https://…, tel:… albo mailto:…)', 'typ' => 'text'],
+            'przypiety'   => ['etykieta' => 'Przypnij na górze listy', 'typ' => 'checkbox'],
         ],
     ],
 ];
@@ -122,7 +171,13 @@ $schematy = [
 $akcja = $_GET['akcja'] ?? ($_POST['akcja'] ?? 'lista');
 $komunikat = null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// PHP czysci $_POST/$_FILES w calosci, gdy przekroczony post_max_size - bez tej detekcji
+// formularz "nic nie robi", a wpisana tresc przepada bez zadnego komunikatu.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+    $komunikat = 'Przesłane zdjęcia są za duże (limit serwera: ' . ini_get('post_max_size')
+        . '). Dodaj mniej zdjęć naraz albo zmniejsz je przed wysłaniem.';
+    $akcja = 'formularz';
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($akcja === 'opublikuj') {
         cmk_publikuj($kolekcja, $sciezkaOpublikowana, $sciezkaDraft, $katalogKopii);
         header('Location: edytuj.php?kolekcja=' . urlencode($kolekcja) . '&info=opublikowano');
@@ -163,15 +218,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 continue;
             }
-            $wartosc = trim((string) ($_POST[$klucz] ?? ''));
+            if ($def['typ'] === 'wybor') {
+                $klucze = array_keys($def['opcje']);
+                $wartosc = (string) ($_POST[$klucz] ?? '');
+                $rekord[$klucz] = in_array($wartosc, $klucze, true) ? $wartosc : ($klucze[0] ?? '');
+                continue;
+            }
+            if ($def['typ'] === 'data') {
+                $wartosc = trim((string) ($_POST[$klucz] ?? ''));
+                if ($wartosc !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $wartosc)) {
+                    $bledy[] = $def['etykieta'] . ' ma nieprawidłowy format daty.';
+                } elseif (!empty($def['wymagane']) && $wartosc === '') {
+                    $bledy[] = $def['etykieta'] . ' jest wymagane.';
+                }
+                $rekord[$klucz] = $wartosc;
+                continue;
+            }
+            if ($def['typ'] === 'galeria') {
+                $istniejace = $_POST['zdjecia_istniejace'] ?? [];
+                $usunSet = $_POST['zdjecia_usun'] ?? [];
+                $zachowane = [];
+                foreach ($istniejace as $sciezka) {
+                    $sciezka = (string) $sciezka;
+                    if (in_array($sciezka, $usunSet, true)) continue;
+                    if (!preg_match('#^uploads/[A-Za-z0-9._-]+$#', $sciezka)) continue;
+                    if (!file_exists(__DIR__ . '/../' . $sciezka)) continue;
+                    $zachowane[] = $sciezka;
+                }
+                foreach (cmk_przepakuj_pliki($_FILES['zdjecia_nowe'] ?? null) as $plikNowy) {
+                    if ($plikNowy['error'] === UPLOAD_ERR_NO_FILE) continue;
+                    $wynik = cmk_upload_zdjecie($plikNowy, 1400);
+                    if (is_array($wynik)) { $bledy[] = $wynik['blad']; }
+                    else { $zachowane[] = $wynik; }
+                }
+                if (count($zachowane) > 8) {
+                    $bledy[] = 'Maksymalnie 8 zdjęć na wpis.';
+                }
+                $rekord[$klucz] = $zachowane;
+                unset($rekord['zdjecie']);
+                continue;
+            }
+            // Przegladarka wysyla wieloliniowy tekst z \r\n - bez normalizacji explode("\n\n", ...)
+            // w inc/aktualnosci.php nigdy by nie trafil na pusta linie i akapity by sie nie rozdzielily.
+            $wartosc = trim(str_replace(["\r\n", "\r"], "\n", (string) ($_POST[$klucz] ?? '')));
             if (!empty($def['wymagane']) && $wartosc === '') {
                 $bledy[] = $def['etykieta'] . ' jest wymagane.';
+            }
+            if ($klucz === 'ctaUrl' && $wartosc !== '' && !preg_match('#^(https?://|mailto:|tel:)#i', $wartosc)) {
+                $bledy[] = 'Adres przycisku musi zaczynać się od https://, http://, mailto: albo tel:.';
             }
             $rekord[$klucz] = $wartosc;
         }
 
-        if ($kolekcja === 'specjalizacje' && empty($rekord['id'])) {
-            $rekord['id'] = cmk_unikalny_slug($rekord['nazwa'] ?? '', $dane);
+        if (in_array($kolekcja, ['specjalizacje', 'aktualnosci'], true) && empty($rekord['id'])) {
+            $rekord['id'] = cmk_unikalny_slug($rekord['nazwa'] ?? $rekord['tytul'] ?? '', $dane);
         }
 
         if (empty($bledy)) {
@@ -291,8 +391,14 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
   form.inline { display:inline; }
   label { display:block; font-size:14px; font-weight:var(--weight-medium); color:var(--navy-800); margin:16px 0 6px; }
   label:first-child { margin-top:0; }
-  input[type=text], textarea, select { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid var(--border-default); border-radius:var(--radius-md); font-size:15px; font-family:inherit; }
+  input[type=text], input[type=date], textarea, select { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid var(--border-default); border-radius:var(--radius-md); font-size:15px; font-family:inherit; }
   textarea { min-height:110px; resize:vertical; }
+  .galeria-lista { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
+  .galeria-item { display:flex; flex-direction:column; align-items:center; gap:6px; width:100px; padding:8px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); background:var(--white); }
+  .galeria-item img { width:80px; height:80px; object-fit:cover; border-radius:var(--radius-md); }
+  .galeria-item-akcje { display:flex; align-items:center; gap:4px; }
+  .galeria-usun { display:flex; align-items:center; gap:4px; font-size:11px; font-weight:normal; color:#b42318; margin:0; }
+  .galeria-usun input { width:auto; }
   .checkbox-row { display:flex; align-items:center; gap:8px; margin:16px 0 6px; }
   .checkbox-row input { width:auto; }
   .checkbox-row label { margin:0; }
@@ -345,6 +451,11 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
     <?php if ($akcja === 'formularz' || ($edytowanaPoz !== null)): ?>
       <?php $pola = $schematy[$kolekcja]['pola']; $poz = $edytowanaPoz ?? 'nowy'; $rekord = $edytowanyRekord; ?>
       <div class="card">
+        <?php if ($kolekcja === 'aktualnosci'): ?>
+          <p style="font-size:13px; line-height:1.5; color:var(--navy-800); background:var(--blue-050); border:1px solid var(--blue-200); border-radius:var(--radius-md); padding:12px 14px; margin:0 0 20px;">
+            <strong>Jak to działa:</strong> wpis pojawia się na stronie głównej i w zakładce „Aktualności" dopiero po kliknięciu <strong>Opublikuj</strong>. Zdjęcia możesz dodać albo zostawić bez nich. Pole „Widoczne do" sprawia, że promocja sama zniknie ze strony po tym dniu.
+          </p>
+        <?php endif; ?>
         <form method="post" enctype="multipart/form-data">
           <input type="hidden" name="akcja" value="zapisz">
           <input type="hidden" name="poz" value="<?= htmlspecialchars($poz) ?>">
@@ -358,10 +469,30 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
             <?php elseif ($def['typ'] === 'wybor'): ?>
               <label for="<?= $klucz ?>"><?= htmlspecialchars($def['etykieta']) ?></label>
               <select id="<?= $klucz ?>" name="<?= $klucz ?>">
-                <?php foreach ($def['opcje'] as $opcja): ?>
-                  <option value="<?= htmlspecialchars($opcja) ?>" <?= ($rekord[$klucz] ?? '') === $opcja ? 'selected' : '' ?>><?= htmlspecialchars($opcja) ?></option>
+                <?php foreach ($def['opcje'] as $wartosc => $etykietaOpcji): ?>
+                  <option value="<?= htmlspecialchars($wartosc) ?>" <?= ($rekord[$klucz] ?? '') === $wartosc ? 'selected' : '' ?>><?= htmlspecialchars($etykietaOpcji) ?></option>
                 <?php endforeach; ?>
               </select>
+            <?php elseif ($def['typ'] === 'data'): ?>
+              <label for="<?= $klucz ?>"><?= htmlspecialchars($def['etykieta']) ?></label>
+              <input type="date" id="<?= $klucz ?>" name="<?= $klucz ?>" value="<?= htmlspecialchars($rekord[$klucz] ?? '') ?>">
+            <?php elseif ($def['typ'] === 'galeria'): ?>
+              <label><?= htmlspecialchars($def['etykieta']) ?></label>
+              <div class="galeria-lista" data-klucz="<?= $klucz ?>">
+                <?php foreach ((array) ($rekord[$klucz] ?? []) as $sciezka): if (!is_string($sciezka) || $sciezka === '') continue; ?>
+                  <div class="galeria-item">
+                    <img src="../<?= htmlspecialchars($sciezka) ?>" alt="">
+                    <input type="hidden" name="zdjecia_istniejace[]" value="<?= htmlspecialchars($sciezka) ?>">
+                    <div class="galeria-item-akcje">
+                      <button type="button" class="btn btn-secondary btn-small" data-galeria-gora title="Przesuń w lewo">&uarr;</button>
+                      <button type="button" class="btn btn-secondary btn-small" data-galeria-dol title="Przesuń w prawo">&darr;</button>
+                    </div>
+                    <label class="galeria-usun"><input type="checkbox" name="zdjecia_usun[]" value="<?= htmlspecialchars($sciezka) ?>"> Usuń</label>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+              <input type="file" name="zdjecia_nowe[]" multiple accept="image/jpeg,image/png,image/webp" style="margin-top:10px;">
+              <p style="font-size:13px; color:var(--text-muted); margin:6px 0 0;">Maksymalnie 8 zdjęć na wpis.</p>
             <?php elseif ($def['typ'] === 'checkbox'): ?>
               <div class="checkbox-row">
                 <input type="checkbox" id="<?= $klucz ?>" name="<?= $klucz ?>" <?= !empty($rekord[$klucz]) ? 'checked' : '' ?>>
@@ -420,11 +551,24 @@ $edytowanyRekord = ($edytowanaPoz !== null && $edytowanaPoz !== 'nowy' && isset(
             <a class="btn btn-secondary" href="edytuj.php?kolekcja=<?= urlencode($kolekcja) ?>">Anuluj</a>
           </div>
         </form>
+        <?php if ($kolekcja === 'aktualnosci' && !empty($rekord['id'])): ?>
+          <p style="font-size:13px; color:var(--text-muted); margin:16px 0 0;">Adres wpisu: aktualnosci.php?post=<?= htmlspecialchars($rekord['id']) ?></p>
+        <?php endif; ?>
       </div>
     <?php else: ?>
       <?php foreach ($dane as $i => $it): ?>
         <div class="lista-item">
-          <span class="nazwa"><?= htmlspecialchars($schematy[$kolekcja]['tytul']($it)) ?></span>
+          <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+            <?php if (!empty($schematy[$kolekcja]['miniatura']) && ($miniatura = $schematy[$kolekcja]['miniatura']($it))): ?>
+              <img src="../<?= htmlspecialchars($miniatura) ?>" alt="" style="width:44px; height:44px; object-fit:cover; border-radius:var(--radius-md); border:1px solid var(--border-subtle); flex-shrink:0;">
+            <?php endif; ?>
+            <div style="min-width:0;">
+              <div class="nazwa"><?= htmlspecialchars($schematy[$kolekcja]['tytul']($it)) ?></div>
+              <?php if (!empty($schematy[$kolekcja]['podtytul'])): ?>
+                <div style="font-size:12.5px; color:var(--text-muted); margin-top:2px;"><?= $schematy[$kolekcja]['podtytul']($it) ?></div>
+              <?php endif; ?>
+            </div>
+          </div>
           <div class="akcje">
             <form class="inline" method="post"><input type="hidden" name="akcja" value="przesun"><input type="hidden" name="poz" value="<?= $i ?>"><input type="hidden" name="kierunek" value="gora"><button class="btn btn-secondary btn-small" type="submit" <?= $i === 0 ? 'disabled' : '' ?>>&uarr;</button></form>
             <form class="inline" method="post"><input type="hidden" name="akcja" value="przesun"><input type="hidden" name="poz" value="<?= $i ?>"><input type="hidden" name="kierunek" value="dol"><button class="btn btn-secondary btn-small" type="submit" <?= $i === count($dane) - 1 ? 'disabled' : '' ?>>&darr;</button></form>
@@ -542,6 +686,36 @@ if (pozycjeLista && pozycjaDodaj) {
     podepnijUsuwanie(wiersz);
   });
 }
+
+// Galeria aktualnosci: strzalki przestawiaja kafelek w DOM, kolejnosc w DOM = kolejnosc zapisu.
+document.querySelectorAll('.galeria-lista').forEach(function (lista) {
+  lista.addEventListener('click', function (e) {
+    var item = e.target.closest('.galeria-item');
+    if (!item) return;
+    if (e.target.closest('[data-galeria-gora]') && item.previousElementSibling) {
+      lista.insertBefore(item, item.previousElementSibling);
+    } else if (e.target.closest('[data-galeria-dol]') && item.nextElementSibling) {
+      lista.insertBefore(item.nextElementSibling, item);
+    }
+  });
+});
+
+// Guard po stronie przegladarki: ostrzega przed wyslaniem, gdy suma wybranych plikow
+// przekroczy limit serwera - bez tego formularz "znika" (patrz PHP: pusty $_POST przy CONTENT_LENGTH>0).
+window.CMK_POST_MAX_BAJTOW = <?= (int) cmk_ini_bajty(ini_get('post_max_size')) ?>;
+document.querySelectorAll('form[enctype]').forEach(function (form) {
+  form.addEventListener('submit', function (e) {
+    if (!window.CMK_POST_MAX_BAJTOW) return;
+    var suma = 0;
+    form.querySelectorAll('input[type=file]').forEach(function (input) {
+      for (var i = 0; i < input.files.length; i++) suma += input.files[i].size;
+    });
+    if (suma > 0 && suma > window.CMK_POST_MAX_BAJTOW - 200 * 1024) {
+      e.preventDefault();
+      alert('Wybrane zdjęcia są za duże. Limit serwera na jedno przesłanie to ' + Math.round(window.CMK_POST_MAX_BAJTOW / 1024 / 1024) + ' MB. Dodaj mniej zdjęć naraz albo zmniejsz je przed wysłaniem.');
+    }
+  });
+});
 </script>
 </body>
 </html>
