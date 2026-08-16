@@ -184,8 +184,8 @@
           <sc-for list="{{ lekarzeWidoczni }}" as="l" hint-placeholder-count="6">
             <article style="height:100%; border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs); display:flex; flex-direction:column; transition:var(--transition-control);" style-hover="border-color:var(--blue-200); box-shadow:var(--shadow-md);">
               <sc-if value="{{ l.zdjecie }}">
-                <div style="height:240px; background:var(--gradient-wash); display:flex; align-items:flex-end; justify-content:center; overflow:hidden; border-bottom:1px solid var(--border-subtle); position:relative;">
-                  <img src="{{ l.zdjecie }}" alt="{{ l.imie }}" style="display:block; width:88%; height:auto; margin-bottom:-6%;">
+                <div style="height:240px; background:var(--gradient-wash); overflow:hidden; border-bottom:1px solid var(--border-subtle); position:relative;">
+                  <img src="{{ l.zdjecie }}" alt="{{ l.imie }}" style="display:block; width:100%; height:100%; object-fit:cover; object-position:center 15%;">
                   <span style="position:absolute; left:14px; top:14px; padding:6px 12px; border-radius:var(--radius-pill); background:rgba(255,255,255,.74); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9); font-family:var(--font-display); font-size:12.5px; font-weight:var(--weight-semibold); color:var(--navy-900); white-space:nowrap;">{{ l.podtytul }}</span>
                 </div>
               </sc-if>

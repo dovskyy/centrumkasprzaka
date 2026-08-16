@@ -23,5 +23,17 @@ function cmk_tresc() {
         $tresc[$nazwa] = file_exists($plik) ? json_decode(file_get_contents($plik), true) : [];
     }
     $tresc['aktualnosci'] = cmk_normalizuj_aktualnosci($tresc['aktualnosci']);
+    $tresc['lekarze'] = array_map('cmk_uzupelnij_zdjecie_lekarza', $tresc['lekarze'] ?? []);
     return $tresc;
+}
+
+// Lekarz bez wgranego zdjecia (zdjecie: null w danych) dostaje domyslny placeholder
+// dobrany po polu "plec" - zeby karty na /specjalisci.php nigdy nie byly puste.
+function cmk_uzupelnij_zdjecie_lekarza($lekarz) {
+    if (empty($lekarz['zdjecie'])) {
+        $lekarz['zdjecie'] = ($lekarz['plec'] ?? '') === 'M'
+            ? 'uploads/doctor-placeholder-male.png'
+            : 'uploads/doctor-placeholder-female.png';
+    }
+    return $lekarz;
 }
