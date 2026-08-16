@@ -151,6 +151,13 @@ if ($wpisPhp !== null) {
 
   .ak-filtry { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
   .ak-filtr { padding:9px 16px; border-radius:var(--radius-pill); font-family:var(--font-display); font-size:14px; font-weight:var(--weight-medium); cursor:pointer; transition:var(--transition-control); }
+
+  #wpis-tresc { display:flex; flex-direction:column; gap:16px; font-size:var(--text-body); line-height:var(--leading-body); color:var(--navy-800); }
+  #wpis-tresc p { margin:0; }
+  #wpis-tresc h3 { margin:8px 0 0; font-size:20px; color:var(--navy-900); }
+  #wpis-tresc ul { margin:0; padding-left:22px; display:flex; flex-direction:column; gap:6px; }
+  #wpis-tresc strong { font-weight:var(--weight-semibold); color:var(--navy-900); }
+  #wpis-tresc a { color:var(--blue-600); text-decoration:underline; }
 </style>
 </helmet>
 
@@ -246,11 +253,7 @@ if ($wpisPhp !== null) {
           </sc-if>
 
           <sc-if value="{{ wpisMaTresc }}">
-            <div style="display:flex; flex-direction:column; gap:16px;">
-              <sc-for list="{{ wpis.akapity }}" as="akapit" hint-placeholder-count="2">
-                <p style="margin:0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--navy-800);">{{ akapit }}</p>
-              </sc-for>
-            </div>
+            <div id="wpis-tresc"></div>
           </sc-if>
 
           <sc-if value="{{ wpis.ctaUrl }}">
@@ -434,6 +437,15 @@ class Component extends DCLogic {
       if (e.key === 'Escape' && this.state.kalendarzOtwarty) this.zamknijKalendarz();
     };
     window.addEventListener('keydown', this.obslugaKlawiszy);
+
+    // Tresc wpisu jest juz bezpiecznym HTML-em wyliczonym przez cmk_tresc_html() w PHP
+    // (patrz inc/aktualnosci.php) - wstrzykujemy go przez innerHTML zamiast sc-for po akapitach,
+    // zeby ##/**/list/link renderowaly sie jako prawdziwe znaczniki. Ten sam wzorzec co
+    // wstrzykiwanie widgetu ZnanyLekarz w specjalisci.php (runtime dc nie ma dyrektywy raw-HTML).
+    const idZUrl = new URLSearchParams(location.search).get('post');
+    const wpisZrodlo = idZUrl ? AKTUALNOSCI.find(a => a.id === idZUrl) : null;
+    const kontenerTresci = document.getElementById('wpis-tresc');
+    if (wpisZrodlo && kontenerTresci) kontenerTresci.innerHTML = wpisZrodlo.trescHtml || '';
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.obslugaKlawiszy);

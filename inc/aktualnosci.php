@@ -54,8 +54,9 @@ function cmk_normalizuj_aktualnosci($lista) {
 
         $tresc = str_replace(["\r\n", "\r"], "\n", (string) ($rekord['tresc'] ?? ''));
         $akapity = $tresc !== '' ? explode("\n\n", $tresc) : [];
-        $r['akapity'] = $akapity;
-        $r['zajawka'] = cmk_przytnij_zajawke($akapity[0] ?? '', 180);
+        $r['akapity'] = $akapity; // zachowane dla kompatybilnosci (stary format renderowania)
+        $r['trescHtml'] = cmk_tresc_html($tresc);
+        $r['zajawka'] = cmk_przytnij_zajawke(cmk_tresc_bez_znacznikow($akapity[0] ?? ''), 180);
 
         $r['href'] = 'aktualnosci.php?post=' . rawurlencode($r['id']);
 
@@ -75,6 +76,72 @@ function cmk_normalizuj_aktualnosci($lista) {
     });
 
     return array_values(array_map(function ($w) { return $w['rekord']; }, $wynik));
+}
+
+// Konwerter tresci aktualnosci z prostego, zamknietego zbioru znacznikow na bezpieczny HTML.
+// Kolejnosc operacji jest krytyczna dla bezpieczenstwa: najpierw htmlspecialchars() calego
+// tekstu, potem podmiana znacznikow na tagi - wynik z definicji nie moze zawierac HTML-a
+// wpisanego przez uzytkownika (nawet gdyby wpisal <script> recznie, trafi jako tekst).
+// Zbior regul (utrzymywac zsynchronizowany z podgladem JS w panel/assets/panel.js):
+//   ## / ### tekst        -> <h3>
+//   - tekst / * tekst      -> <li> w <ul>
+//   **tekst**              -> <strong>, *tekst* -> <em>
+//   [napis](url)           -> <a>, whitelist schematow https?://|mailto:|tel:
+//   pusta linia            -> nowy <p>
+function cmk_tresc_html($tresc) {
+    $tresc = str_replace(["\r\n", "\r"], "\n", (string) $tresc);
+    if (trim($tresc) === '') return '';
+    $esc = htmlspecialchars($tresc, ENT_QUOTES, 'UTF-8');
+
+    $linie = explode("\n", $esc);
+    $html = '';
+    $wLiscie = false;
+    $akapit = [];
+
+    $domknijAkapit = function () use (&$html, &$akapit) {
+        if (!empty($akapit)) {
+            $html .= '<p>' . implode(' ', $akapit) . '</p>';
+            $akapit = [];
+        }
+    };
+
+    foreach ($linie as $linia) {
+        if (preg_match('/^#{2,3}\s+(.*)$/', $linia, $m)) {
+            $domknijAkapit();
+            if ($wLiscie) { $html .= '</ul>'; $wLiscie = false; }
+            $html .= '<h3>' . $m[1] . '</h3>';
+        } elseif (preg_match('/^[-*]\s+(.*)$/', $linia, $m)) {
+            $domknijAkapit();
+            if (!$wLiscie) { $html .= '<ul>'; $wLiscie = true; }
+            $html .= '<li>' . $m[1] . '</li>';
+        } elseif (trim($linia) === '') {
+            if ($wLiscie) { $html .= '</ul>'; $wLiscie = false; }
+            $domknijAkapit();
+        } else {
+            $akapit[] = $linia;
+        }
+    }
+    if ($wLiscie) $html .= '</ul>';
+    $domknijAkapit();
+
+    $html = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $html);
+    $html = preg_replace('/\*(.+?)\*/s', '<em>$1</em>', $html);
+    $html = preg_replace_callback('/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|tel:[^\s)]+)\)/i', function ($m) {
+        return '<a href="' . $m[2] . '" target="_blank" rel="noopener">' . $m[1] . '</a>';
+    }, $html);
+
+    return $html;
+}
+
+// Usuwa znaczniki (##, **, -, [..](..)) z tekstu - uzywane do liczenia zajawki, zeby
+// "### Nowi specjalisci" nie trafialo z hashami do <meta description>.
+function cmk_tresc_bez_znacznikow($tekst) {
+    $tekst = preg_replace('/^#{2,3}\s+/', '', $tekst);
+    $tekst = preg_replace('/^[-*]\s+/', '', $tekst);
+    $tekst = preg_replace('/\*\*(.+?)\*\*/s', '$1', $tekst);
+    $tekst = preg_replace('/\*(.+?)\*/s', '$1', $tekst);
+    $tekst = preg_replace('/\[([^\]]+)\]\([^)]+\)/', '$1', $tekst);
+    return trim($tekst);
 }
 
 function cmk_data_opis($iso, $miesiace) {

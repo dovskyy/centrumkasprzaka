@@ -95,3 +95,34 @@ function cmk_logout() {
     $_SESSION = [];
     session_destroy();
 }
+
+// CSRF: token per sesja (nie per formularz - prostsze, wystarczajace dla panelu jednego uzytkownika).
+function cmk_csrf_token() {
+    cmk_panel_session_start();
+    if (empty($_SESSION['cmk_csrf'])) {
+        $_SESSION['cmk_csrf'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['cmk_csrf'];
+}
+
+function cmk_csrf_pole() {
+    return '<input type="hidden" name="csrf" value="' . htmlspecialchars(cmk_csrf_token()) . '">';
+}
+
+// Wywolywac na poczatku obslugi kazdego POST-a. Przy niezgodnosci konczy zadanie 403-ka
+// z czytelnym komunikatem PL zamiast bialego ekranu.
+function cmk_sprawdz_csrf() {
+    cmk_panel_session_start();
+    $wyslany = (string) ($_POST['csrf'] ?? '');
+    $oczekiwany = (string) ($_SESSION['cmk_csrf'] ?? '');
+    if ($oczekiwany === '' || !hash_equals($oczekiwany, $wyslany)) {
+        http_response_code(403);
+        header('Content-Type: text/html; charset=utf-8');
+        echo '<!DOCTYPE html><html lang="pl"><head><meta charset="utf-8"><title>Sesja wygasła</title></head><body style="font-family:sans-serif; max-width:480px; margin:80px auto; text-align:center;">'
+            . '<h1 style="font-size:20px;">Sesja wygasła</h1>'
+            . '<p>Zaloguj się ponownie, aby kontynuować.</p>'
+            . '<p><a href="index.php">Wróć do logowania</a></p>'
+            . '</body></html>';
+        exit;
+    }
+}
