@@ -155,7 +155,6 @@
         </nav>
         <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--blue-200); margin-bottom:14px;">Nasz zespół</div>
         <h1 id="tytul" style="margin:0 0 18px; font-family:var(--font-display); font-size:var(--text-display-2); font-weight:var(--weight-extrabold); letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white); max-width:720px;">Lekarze przyjmujący</h1>
-
       </div>
     </section>
 

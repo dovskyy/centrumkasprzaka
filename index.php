@@ -56,9 +56,8 @@
 </script>
 <x-dc>
 <helmet>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Centrum Medyczne Kasprzaka — prywatna przychodnia na Woli, Warszawa</title>
-<meta name="description" content="Prywatna przychodnia przy ul. Kasprzaka 31 na warszawskiej Woli. Ginekologia, dermatologia, pediatria, kardiologia, USG. Wizyty umawiane online.">
+<title>Centrum Medyczne Kasprzaka — Twoja przychodnia na Woli w Warszawie</title>
+<meta name="description" content="Nowoczesne Centrum Medyczne przy ul. Kasprzaka 31 na Woli w Warszawie. Doświadczeni specjaliści, troskliwa opieka i diagnostyka USG bez skierowania. Umów wizytę online.">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/fonts.css">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/colors.css">
 <link rel="stylesheet" href="_ds/cm-kasprzaka-design-system-10ef7737-e664-437d-a8ae-74af75e92b43/tokens/typography.css">
@@ -523,7 +522,7 @@
             <img src="uploads/assets-1786096163757-0x49.webp" alt="Logo CMK" style="height: clamp(80px, 9vw, 120px); width: auto; object-fit: contain; flex-shrink: 0;">
             <h1 class="hero-h1" id="hero-h" style="margin:0; font-family:var(--font-logo); font-size:45px; font-weight:400; text-transform:uppercase; letter-spacing:var(--tracking-display); line-height:var(--leading-tight); color:var(--white);">Centrum Medyczne <span style="font-weight:200;">Kasprzaka</span></h1>
           </div>
-          <p style="margin:0 0 32px; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78); max-width:520px; text-wrap:pretty;">Konsultacje specjalistyczne i diagnostyka USG w jednym miejscu. Termin zwykle w ciągu kilku dni, bez skierowania.</p>
+          <p style="margin:0 0 32px; font-size:var(--text-body-lg); line-height:var(--leading-body); color:rgba(255,255,255,.78); max-width:520px; text-wrap:pretty;">Konsultacje doświadczonych lekarzy i diagnostyka USG bez skierowania. Zapewniamy profesjonalną opiekę i szybkie terminy.</p>
           <div style="display:flex; flex-wrap:wrap; gap:12px; white-space:nowrap;">
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="cta-book-btn" onClick="{{ otworzKalendarz }}" size="lg" icon="calendar-check" hint-size="auto,56px">Umów wizytę online</x-import>
             <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.Button" class="hero-phone-btn" as="a" href="tel:+48727500085" variant="onDark" size="lg" icon="phone" hint-size="auto,56px"><span class="hero-phone-label">Zadzwoń: 727 500 085</span></x-import>
@@ -659,29 +658,29 @@
                 <li style="position:relative; display:flex; gap:16px;">
                   <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--blue-600); color:var(--white); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">1</span>
                   <span>
-                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wybierasz termin online</span>
-                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Wolne godziny widać od razu. Zwykle w ciągu 3 dni, bez skierowania.</span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wybierasz dogodny termin</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Wizytę rezerwujesz online lub telefonicznie w kilka chwil — bez kolejek i bez skierowania.</span>
                   </span>
                 </li>
                 <li style="position:relative; display:flex; gap:16px;">
                   <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--white); color:var(--blue-600); border:2px solid var(--blue-200); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">2</span>
                   <span>
-                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Przychodzisz do przychodni</span>
-                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Parking przed budynkiem, wejście z poziomu ulicy, bez schodów.</span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Przychodzisz na wizytę</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Spokojna atmosfera, punktualne przyjęcie o umówionej godzinie i brak kolejek.</span>
                   </span>
                 </li>
                 <li style="position:relative; display:flex; gap:16px;">
                   <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--white); color:var(--blue-600); border:2px solid var(--blue-200); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">3</span>
                   <span>
-                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Badanie robimy na miejscu</span>
-                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">USG dla dzieci i dorosłych w tym samym gabinecie co konsultacja.</span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Konsultacja i badanie na miejscu</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Lekarz poświęci Ci tyle czasu, ile potrzebujesz. Badania USG wykonujemy w trakcie tej samej wizyty.</span>
                   </span>
                 </li>
                 <li style="position:relative; display:flex; gap:16px;">
                   <span style="position:relative; z-index:1; width:34px; height:34px; flex:0 0 auto; border-radius:var(--radius-pill); display:grid; place-items:center; background:var(--white); color:var(--blue-600); border:2px solid var(--blue-200); font-family:var(--font-display); font-weight:var(--weight-extrabold); font-size:14px; box-shadow:0 0 0 6px var(--surface-subtle);">4</span>
                   <span>
-                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Wynik dostajesz tego samego dnia</span>
-                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Opis USG omawiamy bezpośrednio po badaniu.</span>
+                    <span style="display:block; font-family:var(--font-display); font-size:16.5px; font-weight:var(--weight-bold); color:var(--navy-900);">Szybkie wyniki i omówienie zaleceń</span>
+                    <span style="display:block; margin-top:4px; font-size:15px; line-height:1.6; color:var(--text-muted);">Opis USG otrzymujesz od razu, a lekarz szczegółowo wyjaśnia dalsze kroki i odpowiada na pytania.</span>
                   </span>
                 </li>
               </ol>
@@ -693,7 +692,7 @@
 
     <section id="zespol" aria-labelledby="zespol-h" style="background:var(--white);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
-        <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Nasz zespół" title="Specjaliści" lead="Zdjęcia lekarzy do uzupełnienia — karty działają także bez fotografii." hint-size="100%,160px"></x-import>
+        <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Nasz zespół" title="Specjaliści" lead="Doświadczeni lekarze specjaliści i diagności. Rzetelna wiedza medyczna, precyzyjna diagnostyka i czas poświęcony każdemu pacjentowi." hint-size="100%,160px"></x-import>
         <div class="zespol-siatka">
           <sc-for list="{{ lekarzeTeaser }}" as="l" hint-placeholder-count="4">
             <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
@@ -720,7 +719,7 @@
     <section id="opinie" aria-labelledby="opinie-h" style="background:var(--surface-subtle);">
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
         <div class="opinie-head">
-          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Opinie pacjentów" title="Co mówią nasi pacjenci" lead="Opinie pochodzą bezpośrednio z profilu placówki w serwisie ZnanyLekarz — wystawiają je pacjenci po odbytej wizycie." hint-size="100%,160px"></x-import>
+          <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Opinie pacjentów" title="Co mówią nasi pacjenci" lead="Opinie naszych pacjentów są dla nas bardzo ważne — zależy nam, aby każdy czuł się bezpiecznie i pod dobrą opieką. Poniżej publikujemy autentyczne oceny z profilu placówki w serwisie ZnanyLekarz." hint-size="100%,160px"></x-import>
           <!-- TODO: potwierdzić ocenę i dopisać liczbę opinii ZnanyLekarz. -->
           <div class="opinie-oceny">
             <a class="ocena-pigulka" href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka" target="_blank" rel="noopener noreferrer">
@@ -837,8 +836,7 @@
             </div>
           </div>
           
-          <div style="display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center; padding-top:12px; max-width:520px;">
-            <p style="margin:0; font-size:var(--text-body); line-height:var(--leading-body); color:var(--text-muted);">Wszystkie zweryfikowane opinie pacjentów znajdziesz na naszym profilu ZnanyLekarz.</p>
+          <div style="display:flex; justify-content:center; padding-top:12px;">
             <a id="zl-opinie-anchor"
                href="https://www.znanylekarz.pl/placowki/centrum-medyczne-kasprzaka"
                target="_blank" rel="noopener noreferrer nofollow"
@@ -975,7 +973,7 @@
       <div>
         <img src="uploads/assets-1786096163757-0x49.webp" alt="" width="40" height="40" style="display:block; width:40px; height:40px; margin-bottom:16px;">
         <p style="margin:0; font-size:14.5px; line-height:1.65;">Centrum Medyczne Kasprzaka Sp. z o.o.<br>ul. Marcina Kasprzaka 31 lok. U7, 01-211 Warszawa<br>NIP: 5272935293 · REGON: 387123910</p>
-        <p style="margin:12px 0 0; font-size:13px; line-height:1.65; color:rgba(255,255,255,.55);">Podmiot wpisany do Rejestru Podmiotów Wykonujących Działalność Leczniczą prowadzonego przez Wojewodę Mazowieckiego, nr księgi — do uzupełnienia.</p>
+        <p style="margin:12px 0 0; font-size:13px; line-height:1.65; color:rgba(255,255,255,.55);">Podmiot leczniczy wpisany do Rejestru Podmiotów Wykonujących Działalność Leczniczą prowadzonego przez Wojewodę Mazowieckiego.</p>
       </div>
       <nav aria-label="Stopka — serwis">
         <div style="font-family:var(--font-display); font-size:var(--text-eyebrow); font-weight:var(--weight-bold); letter-spacing:var(--tracking-eyebrow); text-transform:uppercase; color:var(--white); margin-bottom:16px;">Serwis</div>
