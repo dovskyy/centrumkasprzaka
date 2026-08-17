@@ -393,11 +393,16 @@
     .hero-proof--bridge .hero-proof__item:nth-child(3) { border-top-color: rgba(14,26,60,.12); }
   }
 
-  /* Zespol/Specjalisci na stronie glownej: stale 3 kolumny -> od razu 1 kolumna, bez
-     posredniego stanu 2 kolumn, w ktorym 3. karta wpadalaby w samotny "dokladany" wiersz. */
-  .zespol-siatka { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; margin-top:40px; }
+  /* Zespol/Specjalisci na stronie glownej: na desktopie stale 4 kolumny (jeden pelny rzad),
+     ponizej 780px od razu 1 kolumna - bez posredniego stanu 2/3 kolumn, w ktorym ostatnia
+     karta wpadalaby w samotny "dokladany" wiersz. Piata+ karta ukryta zawsze (bezpiecznik,
+     gdyby w panelu zaznaczono wiecej niz 4 lekarzy "Pokaz na stronie glownej"), a na mobile
+     dodatkowo ukryta 4. karta - zostaja dokladnie 3.  */
+  .zespol-siatka { display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; margin-top:40px; }
+  .zespol-siatka > article:nth-child(n+5) { display:none; }
   @media (max-width:780px) {
     .zespol-siatka { grid-template-columns:1fr; max-width:420px; margin-left:auto; margin-right:auto; }
+    .zespol-siatka > article:nth-child(n+4) { display:none; }
   }
 
   /* Sekcja opinii */
@@ -690,7 +695,7 @@
       <div style="max-width:var(--container-max); margin:0 auto; padding:96px var(--gutter);">
         <x-import component-from-global-scope="CMKasprzakaDesignSystem_10ef77.SectionHeading" eyebrow="Nasz zespół" title="Specjaliści" lead="Zdjęcia lekarzy do uzupełnienia — karty działają także bez fotografii." hint-size="100%,160px"></x-import>
         <div class="zespol-siatka">
-          <sc-for list="{{ lekarzeTeaser }}" as="l" hint-placeholder-count="3">
+          <sc-for list="{{ lekarzeTeaser }}" as="l" hint-placeholder-count="4">
             <article style="border-radius:var(--radius-card); overflow:hidden; background:var(--white); border:1px solid var(--border-subtle); box-shadow:var(--shadow-xs);">
               <div style="height:230px; background:var(--gradient-wash); overflow:hidden; border-bottom:1px solid var(--border-subtle);">
                 <img src="{{ l.zdjecie }}" alt="{{ l.imie }}" style="display:block; width:100%; height:100%; object-fit:cover; object-position:center 15%;">
@@ -1263,10 +1268,10 @@ class Component extends DCLogic {
       przewinSpecjalizacjePrawo: this.przewinSpecjalizacjePrawo,
       // Lekarz z wklejonym widgetem dostaje przycisk otwierajacy jego wlasny modal,
       // reszta dziala jak dotychczas - wspolny kalendarz placowki.
-      // Zawsze max 3 - siatka na mniejszych ekranach nie ma dokladac dodatkowego wiersza
-      // (patrz .zespol-siatka w CSS: 3 kolumny -> 1 kolumna, bez posredniego stanu 2 kolumn,
-      // w ktorym 3. karta wpadalaby w samotny, "dokladany" wiersz).
-      lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej).slice(0, 3).map((l) => ({
+      // Limit widocznych kart robi CSS (.zespol-siatka), nie JS - na desktopie siatka
+      // pokazuje do 4 kart w jednym rzedzie, na mobile ukrywa 4. karte (zostaja 3),
+      // zeby zaden rozmiar ekranu nie "dokladal" samotnego, niepelnego wiersza.
+      lekarzeTeaser: LEKARZE.filter((l) => l.naStronieGlownej).map((l) => ({
         ...l,
         otworzKalendarzDlaNiego: l.widgetHtml ? (e) => this.otworzWidgetLekarza(e, l) : this.otworzKalendarz
       })),
