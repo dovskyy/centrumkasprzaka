@@ -251,7 +251,10 @@
       </div>
     </div>
     <div style="border-top:1px solid rgba(255,255,255,.12);">
-      <div style="max-width:var(--container-max); margin:0 auto; padding:18px var(--gutter) 40px; font-size:13.5px;">© 2026 Centrum Medyczne Kasprzaka</div>
+      <div style="max-width:var(--container-max); margin:0 auto; padding:18px var(--gutter) 40px; font-size:13.5px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+        <span>© 2026 Centrum Medyczne Kasprzaka</span>
+        <a href="panel/" style="color:rgba(255,255,255,.5); text-decoration:none;">Panel</a>
+      </div>
     </div>
   </footer>
 
