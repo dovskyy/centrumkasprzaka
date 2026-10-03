@@ -41,8 +41,7 @@ yarn-error.log*
 temp/
 *.bak
 
-# Panel (sekrety, stan lokalny — nie w repo)
-panel/config.php
+# Panel (stan lokalny — nie w repo; config.php jest teraz trackowany, patrz panel/config.php)
 panel/_attempts.json
 
 # Dane (baza treści — różna lokalnie i na serwerze, nie trackujemy)
